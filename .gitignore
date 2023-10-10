@@ -410,3 +410,4 @@ bld/
 bin/
 obj/
 log/
+net7.0/
