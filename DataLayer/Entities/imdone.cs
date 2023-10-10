@@ -8,5 +8,6 @@ namespace DataLayer.Entities
 {
     internal class imdone
     {
+        string? YYYYYYYEEESSS { get; set; }
     }
 }
