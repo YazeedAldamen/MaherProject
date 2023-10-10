@@ -396,3 +396,13 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+Debug/
+DebugPublic/
+Release/
+Releases/
+x64/
+x86/
+bld/
+bin/
+obj/
+log/
