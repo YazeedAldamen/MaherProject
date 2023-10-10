@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/AdminDashboard/obj/Release/net7.0
+/DataLayer/.vs/DataLayer/FileContentIndex
+/DataLayer/obj/Release/net7.0
+/ServiceLayer/obj/Release/net7.0
+/DataLayer/.vs/DataLayer/v17/.suo
+/.vs/slnx.sqlite
