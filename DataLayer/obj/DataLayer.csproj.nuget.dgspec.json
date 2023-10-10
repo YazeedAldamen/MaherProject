@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hoken\\source\\repos\\MaherProject\\DataLayer\\DataLayer.csproj": {}
+    "C:\\Users\\hoken\\Source\\Repos\\MaherProject\\DataLayer\\DataLayer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hoken\\source\\repos\\MaherProject\\DataLayer\\DataLayer.csproj": {
+    "C:\\Users\\hoken\\Source\\Repos\\MaherProject\\DataLayer\\DataLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hoken\\source\\repos\\MaherProject\\DataLayer\\DataLayer.csproj",
+        "projectUniqueName": "C:\\Users\\hoken\\Source\\Repos\\MaherProject\\DataLayer\\DataLayer.csproj",
         "projectName": "DataLayer",
-        "projectPath": "C:\\Users\\hoken\\source\\repos\\MaherProject\\DataLayer\\DataLayer.csproj",
+        "projectPath": "C:\\Users\\hoken\\Source\\Repos\\MaherProject\\DataLayer\\DataLayer.csproj",
         "packagesPath": "C:\\Users\\hoken\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hoken\\source\\repos\\MaherProject\\DataLayer\\obj\\",
+        "outputPath": "C:\\Users\\hoken\\Source\\Repos\\MaherProject\\DataLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hoken\\AppData\\Roaming\\NuGet\\NuGet.Config",
