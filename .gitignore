@@ -411,3 +411,6 @@ bin/
 obj/
 log/
 net7.0/
+/ServiceLayer/obj/debug/net7.0/
+/DataLayer/obj/debug/net7.0/
+/AdminDashboard/obj/debug/net7.0/
