@@ -417,3 +417,9 @@ net7.0/
 /ServiceLayer/obj/Debug/
 /DataLayer/obj/Debug/
 /AdminDashboard/obj/Debug/
+
+# Ignore build output
+bin/
+obj/
+*.dll
+*.exe
