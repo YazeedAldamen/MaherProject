@@ -369,7 +369,7 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
-Debug/
+
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
@@ -396,27 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-*/Debug/
-*/obj/
-*/Debug/*
-*/obj/*
-Debug/
-DebugPublic/
-Release/
-Releases/
-x64/
-x86/
-bld/
-bin/
-obj/
-log/
-net7.0/
-/ServiceLayer/obj/Debug/net7.0/
-/DataLayer/obj/Debug/net7.0/
-/AdminDashboard/obj/Debug/net7.0/
-/ServiceLayer/obj/Debug/
-/DataLayer/obj/Debug/
-/AdminDashboard/obj/Debug/
 
 # Ignore build output
 bin/
