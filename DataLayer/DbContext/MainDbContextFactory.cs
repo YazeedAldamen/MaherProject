@@ -44,6 +44,26 @@ namespace DataLayer.DbContext
 
         public MainDbContext Create()
         {
+            if (!isinited)
+            {
+                lock (dblock)
+                {
+                    if (!isinited)
+                    {
+                        _log.LogInformation("Start Database.Migrate()");
+                        using (MainDbContext context = new MainDbContext(_options))
+                        {
+                            if (context.Database.CanConnect())
+                            {
+                                // Apply pending migrations
+                                context.Database.Migrate();
+                            }
+                        }
+                        _log.LogInformation("Database.Migrate() Complete");
+                        isinited = true;
+                    }
+                }
+            }
             return new MainDbContext(_options);
         }
 

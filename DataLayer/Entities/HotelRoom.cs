@@ -46,5 +46,7 @@ namespace DataLayer.Entities
 
         public bool IsAC { get; set; }
         public bool IsRoomHeater { get; set; }
+        public Guid? UserId { get; set; }
+        public virtual AspNetUser? User { get; set; }
     }
 }

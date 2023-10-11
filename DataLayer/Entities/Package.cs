@@ -20,7 +20,7 @@ namespace DataLayer.Entities
 
         public float? Discount { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public int? NumberOfDays { get; set; }
 
@@ -69,6 +69,8 @@ namespace DataLayer.Entities
         public bool IsAC { get; set; }
         public bool IsRoomHeater { get; set; }
 
+        public Guid? UserId { get; set; }
+        public virtual AspNetUser? User { get; set; }
 
     }
 }

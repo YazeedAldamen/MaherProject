@@ -20,12 +20,7 @@ namespace DataLayer.DbContext
         public virtual DbSet<HotelRoom> HotelRooms { get; set; }
         public virtual DbSet<ProviderService> ProviderServices { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
-
-
-
-
-
-
-
+        public virtual DbSet<RoomsOrder> RoomsOrders { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
     }
 }
