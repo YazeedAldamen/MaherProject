@@ -1,0 +1,42 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --orange: #FF5722;
+    --light-grey: #f7f7f7;
+    --dark: #0e1010;
+    --white: #fff; 
+    --trans: all 0.3s ease-in-out;
+    --box-shadow:2px 2px 18px rgb(14 52 54 / 15%) ;
+
+}
+.form_img{
+    width: 250px;
+}
+.header{
+    min-height: 50vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(~/images/img12.jpg) center/cover no-repeat;
+    filter: brightness(0.8);
+}
+#dashboard{
+    padding: 25px;
+}
+.sidenav .nav-link{
+    margin: 25px;
+}
+.sidenav .nav-link a{
+    font-size: 16px;
+    width: 600;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--dark);
+}
+.sidenav .nav-link a:hover{
+    color: var(--orange);
+}
+.body-contant{
+    margin-left: 75px;
+}
