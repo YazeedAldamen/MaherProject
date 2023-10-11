@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Entities
 {
-    public class HotelRooms
+    public class ProviderService
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -36,6 +36,8 @@ namespace DataLayer.Entities
 
         public int? NumberOfBathrooms { get; set; }
 
+        public int? NumberOfRooms { get; set; }
+
         public bool IsPublished { get; set; }
 
         public bool IsDeleted { get; set; }
@@ -46,5 +48,6 @@ namespace DataLayer.Entities
 
         public bool IsAC { get; set; }
         public bool IsRoomHeater { get; set; }
+        public bool IsShowNotification { get; set; }
     }
 }
