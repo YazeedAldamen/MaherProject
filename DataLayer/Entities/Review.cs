@@ -11,7 +11,7 @@ namespace DataLayer.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string? UserId { get; set; }
+        public Guid? UserId { get; set; }
         public virtual AspNetUser? User { get; set; }
         public int? HotelId { get; set; }
         public virtual HotelRoom? Hotel { get; set; }

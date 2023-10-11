@@ -13,7 +13,7 @@ namespace DataLayer.Entities
         public int Id { get; set; }
         public int? PackageId { get; set; }
         public virtual Package? Package { get; set; }
-        public string? UserId { get; set; }
+        public Guid? UserId { get; set; }
         public virtual AspNetUser? User { get;}
         public DateTime? CheckIn { get; set; }
         public DateTime? CheckOut { get; set; }
