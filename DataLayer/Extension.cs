@@ -1,4 +1,7 @@
 ﻿using DataLayer.DbContext;
+using DataLayer.Interfaces;
+using DataLayer.Repositories;
+using DataLayer.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +18,8 @@ namespace DataLayer
         public static IServiceCollection AddMySqlCoreDb(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IMySqlDbContextOptionsFactory, MySqlDbContextOption>();
+            services.AddTransient<IEfContextFactory, MainDbContextFactory>();
+            services.AddTransient<IUnitOfWorkRepositories, UnitOfWorkRepositories>();
 
             return services;
         }
