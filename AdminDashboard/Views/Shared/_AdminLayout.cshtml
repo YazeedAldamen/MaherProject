@@ -9,7 +9,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- custom css -->
     <link rel="stylesheet" href="~/css/main.css">
-
+    <script src="~/datatable/js/jquery-3.6.0.min.js"></script>
     <!-- BootStrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
@@ -35,8 +35,8 @@
                             <li class="nav-link"><a href="index.html"><i class='bx bx-bell'></i> Notification</a></li>
                             <li class="nav-link"><a href="create_package.html"><i class='bx bx-add-to-queue'></i> Create Package</a></li>
                             <li class="nav-link"><a href="edit_package.html"><i class='bx bx-edit-alt'></i> Edit / Delete Package</a></li>
-                            <li class="nav-link"><a href="create_blog.html"><i class='bx bx-book-add'></i> Create Blog</a></li>
-                            <li class="nav-link"><a href="edit_blog.html"><i class='bx bx-edit-alt'></i> Edit / Delete Blog</a></li>
+                            <li class="nav-link"><a href="@Url.Action("Create","Blogs")"><i class='bx bx-book-add'></i> Create Blog</a></li>
+                            <li class="nav-link"><a href="@Url.Action("Edit","Blogs")"><i class='bx bx-edit-alt'></i> Edit / Delete Blog</a></li>
                             <li class="nav-link"><a href="hotel_request.html"><i class='bx bx-note'></i> Hotel Request</a></li>
                             <li class="nav-link"><a href="edit_hotels.html"><i class='bx bx-edit-alt'></i> Edit / Delete Hotels</a></li>
                             <li class="nav-link"><a href="orders.html"><i class='bx bx-notepad'></i> Package Orders</a></li>
@@ -90,6 +90,7 @@
 
     </section>
     <!-- js -->
+    @RenderSection("DataTable", required: false)
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
 </body>

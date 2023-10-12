@@ -1,0 +1,38 @@
+﻿@model AdminDashboard.Models.BlogModel
+@{
+    ViewData["Title"] = "Edit Blog";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="col-lg-9 col-md-12 px-4 mt-3">
+
+    <h1>
+        Create New Blog
+    </h1>
+    <form asp-action="Create" asp-controller="Blogs" class="row g-3 mt-5" enctype="multipart/form-data">
+        <div class="col-md-6">
+            <label for="Title" class="form-label">@Html.DisplayNameFor(x=>x.Title):</label>
+            <input asp-for="Title" class="form-control" name="Title" id="Title" />
+        </div>
+
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Upload Main Image</label>
+            <input asp-for="Image" class="form-control" id="Image" />
+        </div>
+        <div class="col-md-6">
+            <label for="BlogMainText" class="form-label">@Html.DisplayNameFor(x=>x.BlogMainText):</label>
+            <textarea asp-for="BlogMainText" class="form-control" id="BlogMainText"></textarea>
+        </div>
+
+        <div class="col-12">
+            <label for="BlogMainText" class="form-label">@Html.DisplayNameFor(x=>x.IsPublished):</label>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <input asp-for="IsPublished" class="form-check-input" type="checkbox" name="IsPublished" id="IsPublished" />
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
