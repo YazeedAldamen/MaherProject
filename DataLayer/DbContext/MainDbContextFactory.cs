@@ -14,26 +14,25 @@ namespace DataLayer.DbContext
     {
         private readonly IMySqlDbContextOptionsFactory _options;
         private ILoggerFactory _loggerFactory;
-        private readonly ILogger<IEfContextFactory> _log;
+        private readonly ILogger<MainDbContextFactory> _log;
         private readonly IConfiguration _config;
 
         private static bool isinited = false;
         private static object dblock = new object();
 
-        #region Ctor 
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="loggerFactory"></param>
-        /// <param name="options"></param>
-        /// <param name="config"></param>
-        public MainDbContextFactory(ILoggerFactory loggerFactory, IMySqlDbContextOptionsFactory options, IConfiguration config)
+
+		#region Ctor 
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		/// <param name="loggerFactory"></param>
+		/// <param name="options"></param>
+		/// <param name="config"></param>
+		public MainDbContextFactory(ILoggerFactory loggerFactory, IMySqlDbContextOptionsFactory options, IConfiguration config)
         {
             _loggerFactory = loggerFactory;
-            _log = _loggerFactory.CreateLogger<IEfContextFactory>();
+            _log = _loggerFactory.CreateLogger<MainDbContextFactory>();
             _config = config;
-            isinited = false;
-
             //options.OptionsBuilder.UseMySql(_config.GetConnectionString("WebTebMySqlConnection"));
             options.OptionsBuilder.UseLoggerFactory(_loggerFactory);
             options.OptionsBuilder.EnableSensitiveDataLogging();
