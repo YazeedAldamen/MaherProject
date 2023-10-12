@@ -13,10 +13,13 @@ namespace ServiceLayer
         private readonly IUnitOfWorkRepositories _unitOfWorkRepository;
 
         private BlogServices _blogServices;
+        private ContactService _contactServices;
+        private PackageServices _packageServices;
         public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository) {
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
         public BlogServices BlogServices =>_blogServices??=new BlogServices(_unitOfWorkRepository);
+
     }
 }

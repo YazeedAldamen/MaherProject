@@ -13,9 +13,9 @@ namespace ServiceLayer.Services
     {
         private readonly IGenericRepository<Blog> _blogRepository;
 
-        public BlogServices(IUnitOfWorkRepositories genericRepository)
+        public BlogServices(IUnitOfWorkRepositories unitofworkRepository)
         {
-            _blogRepository=genericRepository.BlogRepository;
+            _blogRepository=unitofworkRepository.BlogRepository;
         }
 
         public async Task<IEnumerable<BlogDTO>> GetAllBlogs()
