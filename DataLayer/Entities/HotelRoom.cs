@@ -48,5 +48,9 @@ namespace DataLayer.Entities
         public bool IsRoomHeater { get; set; }
         public Guid? UserId { get; set; }
         public virtual AspNetUser? User { get; set; }
+        public ICollection<RoomsOrder> RoomOrders { get; set; } = new List<RoomsOrder>();
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+
+
     }
 }
