@@ -18,11 +18,11 @@ namespace ServiceLayer.Services
             _blogRepository=genericRepository.BlogRepository;
         }
 
-        public async Task<IEnumerable<BlogModel>> GetAllBlogs()
+        public async Task<IEnumerable<BlogDTO>> GetAllBlogs()
         {
             var allBlogs = await _blogRepository.GetAllAsync();
 
-            IEnumerable<BlogModel> data = allBlogs.Select(x => new BlogModel
+            IEnumerable<BlogDTO> data = allBlogs.Select(x => new BlogDTO
             {
                 Id=x.Id,
                 Title=x.Title,
