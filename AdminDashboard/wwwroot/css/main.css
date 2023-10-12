@@ -18,7 +18,7 @@
 }
 .header{
     min-height: 50vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(~/images/img12.jpg) center/cover no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(~/images/img12.jpg) center no-repeat;
     filter: brightness(0.8);
 }
 #dashboard{
@@ -29,7 +29,7 @@
 }
 .sidenav .nav-link a{
     font-size: 16px;
-    width: 600;
+    width: 600px;
     font-weight: bold;
     text-decoration: none;
     color: var(--dark);
