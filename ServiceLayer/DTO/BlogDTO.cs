@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.DTO
 {
-    public class BlogModel
+    public class BlogDTO
     {
         public int Id { get; set; }
         public string? Title { get; set; }
