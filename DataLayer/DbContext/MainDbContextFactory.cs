@@ -66,16 +66,5 @@ namespace DataLayer.DbContext
             return new MainDbContext(_options);
         }
 
-
-        public MySqlConnection CreateMySqlConnection()
-        {
-            var connectionString = _config.GetConnectionString("WebTebMySqlConnection");
-            MySqlConnection conn;
-
-            conn = new MySqlConnection();
-            conn.ConnectionString = connectionString;
-            conn.Open();
-            return conn;
-        }
     }
 }

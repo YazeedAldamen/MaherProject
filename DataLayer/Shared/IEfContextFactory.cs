@@ -6,7 +6,5 @@ namespace DataLayer.Shared
     public interface IEfContextFactory
     {
         MainDbContext Create();
-        MySqlConnection CreateMySqlConnection();
-
     }
 }
