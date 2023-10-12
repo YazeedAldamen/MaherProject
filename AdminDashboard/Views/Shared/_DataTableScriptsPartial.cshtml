@@ -1,0 +1,51 @@
+﻿<script src="~/datatable/js/jquery.datatables.min.js"></script>
+<script src="~/datatable/js/datatables.bootstrap5.min.js"></script>
+<script>
+	function toggleSearch() {
+		var filtersContainer = document.getElementById("search-container");
+		filtersContainer.style.display = filtersContainer.style.display === "block" ? "none" : "block";
+	}
+
+	var sortByColumn = "Id";
+	var sortAscending = true;
+
+	function getOrderByColumnName() {
+		return sortByColumn;
+	}
+
+	function setOrderByColumnName(columnName) {
+		if (sortByColumn === columnName) {
+			sortAscending = !sortAscending;
+		} else {
+			sortByColumn = columnName;
+			sortAscending = true;
+		}
+	}
+
+	js = jQuery.noConflict();
+
+	js(document).ready(function () {
+	
+		js("th").on("click", function () {
+			var columnName = js(this).data("value");
+			setOrderByColumnName(columnName);
+		});
+	});
+
+    var allInputs = document.querySelectorAll('.search-container input[type="text"],.search-container input[type="number"],.search-container input[type="date"] , .search-container select');
+    var clearButton = document.querySelector('.search-container .btn-danger');
+
+    function clearSearch() {
+        for (var i = 0; i < allInputs.length; i++) {
+            if (allInputs[i].type === "text" || allInputs[i].type === "number" || allInputs[i].type === "date") {
+                allInputs[i].value = "";
+            } else if ( allInputs[i].tagName === "SELECT") {
+                allInputs[i].value = "";
+            }
+        }
+        searchDataTable();
+      
+    }
+
+
+</script>
