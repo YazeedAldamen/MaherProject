@@ -71,6 +71,7 @@ namespace DataLayer.Entities
 
         public Guid? UserId { get; set; }
         public virtual AspNetUser? User { get; set; }
+        public virtual PackageType? PackageType { get; set; }
 
     }
 }

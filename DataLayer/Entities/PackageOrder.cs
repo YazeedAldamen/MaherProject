@@ -20,6 +20,10 @@ namespace DataLayer.Entities
         public int? NumberOfAdults { get; set; }
         public int? NumberOfChildren { get; set; }
         public string? PaymentMethod { get; set; }
+        public ICollection<PackageOrder> PackageOrders { get; set; } = new List<PackageOrder>();
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+
+
 
     }
 }
