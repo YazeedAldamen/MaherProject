@@ -44,7 +44,7 @@ namespace AdminDashboard.Controllers
             return View(model);
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(BlogModel model) 
         {
             if (!ModelState.IsValid) 
