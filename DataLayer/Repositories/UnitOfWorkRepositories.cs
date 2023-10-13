@@ -20,6 +20,7 @@ namespace DataLayer.Repositories
         public IGenericRepository<ProviderService> ProviderServiceRepository { get; set; }
         public IGenericRepository<Review> ReviewRepository { get; set; }
         public IGenericRepository<RoomsOrder> RoomOrderRepository { get; set; }
+        public IGenericRepository<AspNetUser> UsersRepository { get; set; }
 
         public UnitOfWorkRepositories(IEfContextFactory efContextFactory)
         {
@@ -32,6 +33,7 @@ namespace DataLayer.Repositories
             ProviderServiceRepository = new GenericRepository<ProviderService>(efContextFactory);
             ReviewRepository = new GenericRepository<Review>(efContextFactory);
             RoomOrderRepository = new GenericRepository<RoomsOrder>(efContextFactory);
+            UsersRepository = new GenericRepository<AspNetUser>(efContextFactory);
         }
 
 

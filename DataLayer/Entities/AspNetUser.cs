@@ -13,5 +13,7 @@ namespace DataLayer.Entities
         public ICollection<HotelRoom> HotelRooms { get; set; } = new List<HotelRoom>();
         public ICollection<RoomsOrder> RoomsOrders { get; set; } = new List<RoomsOrder>();
         public ICollection<ProviderService> providerServices { get; set; } = new List<ProviderService>();
+        public ICollection<AspNetUserRole> AspNetUserRole { get; set;} = new List<AspNetUserRole>();
+        public ICollection<AspNetRole> AspNetRole { get; set; } = new List<AspNetRole>();
     }
 }

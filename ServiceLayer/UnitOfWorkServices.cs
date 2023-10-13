@@ -18,6 +18,7 @@ namespace ServiceLayer
         private HotelRoomService _hotelRoomService;
         private ImageService _imageServices;
         private ProviderServiceService _providerServiceService;
+        private UsersService _usersServices;
 
         public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, ImageService imageServices = null)
         {
@@ -29,6 +30,7 @@ namespace ServiceLayer
         public HotelRoomService HotelRoomService=>_hotelRoomService??new HotelRoomService(_unitOfWorkRepository);
 		public PackageServices PackageServices => _packageServices ??= new PackageServices(_unitOfWorkRepository,_imageServices);
         public ProviderServiceService ProviderService=>_providerServiceService??new ProviderServiceService(_unitOfWorkRepository);
+        public UsersService UsersServices => _usersServices ??= new UsersService(_unitOfWorkRepository);
 
 	}
 }

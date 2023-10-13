@@ -17,5 +17,6 @@ namespace DataLayer.Interfaces
         IGenericRepository<ProviderService> ProviderServiceRepository { get; }
         IGenericRepository<Review> ReviewRepository { get; }
         IGenericRepository<RoomsOrder> RoomOrderRepository { get; }
+        IGenericRepository<AspNetUser> UsersRepository { get; }
     }
 }

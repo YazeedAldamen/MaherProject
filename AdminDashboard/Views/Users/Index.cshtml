@@ -1,0 +1,91 @@
+﻿@model IEnumerable<ServiceLayer.DTO.UserDTO>
+@{
+    ViewData["Title"] = "Packages";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section DataTable {
+    <partial name="_DataTableCSSPartial" />
+    <partial name="_DataTableScriptsPartial" />
+}
+<div class="col-lg-9 col-md-12 px-4 mt-3">
+    <div class="body-contant">
+        <h1 class="mb-5">Hotels Request</h1>
+        <table class="table" id="table-object">
+            <thead>
+                <tr>
+                    <th data-value="Id" scope="col">#</th>
+                    <th data-value="FirstName" scope="col">@Html.DisplayNameFor(m=>m.FirstName)</th>
+                    <th data-value="Email" scope="col">@Html.DisplayNameFor(m=>m.Email)</th>
+                    <th data-value="PhoneNumber" scope="col">@Html.DisplayNameFor(m=>m.PhoneNumber)</th>
+                    <th data-value="Price" scope="col">@Html.DisplayNameFor(m=>m.Role)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script>
+    js = jQuery.noConflict();
+
+    js(document).ready(function () {
+        buildDataTable();
+    });
+    function buildDataTable() {
+        js("#table-object").DataTable({
+            "oLanguage": {
+                "oPaginate": {
+                    "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                    "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                },
+                "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "sLengthMenu": "Results: _MENU_"
+            },
+            "lengthMenu": [[10, 25, 50], [10, 25, 50]],
+            "searching": false,
+            "processing": true,
+            "serverSide": true,
+            "filter": false,
+            "orderMulti": false,
+            "lengthChange": true,
+            "ordering": true,
+            "destroy": true,
+            "pageLength": 5,
+            "page": 1,
+            "scrollY": false,
+            "sScrollX": "100%",
+            "scrollCollapse": true,
+            "ajax": {
+                "url": '@Url.Action("GetDataTable","Packages")',
+                "type": "POST",
+                "datatype": "json",
+                "data": function (d) {
+                    d.orderBy = sortByColumn;
+                    d.isDescending = !sortAscending;
+                }
+            },
+            "columns": [
+                { "data": "id", "autoWidth": true },
+                { "data": "name", "autoWidth": true },
+                { "data": "description", "autoWidth": true },
+                { "data": "hotelName", "autoWidth": true },
+                { "data": "price", "autoWidth": true },
+                { "data": "isPublished", "autoWidth": true },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return formatActionsHTML(row.id);
+                    }
+                }
+            ]
+        });
+    }
+
+    function formatActionsHTML(id) {
+
+        return `<div class="action-items">
+                                       <a href="/Packages/Edit/${id}" class="bx bx-edit-alt" style="font-size: large"></a>
+                        </div>`;
+    }
+
+</script>
