@@ -27,9 +27,34 @@ namespace ServiceLayer.Services
 
             return fullName;
         }
-
+        public async Task<string> HandleImage(string oldImage, IFormFile newImage)
+        {
+            string? newImageName = null;
+            if (newImage != null)
+            {
+                if (!string.IsNullOrEmpty(oldImage))
+                {
+                    FileManager.DeleteFile(oldImage);
+                }
+                newImageName = await ImageService.UploadFile(newImage);
+            }
+            return newImageName;
+        }
+        public async Task<string> HandleMultipleImages(string oldImage, IFormFile newImage)
+        {
+            string? newImageName = null;
+            if (newImage != null)
+            {
+                if (!string.IsNullOrEmpty(oldImage))
+                {
+                    FileManager.DeleteFile(oldImage);
+                }
+                newImageName = await ImageService.UploadFile(newImage);
+            }
+            return newImageName;
+        }
     }
 
-    
+
 
 }

@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataLayer.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace ServiceLayer.DTO
+namespace AdminDashboard.Models
 {
-    public class PackageDTO
+    public class PackageModel
     {
         public int Id { get; set; }
 
@@ -71,12 +67,14 @@ namespace ServiceLayer.DTO
         public Guid? UserId { get; set; }
         public IFormFile? PackageMainImageFile { get; set; }
         public List<IFormFile>? PackageImages { get; set; }
-        //public IFormFile? PackageImage1File { get; set; }
+        //public List<IFormFile>? PackageImage1File { get; set; }
         //public IFormFile? PackageImage2File { get; set; }
 
         //public IFormFile? PackageImage3File { get; set; }
         public IFormFile? HotelMainImageFile { get; set; }
         public List<IFormFile>? HotelImages { get; set; }
+
+
 
     }
 }
