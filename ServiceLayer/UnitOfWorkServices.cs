@@ -16,14 +16,19 @@ namespace ServiceLayer
         private ContactService _contactServices;
         private PackageServices _packageServices;
         private HotelRoomService _hotelRoomService;
+        private ImageService _imageServices;
         private ProviderServiceService _providerServiceService;
-        public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository) {
+
+        public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, ImageService imageServices = null)
+        {
             _unitOfWorkRepository = unitOfWorkRepository;
+            _imageServices = imageServices;
         }
 
         public BlogServices BlogServices =>_blogServices??=new BlogServices(_unitOfWorkRepository);
         public HotelRoomService HotelRoomService=>_hotelRoomService??new HotelRoomService(_unitOfWorkRepository);
+		public PackageServices PackageServices => _packageServices ??= new PackageServices(_unitOfWorkRepository,_imageServices);
         public ProviderServiceService ProviderService=>_providerServiceService??new ProviderServiceService(_unitOfWorkRepository);
 
-    }
+	}
 }
