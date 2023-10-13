@@ -45,5 +45,9 @@ namespace ServiceLayer.DTO
         public bool IsAC { get; set; }
         public bool IsRoomHeater { get; set; }
         public Guid? UserId { get; set; }
+
+        public int? NumberOfChildren { get; set; }
+
+        public int? NumberOfAdults { get; set; }
     }
 }
