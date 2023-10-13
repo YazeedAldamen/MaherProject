@@ -36,6 +36,10 @@ namespace DataLayer.Entities
 
         public int? NumberOfBathrooms { get; set; }
 
+        public int? NumberOfChildren { get; set; }
+
+        public int? NumberOfAdults { get; set; }
+
         public bool IsPublished { get; set; }
 
         public bool IsDeleted { get; set; }

@@ -1,0 +1,101 @@
+﻿@model AdminDashboard.Models.RoomListViewModel
+@{
+    ViewData["Title"] = "Edit Hotel Rooms";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section DataTable {
+    <partial name="_DataTableCSSPartial" />
+    <partial name="_DataTableScriptsPartial" />
+}
+<div class="col-lg-9 col-md-12 px-4 mt-3">
+    <div class="body-contant">
+        <h1 class="mb-5">Hotel Rooms</h1>
+         @foreach(var room in Model.Rooms){
+                <div class="card mb-4 border-0 shadow">
+                    <div class="row g-0 p-3 align-items-center">
+                        <div class="col-md-5 mb-lg-0 mb-md-0 mb-3">
+                            <img src="../../images/content/@room.HotelMainImage" class="img-fluid rounded">
+                        </div>
+                        <div class="col-md-5 px-lg-3 px-md-3 px-0">
+                            <h5 class="mb-3">@room.HotelName</h5>
+                            <div class="features mb-4">
+                                <h6 class="mb-1">Features</h6>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-bed'></i>@room.NumberOfBeds Beds
+                                </span>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-bath'></i>@room.NumberOfBathrooms Bathroom
+                                </span>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-chair'></i>@room.NumberOfSofas Sofa
+                                </span>
+                            </div>
+                            <div class="Facilities mb-3">
+                                <h6 class="mb-1">Facilities</h6>
+                                @{
+                                    if (room.IsWifi)
+                                    {
+                                        <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                            <i class='bx bx-wifi'></i>Wifi
+                                        </span>
+                                    }
+                                    if (room.IsTV)
+                                    {
+                                        <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                            <i class='bx bx-tv'></i>Television
+                                            </span>
+                                        }
+                                    if (room.IsAC)
+                                    {
+                                        <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                            <i class='bx bx-wind'></i>AC
+                                            </span>
+                                        }
+                                    if (room.IsRoomHeater)
+                                    {
+                                        <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                            <i class='bx bxs-hot'></i>Room Heater
+                                        </span>
+                                    }
+                                }
+                            </div>
+                            <div class="guests">
+                                <h6 class="mb-1">Guests</h6>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-child'></i>@room.NumberOfAdults Adults
+                                </span>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-child'></i>@room.NumberOfChildren Children
+                                </span>
+                            </div>
+                        </div>
+                    <div class="col-md-2 mt-lg-0 mt-md-0 mt-4 text-center">
+                        <h6 class="mb-4">@room.Price JD</h6>
+                        <div class="btn-group">
+                            <a href="@Url.Action("Delete","HotelRooms",new{Id=room.Id})" class="btn btn-danger delete-link">Delete</a>
+                            &nbsp;
+                            @if (room.IsPublished)
+                            {
+                                <a href="@Url.Action("Hide","HotelRooms",new{Id=room.Id})" class="btn btn-secondary">Hide</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Show","HotelRooms",new{Id=room.Id})" class="btn btn-success">Show</a>
+                            }
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            }
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.TotalCount / 4 + 1; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index","HotelRooms",new {page=i})">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+    </div>
+</div>

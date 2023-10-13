@@ -15,11 +15,13 @@ namespace ServiceLayer
         private BlogServices _blogServices;
         private ContactService _contactServices;
         private PackageServices _packageServices;
+        private HotelRoomService _hotelRoomService;
         public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository) {
             _unitOfWorkRepository = unitOfWorkRepository;
         }
 
         public BlogServices BlogServices =>_blogServices??=new BlogServices(_unitOfWorkRepository);
+        public HotelRoomService HotelRoomService=>_hotelRoomService??new HotelRoomService(_unitOfWorkRepository);
 
     }
 }
