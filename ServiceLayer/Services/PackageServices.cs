@@ -96,7 +96,7 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 PackageImage2 = entity.PackageImage2,
                 PackageImage3 = entity.PackageImage3,
                 PackageTypeId = entity.PackageTypeId,
-
+                Name = entity.Name,
                 Price = entity.Price,
                 Discount = entity.Discount,
 

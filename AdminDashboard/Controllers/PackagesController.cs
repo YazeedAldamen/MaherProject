@@ -86,6 +86,7 @@ namespace AdminDashboard.Controllers
                 Id = model.Id,
                 Description = model.Description,
                 PackageMainImageFile = model.PackageMainImageFile,
+                Name = model.Name,
 
                 PackageImages = model.PackageImages,
                 PackageTypeId = model.PackageTypeId,
@@ -144,7 +145,8 @@ namespace AdminDashboard.Controllers
 
             var data = new PackageDTO
             {
-                 Description = model.Description,
+                Name = model.Name,
+                Description = model.Description,
                 PackageMainImageFile = model.PackageMainImageFile,
                 //PackageImage1File = model.PackageImage1File,
                 PackageImages = model.PackageImages,
