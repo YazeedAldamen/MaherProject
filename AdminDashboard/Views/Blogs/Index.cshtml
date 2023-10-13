@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ServiceLayer.DTO.BlogDTO>
+﻿@model AdminDashboard.Models.BlogModel
 @{
     ViewData["Title"] = "Blogs";
     Layout="~/Views/Shared/_AdminLayout.cshtml";
@@ -9,8 +9,8 @@
 }
 <div class="col-lg-9 col-md-12 px-4 mt-3">
     <div class="body-contant">
-        <h1 class="mb-5">Hotels Request</h1>
-        <table class="table" id="table-object">
+        <h1 class="mb-5">@ViewData["Title"]</h1>
+        <table class="table w-100 dataTable no-footer dtr-inline collapsed" id="table-object">
             <thead>
                 <tr>
                     <th data-value="Id" scope="col">#</th>
