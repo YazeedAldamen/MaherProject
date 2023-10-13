@@ -1,0 +1,178 @@
+﻿@model AdminDashboard.Models.ProviderServiceViewModel
+@{
+    ViewData["Title"] = "Hotel Request";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int id = 0 ;
+}
+@section DataTable {
+    <partial name="_DataTableCSSPartial" />
+    <partial name="_DataTableScriptsPartial" />
+}
+<div class="col-lg-9 col-md-12 px-4 mt-3">
+    <div class="body-contant">
+        <h1 class="mb-5">@ViewData["Title"]</h1>
+        <table class="table w-100 dataTable no-footer dtr-inline collapsed" id="table-object">
+            <thead>
+                <tr>
+                    <th data-value="Id" scope="col">#</th>
+                    <th data-value="Title" scope="col">@Html.DisplayNameFor(m=>m.Name)</th>
+                    <th data-value="BlogMainText" scope="col">@Html.DisplayNameFor(m=>m.Email)</th>
+                    <th data-value="IsPublished" scope="col">@Html.DisplayNameFor(m=>m.PhoneNumber)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3 class="mb-4">Hotel Name : <span id="modal-title">Hotel 1</span></h3>
+                <h4>Room And Hotel Description:</h4>
+                <p id="modal-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam tempora eos veritatis distinctio vel molestias. Id eum saepe et accusantium, non molestias, eos autem cumque error, quam minus. Placeat, quasi?</p>
+                <h4>Options 1</h4>
+                <p id="options-1">Wifi / Television / AC</p>
+                <h4>Options 2</h4>
+                <p>No. Of Beds : <span id="beds">2</span> / No. Of Sofa : <span id="sofas">2</span> / No. Of Bathroom : <span id="bathrooms">2</span></p>
+                <h4>City : Amman</h4>
+                <h4>Price : <span id ="price">$250</span></h4>
+                <h4>Discount Price: <span id="discount">$250</span></h4>
+                <h4>Main Image</h4>
+                <img src="./images/img11.jpg" class="form_img" id="main-image">
+                <h4>Multiple Images</h4>
+                <img src="./images/img15.jpg" class="form_img" id="image1">
+                <img src="./images/img15.jpg" class="form_img" id="image2">
+                <img src="./images/img12.jpg" class="form_img" id="image3">
+            </div>
+            <div class="modal-footer">
+                <p id="rejectLink"></p>
+                <p id=""></p>
+                <a href="#" class="btn btn-danger reject-link" data-id="@id">Reject</a>
+                <a href="#" class="btn btn-success accept-link" data-id="@id">Accept</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    js = jQuery.noConflict();
+
+    js(document).ready(function () {
+        buildDataTable();
+        js(document).on('click', '.btn-details', function () {
+            let id = this.dataset.id;
+            console.log('clicked');
+            fetch(`/HotelRequest/Details/${id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })  
+                .then(data => {
+                    var wifi = data.isWifi;
+                    var tv=data.isTV;
+                    var ac=data.isAC;
+                    var optionsText = "";
+                    if (wifi) {
+                        optionsText += "Wifi / ";
+                    }
+                    if (tv) {
+                        optionsText += "Television / ";
+                    }
+                    if (ac) {
+                        optionsText += "AC";
+                    }
+                    optionsText = optionsText.replace(/\/\s*$/, '');
+                    document.querySelector('#options-1').textContent = optionsText;
+                    document.querySelector('#modal-title').textContent = data.hotelName;
+                    document.querySelector('#modal-body').textContent = data.hotelDescription;
+                    document.querySelector('#sofas').textContent = data.numberOfSofas;
+                    document.querySelector('#bathrooms').textContent = data.numberOfBathrooms;
+                    document.querySelector('#beds').textContent = data.numberOfBeds;
+                    document.querySelector('#price').textContent = data.price + 'JD';
+                    document.querySelector('#discount').textContent = data.discount + 'JD';
+                    document.querySelector('#main-image').src = "../../images/content/"+data.hotelMainImage;
+                    document.querySelector('#image1').src = "../../images/content/"+data.hotelImage1;
+                    document.querySelector('#image2').src = "../../images/content/"+data.hotelImage2;
+                    document.querySelector('#image3').src = "../../images/content/"+data.hotelImage3;
+                    js(document).on('click', '.reject-link', function () {
+                        let id = data.id;
+                        console.log(id);
+                        window.location.href = `/HotelRequest/Reject/${id}`;
+                    });
+
+                    js(document).on('click', '.accept-link', function () {
+                        let id = data.id;
+                        window.location.href = `/HotelRequest/Accept/${id}`;
+                    });
+                    let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+                    modal.show();
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+    function buildDataTable() {
+        js("#table-object").DataTable({
+            "oLanguage": {
+                "oPaginate": {
+                    "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                    "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                },
+                "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "sLengthMenu": "Results: _MENU_"
+            },
+            "lengthMenu": [[10, 25, 50], [10, 25, 50]],
+            "searching": false,
+            "processing": true,
+            "serverSide": true,
+            "filter": false,
+            "orderMulti": false,
+            "lengthChange": true,
+            "ordering": false,
+            "destroy": true,
+            "pageLength": 5,
+            "page": 1,
+            "scrollY": false,
+            "sScrollX": "100%",
+            "scrollCollapse": true,
+            "ajax": {
+                "url": '@Url.Action("GetDataTable","HotelRequest")',
+                "type": "POST",
+                "datatype": "json",
+                "data": function (d) {
+                    d.orderBy = sortByColumn;
+                    d.isDescending = !sortAscending;
+                }
+            },
+            "columns": [
+                { "data": "id", "autoWidth": true },
+                { "data": "userName", "autoWidth": true },
+                { "data": "userEmail", "autoWidth": true },
+                { "data": "userPhone", "autoWidth": true },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return formatActionsHTML(row.id);
+                    }
+                }
+            ]
+        });
+    }
+
+    function formatActionsHTML(id) {
+        return `<div class="action-items">
+            <button type="button" class="btn btn-primary btn-details" data-id="${id}">
+                Details
+            </button>
+        </div>`;
+    }
+
+
+</script>
+
+
