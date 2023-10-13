@@ -87,15 +87,39 @@
                     </div>
                 </div>
             }
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    @for (int i = 1; i <= Model.TotalCount / 4 + 1; i++)
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @if (ViewBag.Page > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index","HotelRooms",new {page=1})">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index","HotelRooms",new {page=ViewBag.Page - 1})">Previous</a>
+                    </li>
+                }
+
+                @for (int i = ViewBag.Page - 2; i <= ViewBag.Page + 2 && i <= Model.TotalCount / 4 + 1; i++)
+                {
+                    if (i >= 1)
                     {
                         <li class="page-item @(i == ViewBag.Page ? "active" : "")">
                             <a class="page-link" href="@Url.Action("Index","HotelRooms",new {page=i})">@i</a>
                         </li>
                     }
-                </ul>
-            </nav>
+                }
+
+                @if (ViewBag.Page < Model.TotalCount / 4 + 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index","HotelRooms",new {page=ViewBag.Page + 1})">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index","HotelRooms",new {page=Model.TotalCount / 4 + 1})">Last</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+
     </div>
 </div>

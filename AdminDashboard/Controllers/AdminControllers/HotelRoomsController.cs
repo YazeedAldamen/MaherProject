@@ -20,6 +20,7 @@ namespace AdminDashboard.Controllers.AdminControllers
         public async Task<IActionResult> Index(int page = 1)
         {
             int pageSize = 4;
+            ViewBag.Page=page;
             var model = await _roomService.ListWithPaging(page, pageSize);
 
             var viewModel = new RoomListViewModel
