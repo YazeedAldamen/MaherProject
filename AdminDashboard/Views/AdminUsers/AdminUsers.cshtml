@@ -1,0 +1,107 @@
+﻿@model AdminDashboard.Models.AdminUsersModel
+@{
+    ViewData["Title"] = "System Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section DataTable {
+    <partial name="_DataTableCSSPartial" />
+    <partial name="_DataTableScriptsPartial" />
+}
+<div class="col-lg-9 col-md-12 px-4 mt-3">
+    <div class="body-contant">
+        <h1 class="mb-5">@ViewData["Title"]</h1>
+        <table class="table w-100 dataTable no-footer dtr-inline collapsed" id="table-object">
+            <thead>
+                <tr>
+                    <th data-value="Id" scope="col">#</th>
+                    <th data-value="FirstName" scope="col">@Html.DisplayNameFor(m=>m.FirstName)</th>
+                    <th data-value="Email" scope="col">@Html.DisplayNameFor(m=>m.Email)</th>
+                    <th data-value="PhoneNumber" scope="col">@Html.DisplayNameFor(m=>m.PhoneNumber)</th>
+                    <th data-value="UserType" scope="col">@Html.DisplayNameFor(m=>m.UserType)</th>
+                    <th>Actions</th> 
+               </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    js = jQuery.noConflict();
+
+    js(document).ready(function () {
+        buildDataTable();
+    });
+    function buildDataTable() {
+        js("#table-object").DataTable({
+            "oLanguage": {
+                "oPaginate": {
+                    "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                    "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                },
+                "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "sLengthMenu": "Results: _MENU_"
+            },
+            "lengthMenu": [[10, 25, 50], [10, 25, 50]],
+            "searching": false,
+            "processing": true,
+            "serverSide": true,
+            "filter": false,
+            "orderMulti": false,
+            "lengthChange": true,
+            "ordering": true,
+            "destroy": true,
+            "pageLength": 5,
+            "page": 1,
+            "scrollY": false,
+            "sScrollX": "100%",
+            "scrollCollapse": true,
+            "ajax": {
+                "url": '@Url.Action("GetDataTable","AdminUsers")',
+                "type": "POST",
+                "datatype": "json",
+                "data": function (d) {
+                    d.search = js("#search").val();
+                }
+            },
+            "columns": [
+                { "data": "id", "autoWidth": true },
+                { "data": "firstName", "autoWidth": true },
+                { "data": "email", "autoWidth": true },
+                { "data": "phoneNumber", "autoWidth": true },
+                { "data": "userType", "autoWidth": true },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return formatActionsHTML(row.id);
+                    }
+                }
+            ]
+        });
+    }
+    function formatActionsHTML(id) {
+
+        return `<div class="action-items">
+                                           <select id="inputState" class="form-select">
+                                               <option selected>Choose...</option>
+                                               <option value"User">User</option>
+                                                    <option value"Service Provider">Service Provider</option>
+                                                    <option value"Admin">Admin</option>
+                                             </select>
+                        </div>`;
+    }
+
+    js(document).on('change', '.form-select', function () {
+            var selectedValue = js(this).val();
+            var id = js(this).closest('tr').find('td:first').text();
+
+            js.ajax({
+                type: "POST",
+                url: '@Url.Action("UpdateRole","AdminUsers")',
+                data: { id: id, role: selectedValue },
+                success: function (data) {
+                    js("#table-object").DataTable().ajax.reload();
+                }
+            });
+        });
+</script>
