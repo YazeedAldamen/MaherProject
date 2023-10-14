@@ -2,7 +2,225 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- header -->
+<header class="flex">
+    <div class="container">
+        <div class="header-title">
+            <h2>Your Passport to Exceptional Experiences</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus rerum maxime enim odit illum in molestias beatae.</p>
+        </div>
+
+    </div>
+</header>
+
+<!-- Check Booking Availability Form-->
+
+<div class="container header-form">
+    <div class="row">
+        <div class="col-lg-12 bg-white shadow p-4 rounded">
+            <h5 class="col-lg-3">Check Booking Availability</h5>
+            <form>
+                <div class="row align-items-end">
+                    <div class="col-lg-2 mb-2">
+                        <label for="inputState" class="form-label">City</label>
+                        <select id="inputState" class="form-select">
+                            <option selected>City 1</option>
+                            <option>City 2</option>
+                            <option>City 3</option>
+                            <option>City 4</option>
+                            <option>City 5</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 mb-2">
+                        <label class="form-label">Check-in</label>
+                        <input type="date" class="form-control shadow-none">
+                    </div>
+                    <div class="col-lg-2 mb-2">
+                        <label class="form-label">Check-out</label>
+                        <input type="date" class="form-control shadow-none">
+                    </div>
+                    <div class="col-lg-2 mb-2">
+                        <label class="form-label">Adult</label>
+                        <input type="number" class="form-control" id="inputPassword4">
+                    </div>
+                    <div class="col-lg-2 mb-2">
+                        <label class="form-label">Children</label>
+                        <input type="number" class="form-control" id="inputPassword4">
+                    </div>
+
+                    <div class="col-lg-1 mb-lg-2 mt-2">
+                        <button type="submit" class="btn">Submit</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<!-- video section -->
+<section id="video">
+    <div class="video-wrapper flex mb-5">
+        <video loop autoplay muted plays-inline>
+            <source src="videos/sir_lanka.MOV" type="video/mp4">
+        </video>
+    </div>
+</section>
+<!-- end of video section -->
+<!--Properties-->
+<section class="properties container p-5 m-5" id="properties">
+    <div class="heading">
+        <h2>Our Featured Properties</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, dolor.</p>
+    </div>
+    <div class="properties-container container">
+        <!--Box 1-->
+        <a class="card-content align-items-center" href="./rooms.html">
+            <div class="box">
+                <img src="images/img7.jpeg">
+                <div class="contant  d-flex justify-content-center">
+                    <div class="text">
+                        <h3>Hotels</h3>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <!--Box 2-->
+        <a class="card-content" href="packages.html">
+            <div class="box">
+                <img src="images/img9.jpeg">
+                <div class="contant d-flex justify-content-center">
+                    <div class="text">
+                        <h3>Packages</h3>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
+
+
+<!-- services section -->
+<section id="services" class="py-4">
+    <div class="container">
+        <div class="title-wrap">
+            <h2 class="lg-title">Our services</h2>
+        </div>
+
+        <div class="services-row">
+            <div class="services-item">
+                <span class="services-icon">
+                    <i class='bx bxs-hotel'></i>
+                </span>
+                <h3>Luxurious Hotel</h3>
+                <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quo, totam repellat velit, dignissimos sequi error a minima architecto fugit nisi dolorum repellendus?</p>
+            </div>
+
+            <div class="services-item">
+                <span class="services-icon">
+                    <i class='bx bx-map-alt'></i>
+                </span>
+                <h3>Trave Guide</h3>
+                <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quo, totam repellat velit, dignissimos sequi error a minima architecto fugit nisi dolorum repellendus?</p>
+            </div>
+
+            <div class="services-item">
+                <span class="services-icon">
+                    <i class='bx bx-money'></i>
+                </span>
+                <h3>Suitable Price</h3>
+                <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem quo, totam repellat velit, dignissimos sequi error a minima architecto fugit nisi dolorum repellendus?</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end of services section -->
+<!-- featured section -->
+<section id="featured" class="py-4">
+    <div class="container">
+        <div class="title-wrap">
+            <h2 class="lg-title">Featured Places</h2>
+        </div>
+
+        <div class="featured-row">
+            <div class="featured-item my-2 shadow">
+                <img src="images/img3.jpeg" alt="featured place">
+                <div class="featured-item-content">
+                    <span>
+                        <i class="fas fa-map-marker-alt"></i>
+                        Reo De Janeiro, Brazil
+                    </span>
+                    <div>
+                        <p class="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta sed dignissimos libero soluta illum, harum amet excepturi sit?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-item my-2 shadow">
+                <img src="images/img8.jpeg" alt="featured place">
+                <div class="featured-item-content">
+                    <span>
+                        <i class="fas fa-map-marker-alt"></i>
+                        North Bondi, Australia
+                    </span>
+                    <div>
+                        <p class="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta sed dignissimos libero soluta illum, harum amet excepturi sit?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-item my-2 shadow">
+                <img src="images/img3.jpeg" alt="featured place">
+                <div class="featured-item-content">
+                    <span>
+                        <i class="fas fa-map-marker-alt"></i>
+                        Berlin, Germany
+                    </span>
+                    <div>
+                        <p class="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta sed dignissimos libero soluta illum, harum amet excepturi sit?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-item my-2 shadow">
+                <img src="images/img8.jpeg" alt="featured place">
+                <div class="featured-item-content">
+                    <span>
+                        <i class="fas fa-map-marker-alt"></i>
+                        Khwaeng wat arun, thailand
+                    </span>
+                    <div>
+                        <p class="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta sed dignissimos libero soluta illum, harum amet excepturi sit?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-item my-2 shadow">
+                <img src="images/img3.jpeg" alt="featured place">
+                <div class="featured-item-content">
+                    <span>
+                        <i class="fas fa-map-marker-alt"></i>
+                        Rome, Italy
+                    </span>
+                    <div>
+                        <p class="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta sed dignissimos libero soluta illum, harum amet excepturi sit?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-item my-2 shadow">
+                <img src="images/img8.jpeg" alt="featured place">
+                <div class="featured-item-content">
+                    <span>
+                        <i class="fas fa-map-marker-alt"></i>
+                        fuvahmulah, maldives
+                    </span>
+                    <div>
+                        <p class="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta sed dignissimos libero soluta illum, harum amet excepturi sit?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end of featured section -->
