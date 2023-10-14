@@ -4,6 +4,7 @@ using DataLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer;
+using ServiceLayer.Services;
 using System.ComponentModel;
 
 namespace AdminDashboard
@@ -40,7 +41,7 @@ namespace AdminDashboard
             builder.Services.AddAuthentication();
             builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Auth/Login");
             builder.Services.AddAuthorization();
-
+            builder.Services.AddTransient<EmailSender>();
             builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 

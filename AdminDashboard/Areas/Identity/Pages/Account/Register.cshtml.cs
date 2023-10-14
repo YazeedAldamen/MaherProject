@@ -14,11 +14,11 @@ using DataLayer.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using ServiceLayer.Services;
 
 namespace AdminDashboard.Areas.Identity.Pages.Account
 {
@@ -29,14 +29,14 @@ namespace AdminDashboard.Areas.Identity.Pages.Account
         private readonly IUserStore<DataLayer.Entities.AspNetUser> _userStore;
         private readonly IUserEmailStore<DataLayer.Entities.AspNetUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        //private readonly IEmailSender _emailSender;
+        private readonly EmailSender _emailSender;
 
         public RegisterModel(
             UserManager<DataLayer.Entities.AspNetUser> userManager,
             IUserStore<DataLayer.Entities.AspNetUser> userStore,
             SignInManager<DataLayer.Entities.AspNetUser> signInManager,
-            ILogger<RegisterModel> logger
-            //IEmailSender emailSender
+            ILogger<RegisterModel> logger,
+            EmailSender emailSender
             )
         {
             _userManager = userManager;
@@ -44,7 +44,7 @@ namespace AdminDashboard.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            //_emailSender = emailSender;
+            _emailSender = emailSender;
         }
 
         /// <summary>
@@ -133,8 +133,8 @@ namespace AdminDashboard.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
