@@ -94,16 +94,13 @@
     js(document).on('change', '.form-select', function () {
             var selectedValue = js(this).val();
             var id = js(this).closest('tr').find('td:first').text();
-            // assign the selected value to the role variable
-            var role = js('#inputState').val();;
+
             js.ajax({
                 type: "POST",
                 url: '@Url.Action("UpdateRole","AdminUsers")',
-                data: { id: id, userType: selectedValue },
+                data: { id: id, role: selectedValue },
                 success: function (data) {
-                    if (data.success) {
-                        js("#table-object").DataTable().ajax.reload();
-                    }
+                    js("#table-object").DataTable().ajax.reload();
                 }
             });
         });

@@ -88,7 +88,10 @@ namespace ServiceLayer.Services
             var newRole = await _roleManager.FindByNameAsync(role);
             var user = await _userManager.FindByIdAsync(userId);
             var oldRole = await _userManager.GetRolesAsync(user);
-            await _userManager.RemoveFromRoleAsync(user, oldRole.FirstOrDefault());
+            if (oldRole.Count > 0)
+            {
+                await _userManager.RemoveFromRoleAsync(user, oldRole.FirstOrDefault());
+            }
             try
             {
                 await _userManager.AddToRoleAsync(user, newRole.Name);
@@ -96,6 +99,8 @@ namespace ServiceLayer.Services
             catch (Exception e)
             {
             }
+            
+
         }
 
     }
