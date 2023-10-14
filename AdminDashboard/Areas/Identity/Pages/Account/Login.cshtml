@@ -3,9 +3,55 @@
 
 @{
     ViewData["Title"] = "Log in";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
 }
 
-<h1>@ViewData["Title"]</h1>
+<section class="sign_up container">
+    <h2>Welcome Back</h2>
+    <form id="account" method="post">
+        <div class="form-row col-md-6">
+            <div class="input-data ">
+                <input asp-for="Input.Email" autocomplete="username" aria-required="true" placeholder="Email Address" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row col-md-6">
+            <div class="input-data ">
+                <input asp-for="Input.Password"  autocomplete="current-password" aria-required="true" placeholder="Password" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+        </div>
+@*         <div class="checkbox mb-3">
+            <label asp-for="Input.RememberMe" class="form-label">
+                <input class="form-check-input" asp-for="Input.RememberMe" />
+                @Html.DisplayNameFor(m => m.Input.RememberMe)
+            </label>
+        </div> *@
+        <div class="form-row">
+            <div class="input-data">
+                <p>
+                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                </p>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="input-data">
+                <p>Don't have an account! <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Signup</a></p>
+
+            </div>
+        </div>
+
+        <div class="form-row" class="submit-button">
+            <div class="input-data">
+                <div class="inner">
+                    <button id="login-submit" type="submit" class="btn-style">LOGIN</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</section>
+@* <h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
         <section>
@@ -80,4 +126,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-}
+} *@
+

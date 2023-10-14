@@ -200,7 +200,7 @@ string orderBy, int? page, int? pageSize, bool isDescending)
             var entity = new Package()
             {
                 Description = data.Description,
-
+                Name = data.Name,
                 Price = data.Price,
                 Discount = data.Discount,
 
@@ -267,7 +267,10 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                     var files = kvp;
                     var propertyName = PackageImages[count];
                     var oldImage = entity.GetType().GetProperty(propertyName)?.GetValue(entity);
-                    FileManager.DeleteFile(oldImage.ToString());
+                    if(oldImage != null)
+                    {
+                        FileManager.DeleteFile(oldImage.ToString());
+                    }
                     if (files != null)
                     {
                         var uploadedImageUrl = await ImageService.UploadFile(kvp);
@@ -288,7 +291,10 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                     var files = kvp;
                     var propertyName = HotelImages[count];
                     var oldImage = entity.GetType().GetProperty(propertyName)?.GetValue(entity);
-                    FileManager.DeleteFile(oldImage.ToString());
+                    if(oldImage != null)
+                    {
+                        FileManager.DeleteFile(oldImage.ToString());
+                    }
                     if (files != null)
                     {
                         var uploadedImageUrl = await ImageService.UploadFile(kvp);

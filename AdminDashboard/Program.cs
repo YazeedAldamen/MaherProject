@@ -26,17 +26,18 @@ namespace AdminDashboard
                 options.ConfigureWarnings(t => t.Default(WarningBehavior.Log));
             });
 
-            builder.Services.AddDefaultIdentity<DataLayer.Entities.AspNetUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MainDbContext>();
-            //builder.Services.AddIdentity<AspNetUser,AspNetRole>(options =>
-            //{
-            //    options.Password.RequireDigit = false;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
+            //builder.Services.AddDefaultIdentity<DataLayer.Entities.AspNetUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MainDbContext>();
+            builder.Services.AddIdentity<AspNetUser, AspNetRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
 
-            //}).AddEntityFrameworkStores<MainDbContext>()
-            //.AddDefaultTokenProviders()
-            //.AddSignInManager();
+            }).AddEntityFrameworkStores<MainDbContext>()
+            .AddDefaultTokenProviders()
+            .AddSignInManager()
+            .AddRoles<AspNetRole>();
 
             builder.Services.AddAuthentication();
             builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Auth/Login");
