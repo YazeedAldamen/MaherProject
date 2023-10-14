@@ -24,16 +24,18 @@ namespace AdminDashboard
                 options.EnableSensitiveDataLogging();
                 options.ConfigureWarnings(t => t.Default(WarningBehavior.Log));
             });
-            builder.Services.AddIdentity<AspNetUser,AspNetRole>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
 
-            }).AddEntityFrameworkStores<MainDbContext>()
-            .AddDefaultTokenProviders()
-            .AddSignInManager();
+            builder.Services.AddDefaultIdentity<DataLayer.Entities.AspNetUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MainDbContext>();
+            //builder.Services.AddIdentity<AspNetUser,AspNetRole>(options =>
+            //{
+            //    options.Password.RequireDigit = false;
+            //    options.Password.RequireLowercase = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequireNonAlphanumeric = false;
+
+            //}).AddEntityFrameworkStores<MainDbContext>()
+            //.AddDefaultTokenProviders()
+            //.AddSignInManager();
 
             builder.Services.AddAuthentication();
             builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Auth/Login");
@@ -62,7 +64,11 @@ namespace AdminDashboard
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("/_Host.cshtml");
+            });
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
