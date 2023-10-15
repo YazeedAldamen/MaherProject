@@ -1,0 +1,130 @@
+﻿@model AdminDashboard.Models.PackageModel
+@{
+    ViewData["Title"] = "Create Package";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="col-lg-9 col-md-12 px-4 mt-3">
+
+    <h1>
+        Create Package
+    </h1>
+    <form asp-action="Create" asp-controller="Packages" class="row g-3 mt-5" enctype="multipart/form-data">
+        <div class="col-md-6">
+            <label for="Name" class="form-label">@Html.DisplayNameFor(x=>x.Name):</label>
+            <input asp-for="Name" class="form-control" name="Name" id="Name" />
+        </div>
+        <div class="col-md-2">
+            <label for="Price" class="form-label">@Html.DisplayNameFor(x=>x.Price):</label>
+            <input asp-for="Price" class="form-control" name="Price" id="Price" type="number" />
+        </div>
+        <div class="col-md-2">
+            <label for="Discount" class="form-label">@Html.DisplayNameFor(x=>x.Discount):</label>
+            <input asp-for="Discount" class="form-control" name="Discount" id="Price" type="number" />
+        </div>
+        <div class="col-md-6">
+            <label for="Description" class="form-label">@Html.DisplayNameFor(x=>x.Description):</label>
+            <textarea asp-for="Description" class="form-control" id="Description"></textarea>
+        </div>
+        <div class="col-md-2">
+            <label for="NumberOfDays" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfDays):</label>
+            <input asp-for="NumberOfDays" class="form-control" name="NumberOfDays" id="NumberOfDays" type="number" />
+        </div>
+        <div class="col-md-2">
+            <label for="NumberOfNights" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfNights):</label>
+            <input asp-for="NumberOfNights" class="form-control" name="NumberOfNights" id="Price" type="number" />
+        </div>
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Upload Main Image</label>
+            <input asp-for="PackageMainImageFile" class="form-control" id="PackageMainImageFile" />
+        </div>
+        <div class="mb-3">
+            <label for="formFileMultiple" class="form-label">Upload Multiple Images</label>
+            <input asp-for="PackageImages" class="form-control" id="PackageImages" multiple onchange="limitFileSelection(this, 3)" />
+        </div>
+        <h2>Hotel Info</h2>
+        <div class="col-md-6">
+            <label for="HotelName" class="form-label">@Html.DisplayNameFor(x=>x.HotelName):</label>
+            <input asp-for="HotelName" class="form-control" name="HotelName" id="HotelName" />
+        </div>
+        <div class="col-md-2">
+            <label for="NumberOfAdults" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfAdults):</label>
+            <input asp-for="NumberOfAdults" class="form-control" name="NumbNumberOfAdultserOfDays" id="NumberOfAdults" type="number" />
+        </div>
+        <div class="col-md-2">
+            <label for="NumberOfChildren" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfChildren):</label>
+            <input asp-for="NumberOfChildren" class="form-control" name="NumberOfChildren" id="NumberOfChildren" type="number" />
+        </div>
+        <div class="col-md-6">
+            <label for="HotelDescription" class="form-label">@Html.DisplayNameFor(x=>x.HotelDescription):</label>
+            <textarea asp-for="HotelDescription" class="form-control" id="HotelDescription"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="HotelMainImageFile" class="form-label">Upload Main Image</label>
+            <input asp-for="HotelMainImageFile" class="form-control" id="HotelMainImageFile" />
+        </div>
+        <div class="mb-3">
+            <label for="formFileMultiple" class="form-label">Upload Multiple Images</label>
+            <input asp-for="HotelImages" class="form-control" id="HotelImages" multiple onchange="limitFileSelection(this, 3)" />
+        </div>
+        <div class="col-12">
+            <h2 class="mb-4 mt-4">Options 1</h2>
+            <div class="form-check">
+                <input asp-for="IsWifi" class="form-check-input" type="checkbox" name="IsWifi" id="IsWifi" />
+                <label class="form-check-label" for="gridCheck">
+                    <i class='bx bx-wifi'></i> Wifi
+                </label>
+            </div>
+            <div class="form-check">
+                <input asp-for="IsTV" class="form-check-input" type="checkbox" name="IsTV" id="IsTV" />
+                <label class="form-check-label" for="gridCheck">
+                    <i class='bx bx-tv'></i> Television
+                </label>
+            </div>
+            <div class="form-check">
+                <input asp-for="IsAC" class="form-check-input" type="checkbox" name="IsAC" id="IsAC" />
+                <label class="form-check-label" for="gridCheck">
+                    <i class='bx bx-wind'></i>  AC
+                </label>
+            </div>
+            <div class="form-check">
+                <input asp-for="IsRoomHeater" class="form-check-input" type="checkbox" name="IsRoomHeater" id="IsRoomHeater" />
+                <label class="form-check-label" for="gridCheck">
+                    <i class='bx bxs-hot'></i> Room Heater
+                </label>
+            </div>
+        </div>
+        <h2 class="mb-4 mt-4">Options 2</h2>
+        <div class="col-md-2">
+            <label for="inputState" class="form-label"> <i class='bx bx-bed'></i>No. Of Beds</label>
+            <input asp-for="NumberOfBeds" class="form-control" name="NumberOfBeds" id="Price" type="NumberOfBeds" />
+        </div>
+        <div class="col-md-2">
+            <label for="inputState" class="form-label"><i class='bx bx-chair'></i>No. Of Sofa</label>
+            <input asp-for="NumberOfSofas" class="form-control" name="NumberOfSofas" id="Price" type="NumberOfSofas" />
+        </div>
+        <div class="col-md-2 mb-5">
+            <label for="inputState" class="form-label"><i class='bx bx-bath'></i>No. Of Bathroom</label>
+            <input asp-for="NumberOfBathrooms" class="form-control" name="NumberOfBathrooms" id="Price" type="NumberOfBathrooms" />
+        </div>
+        <div class="col-12">
+            <label for="IsPublished" class="form-label">@Html.DisplayNameFor(x=>x.IsPublished):</label>
+            <div class="col-sm-10">
+                <div class="form-check">
+                    <input asp-for="IsPublished" class="form-check-input" type="checkbox" name="IsPublished" id="IsPublished" />
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function limitFileSelection(input, maxCount) {
+        if (input.files.length > maxCount) {
+            input.value = "";
+            alert("You can only upload a maximum of " + maxCount + " files");
+        }
+    }
+</script>
