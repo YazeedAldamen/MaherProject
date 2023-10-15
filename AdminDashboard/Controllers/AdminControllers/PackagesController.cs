@@ -4,29 +4,29 @@ using ServiceLayer;
 using ServiceLayer.DTO;
 using ServiceLayer.Services;
 
-namespace AdminDashboard.Controllers
+namespace AdminDashboard.Controllers.AdminControllers
 {
-	public class PackagesController : Controller
-	{
-		private readonly PackageServices _packageServices;
-		public PackagesController(UnitOfWorkServices unitOfWorkServices)
-		{
-			_packageServices = unitOfWorkServices.PackageServices;
-		}
-		public IActionResult Index()
-		{
-			return View();
-		}
-		public async Task<JsonResult> GetDataTable(DataTableModel dataTable)
-		{
-			var data = await _packageServices.ListWithPaging(
-			orderBy: dataTable.OrderBy,
-			pageSize: dataTable.Length,
-			page: dataTable.Start,
-			isDescending: dataTable.isDescending);
+    public class PackagesController : Controller
+    {
+        private readonly PackageServices _packageServices;
+        public PackagesController(UnitOfWorkServices unitOfWorkServices)
+        {
+            _packageServices = unitOfWorkServices.PackageServices;
+        }
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public async Task<JsonResult> GetDataTable(DataTableModel dataTable)
+        {
+            var data = await _packageServices.ListWithPaging(
+            orderBy: dataTable.OrderBy,
+            pageSize: dataTable.Length,
+            page: dataTable.Start,
+            isDescending: dataTable.isDescending);
 
-			return Json(new { data = data.EntityData, recordsTotal = data.Count, recordsFiltered = data.Count, lastquestion = dataTable.Start.ToString() });
-		}
+            return Json(new { data = data.EntityData, recordsTotal = data.Count, recordsFiltered = data.Count, lastquestion = dataTable.Start.ToString() });
+        }
 
         public async Task<IActionResult> Edit(int Id)
         {
@@ -121,7 +121,7 @@ namespace AdminDashboard.Controllers
 
             await _packageServices.Edit(data);
 
-            return RedirectToAction(nameof(Edit), new { Id = model.Id });
+            return RedirectToAction(nameof(Edit), new { model.Id });
         }
         public async Task<IActionResult> Delete(int Id)
         {
