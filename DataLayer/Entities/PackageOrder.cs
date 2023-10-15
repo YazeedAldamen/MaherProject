@@ -14,7 +14,7 @@ namespace DataLayer.Entities
         public int? PackageId { get; set; }
         public virtual Package? Package { get; set; }
         public Guid? UserId { get; set; }
-        public virtual AspNetUser? User { get;}
+        public virtual AspNetUser? User { get; set; }
         public DateTime? CheckIn { get; set; }
         public DateTime? CheckOut { get; set; }
         public int? NumberOfAdults { get; set; }
@@ -22,8 +22,5 @@ namespace DataLayer.Entities
         public string? PaymentMethod { get; set; }
         public ICollection<PackageOrder> PackageOrders { get; set; } = new List<PackageOrder>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
-
-
-
     }
 }

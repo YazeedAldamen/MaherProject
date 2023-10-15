@@ -26,6 +26,8 @@ namespace ServiceLayer
 
 
         public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, UserManager<AspNetUser> userManager, RoleManager<AspNetRole> roleManager, ImageService imageServices = null)
+        private PackageOrderService _packageOrderService;
+        public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, ImageService imageServices = null)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _imageServices = imageServices;
@@ -38,5 +40,7 @@ namespace ServiceLayer
 		public PackageServices PackageServices => _packageServices ??= new PackageServices(_unitOfWorkRepository,_imageServices);
         public ProviderServiceService ProviderService=>_providerServiceService??new ProviderServiceService(_unitOfWorkRepository);
         public AdminUsersService AdminUsersService=>_adminUsersService??new AdminUsersService(_unitOfWorkRepository,_userManager,_roleManager);
+        public PackageOrderService PackageOrderService=>_packageOrderService??new PackageOrderService(_unitOfWorkRepository);
+
 	}
 }
