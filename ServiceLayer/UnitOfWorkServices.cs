@@ -23,11 +23,10 @@ namespace ServiceLayer
         private AdminUsersService _adminUsersService;
         private UserManager<AspNetUser> _userManager;
         private RoleManager<AspNetRole> _roleManager;
+		private PackageOrderService _packageOrderService;
 
 
-        public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, UserManager<AspNetUser> userManager, RoleManager<AspNetRole> roleManager, ImageService imageServices = null)
-        private PackageOrderService _packageOrderService;
-        public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, ImageService imageServices = null)
+		public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, UserManager<AspNetUser> userManager, RoleManager<AspNetRole> roleManager, ImageService imageServices = null)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
             _imageServices = imageServices;

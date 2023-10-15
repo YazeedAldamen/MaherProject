@@ -1,0 +1,100 @@
+﻿@model AdminDashboard.Models.PackageOrderModel
+@{
+    ViewData["Title"] = "Package Orders";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section DataTable {
+    <partial name="_DataTableCSSPartial" />
+    <partial name="_DataTableScriptsPartial" />
+}
+<div class="col-lg-9 col-md-12 px-4 mt-3">
+    <div class="body-contant">
+        <h1 class="mb-5">@ViewData["Title"]</h1>
+        <table class="table w-100 dataTable no-footer dtr-inline collapsed" id="table-object">
+            <thead>
+                <tr>
+                    <th data-value="Id" scope="col">#</th>
+                    <th data-value="Title" scope="col">@Html.DisplayNameFor(m=>m.UserName)</th>
+                    <th data-value="BlogMainText" scope="col">@Html.DisplayNameFor(m=>m.UserEmail)</th>
+                    <th data-value="IsPublished" scope="col">@Html.DisplayNameFor(m=>m.UserPhone)</th>
+                    <th data-value="Title" scope="col">@Html.DisplayNameFor(m=>m.CheckIn)</th>
+                    <th data-value="Title" scope="col">@Html.DisplayNameFor(m=>m.CheckOut)</th>
+                    <th data-value="BlogMainText" scope="col">@Html.DisplayNameFor(m=>m.NumberOfAdults)</th>
+                    <th data-value="IsPublished" scope="col">@Html.DisplayNameFor(m=>m.NumberOfChildren)</th>
+                    <th data-value="BlogMainText" scope="col">@Html.DisplayNameFor(m=>m.PaymentMethod)</th>
+                    <th data-value="IsPublished" scope="col">@Html.DisplayNameFor(m=>m.PackageName)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script>
+    js = jQuery.noConflict();
+
+    js(document).ready(function () {
+        buildDataTable();
+    });
+    function buildDataTable() {
+        js("#table-object").DataTable({
+            "oLanguage": {
+                "oPaginate": {
+                    "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                    "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                },
+                "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "sLengthMenu": "Results: _MENU_"
+            },
+            "lengthMenu": [[10, 25, 50], [10, 25, 50]],
+            "searching": false,
+            "processing": true,
+            "serverSide": true,
+            "filter": false,
+            "orderMulti": false,
+            "lengthChange": true,
+            "ordering": true,
+            "destroy": true,
+            "pageLength": 5,
+            "page": 1,
+            "scrollY": false,
+            "sScrollX": "100%",
+            "scrollCollapse": true,
+            "ajax": {
+                "url": '@Url.Action("GetDataTable","PackageOrders")',
+                "type": "POST",
+                "datatype": "json",
+                "data": function (d) {
+                    d.orderBy = sortByColumn;
+                    d.isDescending = !sortAscending;
+                }
+            },
+            "columns": [
+                { "data": "id", "autoWidth": true },
+                { "data": "userName", "autoWidth": true },
+                { "data": "userEmail", "autoWidth": true },
+                { "data": "userPhone", "autoWidth": true },
+                { "data": "checkIn", "autoWidth": true },
+                { "data": "checkOut", "autoWidth": true },
+                { "data": "numberOfAdults", "autoWidth": true },
+                { "data": "numberOfChildren", "autoWidth": true },
+                { "data": "paymentMethod", "autoWidth": true },
+                { "data": "packageName", "autoWidth": true },
+                {
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return formatActionsHTML(row.id);
+                    }
+                }
+            ]
+        });
+    }
+
+    function formatActionsHTML(id) {
+
+        return `<div class="action-items">
+                                   <a href="/Blogs/Edit/${id}" class="bx bx-edit-alt" style="font-size: large"></a>
+                    </div>`;
+    }
+
+</script>
