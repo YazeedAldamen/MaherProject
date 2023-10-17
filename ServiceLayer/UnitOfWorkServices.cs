@@ -25,6 +25,7 @@ namespace ServiceLayer
         private RoleManager<AspNetRole> _roleManager;
 		private PackageOrderService _packageOrderService;
         private ContactService _contactService;
+        private RoomsOrderService _roomsOrderService;
 
 
 		public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, UserManager<AspNetUser> userManager, RoleManager<AspNetRole> roleManager, ImageService imageServices = null)
@@ -42,5 +43,6 @@ namespace ServiceLayer
         public AdminUsersService AdminUsersService=>_adminUsersService??new AdminUsersService(_unitOfWorkRepository,_userManager,_roleManager);
         public PackageOrderService PackageOrderService=>_packageOrderService??new PackageOrderService(_unitOfWorkRepository);
         public ContactService ContactService=>_contactService??new ContactService(_unitOfWorkRepository);
+        public RoomsOrderService RoomsOrderService=>_roomsOrderService??new RoomsOrderService(_unitOfWorkRepository);
 	}
 }

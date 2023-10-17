@@ -1,6 +1,6 @@
-﻿@model AdminDashboard.Models.PackageOrderModel
+﻿@model AdminDashboard.Models.RoomOrdersModel
 @{
-    ViewData["Title"] = "Package Orders";
+    ViewData["Title"] = "Room Orders";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @section DataTable {
@@ -22,7 +22,7 @@
                     <th data-value="BlogMainText" scope="col">@Html.DisplayNameFor(m=>m.NumberOfAdults)</th>
                     <th data-value="IsPublished" scope="col">@Html.DisplayNameFor(m=>m.NumberOfChildren)</th>
                     <th data-value="BlogMainText" scope="col">@Html.DisplayNameFor(m=>m.PaymentMethod)</th>
-                    <th data-value="IsPublished" scope="col">@Html.DisplayNameFor(m=>m.PackageName)</th>
+                    <th data-value="IsPublished" scope="col">@Html.DisplayNameFor(m=>m.HotelName)</th>
                 </tr>
             </thead>
         </table>
@@ -60,7 +60,7 @@
             "sScrollX": "100%",
             "scrollCollapse": true,
             "ajax": {
-                "url": '@Url.Action("GetDataTable","PackageOrders")',
+                "url": '@Url.Action("GetDataTable","RoomOrders")',
                 "type": "POST",
                 "datatype": "json",
                 "data": function (d) {
@@ -78,9 +78,8 @@
                 { "data": "numberOfAdults", "autoWidth": true },
                 { "data": "numberOfChildren", "autoWidth": true },
                 { "data": "paymentMethod", "autoWidth": true },
-                { "data": "packageName", "autoWidth": true }
+                { "data": "hotelName", "autoWidth": true }
             ]
         });
     }
-
 </script>

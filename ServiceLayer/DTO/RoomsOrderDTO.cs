@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.DTO
 {
-    public class RoomsOrder
+    public class RoomsOrderDTO
     {
         public int Id { get; set; }
         public int? RoomId { get; set; }
@@ -17,5 +17,10 @@ namespace ServiceLayer.DTO
         public int? NumberOfAdults { get; set; }
         public int? NumberOfChildren { get; set; }
         public string? PaymentMethod { get; set; }
+        public string? UserName { get; set; }
+        public string? UserEmail { get; set; }
+        public string? UserPhone { get; set; }
+        public string? City { get; set; }
+        public string? HotelName { get; set; }
     }
 }
