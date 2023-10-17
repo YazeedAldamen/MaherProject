@@ -103,12 +103,12 @@
                     js(document).on('click', '.reject-link', function () {
                         let id = data.id;
                         console.log(id);
-                        window.location.href = `/HotelRequest/Reject/${id}`;
+                        window.location.href = `/HotelRooms/Reject/${id}`;
                     });
 
                     js(document).on('click', '.accept-link', function () {
                         let id = data.id;
-                        window.location.href = `/HotelRequest/Accept/${id}`;
+                        window.location.href = `/HotelRooms/Accept/${id}`;
                     });
                     let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
                     modal.show();

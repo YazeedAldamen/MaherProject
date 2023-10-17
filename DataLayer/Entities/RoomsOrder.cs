@@ -14,7 +14,7 @@ namespace DataLayer.Entities
         public int? RoomId { get; set; }
         public virtual HotelRoom? Room { get; set; }
         public Guid? UserId { get; set; }
-        public virtual AspNetUser? User { get; }
+        public virtual AspNetUser? User { get; set; }
         public DateTime? CheckIn { get; set; }
         public DateTime? CheckOut { get; set; }
         public int? NumberOfAdults { get; set; }
