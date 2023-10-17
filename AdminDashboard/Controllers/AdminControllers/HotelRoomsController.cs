@@ -83,7 +83,7 @@ namespace AdminDashboard.Controllers.AdminControllers
 				ShowErrorMessage("Something Went Wrong" + ex.Message);
 
 			}
-			return RedirectToAction("Index");
+			return RedirectToAction("Requests");
 		}
 
 		public async Task<IActionResult> Reject(int id)
@@ -91,13 +91,14 @@ namespace AdminDashboard.Controllers.AdminControllers
 			try
 			{
 				await _roomService.Reject(id);
-			}
-			catch (Exception ex)
+                ShowSuccessMessage("Room Rejected Successfully");
+            }
+            catch (Exception ex)
 			{
 				ShowErrorMessage("Something Went Wrong" + ex.Message);
 
 			}
-			return RedirectToAction("Index");
+			return RedirectToAction("Requests");
 		}
 
 		public async Task<IActionResult> Delete(int Id)
