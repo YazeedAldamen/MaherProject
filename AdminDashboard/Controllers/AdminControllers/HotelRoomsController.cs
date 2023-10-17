@@ -5,6 +5,7 @@ using ServiceLayer.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using X.PagedList;
 using ServiceLayer.DTO;
+using DataLayer.Entities;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
@@ -47,7 +48,59 @@ namespace AdminDashboard.Controllers.AdminControllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Delete(int Id)
+		public IActionResult Requests()
+		{
+			return View();
+		}
+
+		public async Task<JsonResult> GetDataTable(DataTableModel dataTable)
+		{
+			var data = await _roomService.ListWithPaging(
+			orderBy: dataTable.OrderBy,
+			pageSize: dataTable.Length,
+			page: dataTable.Start,
+			isDescending: dataTable.isDescending);
+
+			return Json(new { data = data.EntityData, recordsTotal = data.Count, recordsFiltered = data.Count, lastquestion = dataTable.Start.ToString() });
+		}
+
+		public async Task<IActionResult> Details(int id)
+		{
+			var model = await _roomService.GetById(id);
+			ViewBag.id = id;
+			return Json(model);
+		}
+
+		public async Task<IActionResult> Accept(int id)
+		{
+			try
+			{
+				await _roomService.Accept(id);
+				ShowSuccessMessage("Room Accepted Successfully");
+			}
+			catch (Exception ex)
+			{
+				ShowErrorMessage("Something Went Wrong" + ex.Message);
+
+			}
+			return RedirectToAction("Index");
+		}
+
+		public async Task<IActionResult> Reject(int id)
+		{
+			try
+			{
+				await _roomService.Reject(id);
+			}
+			catch (Exception ex)
+			{
+				ShowErrorMessage("Something Went Wrong" + ex.Message);
+
+			}
+			return RedirectToAction("Index");
+		}
+
+		public async Task<IActionResult> Delete(int Id)
         {
             try 
             { 
