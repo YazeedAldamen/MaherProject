@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Entities
 {
-    public class Package
+    public class Package : BaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -30,7 +30,7 @@ namespace DataLayer.Entities
 
         public string? PackageMainImage { get; set; }
 
-        public string? PackageImage1{ get; set; }
+        public string? PackageImage1 { get; set; }
         public bool IsPublished { get; set; }
 
         public bool IsDeleted { get; set; }
