@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Entities
 {
-    public class RoomsOrder
+    public class RoomsOrder : BaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Entities
 {
-    public class Review
+    public class Review : BaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
