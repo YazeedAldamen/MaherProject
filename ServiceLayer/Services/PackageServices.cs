@@ -50,9 +50,6 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 case "BlogMainText":
                     orderByExpression = query => isDescending ? query.OrderByDescending(entity => entity.Description) : query.OrderBy(entity => entity.Description);
                     break;
-                case "HotelName":
-                    orderByExpression = query => isDescending ? query.OrderByDescending(entity => entity.HotelName) : query.OrderBy(entity => entity.HotelName);
-                    break;
                 case "Price":
                     orderByExpression = query => isDescending ? query.OrderByDescending(entity => entity.Price) : query.OrderBy(entity => entity.Price);
                     break;
@@ -76,7 +73,6 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
-                HotelName = x.HotelName,
                 Price = x.Price,
                 IsPublished = x.IsPublished,
             }).ToList();
@@ -93,37 +89,15 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 Description = entity.Description,
                 PackageMainImage = entity.PackageMainImage,
                 PackageImage1 = entity.PackageImage1,
-                PackageImage2 = entity.PackageImage2,
-                PackageImage3 = entity.PackageImage3,
+
                 PackageTypeId = entity.PackageTypeId,
                 Name = entity.Name,
                 Price = entity.Price,
                 Discount = entity.Discount,
-
                 IsPublished = entity.IsPublished,
-                IsVip = entity.IsVip,
-                IsAC = entity.IsAC,
-                IsTV = entity.IsTV,
-                IsWifi = entity.IsWifi,
-                IsRoomHeater = entity.IsRoomHeater,
                 IsDeleted = entity.IsDeleted,
-
-                HotelName = entity.HotelName,
-                HotelDescription = entity.HotelDescription,
-                HotelMainImage = entity.HotelMainImage,
-                HotelImage1 = entity.HotelImage1,
-                HotelImage2 = entity.HotelImage2,
-                HotelImage3 = entity.HotelImage3,
-
-                NumberOfAdults = entity.NumberOfAdults,
-                NumberOfChildren = entity.NumberOfChildren,
-                NumberOfBeds = entity.NumberOfBeds,
-                NumberOfBathrooms = entity.NumberOfBathrooms,
-                NumberOfSofas = entity.NumberOfSofas,
-
                 NumberOfDays = entity.NumberOfDays,
                 NumberOfNights = entity.NumberOfNights,
-
                 UserId = entity.UserId
             };
             return data;
@@ -141,22 +115,9 @@ string orderBy, int? page, int? pageSize, bool isDescending)
             entity.Discount = data.Discount;
 
             entity.IsPublished = data.IsPublished;
-            entity.IsVip = data.IsVip;
-            entity.IsAC = data.IsAC;
-            entity.IsTV = data.IsTV;
-            entity.IsWifi = data.IsWifi;
-            entity.IsRoomHeater = data.IsRoomHeater;
+
             entity.IsDeleted = data.IsDeleted;
 
-            entity.HotelName = data.HotelName;
-            entity.HotelDescription = data.HotelDescription;
-
-
-            entity.NumberOfAdults = data.NumberOfAdults;
-            entity.NumberOfChildren = data.NumberOfChildren;
-            entity.NumberOfBeds = data.NumberOfBeds;
-            entity.NumberOfBathrooms = data.NumberOfBathrooms;
-            entity.NumberOfSofas = data.NumberOfSofas;
 
             entity.NumberOfDays = data.NumberOfDays;
             entity.NumberOfNights = data.NumberOfNights;
@@ -178,12 +139,6 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 List<string> images = new List<string>();
                 images.Add(entity.PackageMainImage);
                 images.Add(entity.PackageImage1);
-                images.Add(entity.PackageImage2);
-                images.Add(entity.PackageImage3);
-                images.Add(entity.HotelMainImage);
-                images.Add(entity.HotelImage1);
-                images.Add(entity.HotelImage2);
-                images.Add(entity.HotelImage3);
                 images.ForEach(async image =>
                 {
                     if (!string.IsNullOrEmpty(image))
@@ -203,27 +158,10 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 Name = data.Name,
                 Price = data.Price,
                 Discount = data.Discount,
-
                 IsPublished = data.IsPublished,
-                IsVip = data.IsVip,
-                IsAC = data.IsAC,
-                IsTV = data.IsTV,
-                IsWifi = data.IsWifi,
-                IsRoomHeater = data.IsRoomHeater,
                 IsDeleted = data.IsDeleted,
-
-                HotelName = data.HotelName,
-                HotelDescription = data.HotelDescription,
-
-                NumberOfAdults = data.NumberOfAdults,
-                NumberOfChildren = data.NumberOfChildren,
-                NumberOfBeds = data.NumberOfBeds,
-                NumberOfBathrooms = data.NumberOfBathrooms,
-                NumberOfSofas = data.NumberOfSofas,
-
                 NumberOfDays = data.NumberOfDays,
                 NumberOfNights = data.NumberOfNights,
-
                 UserId = data.UserId
             };
             entity = await HandleImagesOC(entity, data,false);
