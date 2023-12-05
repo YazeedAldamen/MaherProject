@@ -3,6 +3,7 @@ using System;
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231205191750_packageUpdates")]
+    partial class packageUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,13 +237,7 @@ namespace DataLayer.Migrations
                     b.Property<bool>("IsPublished")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("SecondaryDescription")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Title")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Video")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -374,9 +371,6 @@ namespace DataLayer.Migrations
                     b.Property<int?>("NumberOfNights")
                         .HasColumnType("int");
 
-                    b.Property<string>("PackageDetails")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("PackageImage1")
                         .HasColumnType("longtext");
 
@@ -389,17 +383,12 @@ namespace DataLayer.Migrations
                     b.Property<float?>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int?>("RoomClassId")
-                        .HasColumnType("int");
-
                     b.Property<Guid?>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PackageTypeId");
-
-                    b.HasIndex("RoomClassId");
 
                     b.HasIndex("UserId");
 
@@ -687,17 +676,11 @@ namespace DataLayer.Migrations
                         .WithMany("Packages")
                         .HasForeignKey("PackageTypeId");
 
-                    b.HasOne("DataLayer.Entities.RoomClass", "RoomClass")
-                        .WithMany()
-                        .HasForeignKey("RoomClassId");
-
                     b.HasOne("DataLayer.Entities.AspNetUser", "User")
                         .WithMany("Packages")
                         .HasForeignKey("UserId");
 
                     b.Navigation("PackageType");
-
-                    b.Navigation("RoomClass");
 
                     b.Navigation("User");
                 });

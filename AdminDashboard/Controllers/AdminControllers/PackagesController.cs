@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using ServiceLayer;
 using ServiceLayer.DTO;
 using ServiceLayer.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
-    public class PackagesController : Controller
+    public class PackagesController : BaseController
     {
         private readonly PackageServices _packageServices;
         public PackagesController(UnitOfWorkServices unitOfWorkServices)
@@ -71,6 +72,7 @@ namespace AdminDashboard.Controllers.AdminControllers
                 UserId = data.UserId
             };
             return View(model);
+
         }
 
         [HttpPost]
@@ -118,14 +120,29 @@ namespace AdminDashboard.Controllers.AdminControllers
 
                 UserId = model.UserId
             };
+            try
+            {
+                await _packageServices.Edit(data);
+                ShowSuccessMessage("Package Updated Successfully");
 
-            await _packageServices.Edit(data);
-
-            return RedirectToAction(nameof(Edit), new { model.Id });
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Something went wrong" + ex.Message);
+            }
+            return RedirectToAction(nameof(Index), new { model.Id });
         }
         public async Task<IActionResult> Delete(int Id)
         {
-            await _packageServices.Delete(Id);
+            try
+            {
+                await _packageServices.Delete(Id);
+                ShowSuccessMessage("Package Deleted Successfully");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("This package has orders");
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -148,10 +165,7 @@ namespace AdminDashboard.Controllers.AdminControllers
                 Name = model.Name,
                 Description = model.Description,
                 PackageMainImageFile = model.PackageMainImageFile,
-                //PackageImage1File = model.PackageImage1File,
                 PackageImages = model.PackageImages,
-                //PackageImage2File = model.PackageImage2File,
-                //PackageImage3File = model.PackageImage3File,
                 PackageTypeId = model.PackageTypeId,
 
                 Price = model.Price,
@@ -181,8 +195,16 @@ namespace AdminDashboard.Controllers.AdminControllers
 
                 UserId = model.UserId
             };
+            try
+            {
+                await _packageServices.Create(data);
+                ShowSuccessMessage("Package Updated Successfully");
 
-            await _packageServices.Create(data);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Something went wrong" + ex.Message);
+            }
             return RedirectToAction(nameof(Index));
         }
     }

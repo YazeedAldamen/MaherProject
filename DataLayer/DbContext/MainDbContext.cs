@@ -23,5 +23,6 @@ namespace DataLayer.DbContext
         public virtual DbSet<RoomsOrder> RoomsOrders { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<PackageType> PackageTypes { get; set; }
+        public virtual DbSet<RoomClass> RoomClasses { get; set; }
     }
 }
