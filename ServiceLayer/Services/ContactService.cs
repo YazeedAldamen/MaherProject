@@ -59,5 +59,14 @@ namespace ServiceLayer.Services
 
             return (results, Count);
         }
+
+        public async Task CreateContact(ContactDTO data)
+        {
+            Contact contact = new Contact();
+            contact.Name = data.Name;
+            contact.Email = data.Email;
+            contact.Message = data.Message;
+            await _contactRepository.Add(contact);
+        }
     }
 }
