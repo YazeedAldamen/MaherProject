@@ -117,9 +117,9 @@ namespace ServiceLayer.Services
 				HotelMainImage = x.HotelMainImage,
 				Price = x.Price,
 				Discount = x.Discount,
-				UserEmail = x.User.Email,
-				UserName = x.User.FirstName,
-				UserPhone = x.User.PhoneNumber,
+				UserEmail = x.User?.Email,
+				UserName = x.User?.FirstName,
+				UserPhone = x.User?.PhoneNumber,
 			}).ToList();
 
 			return (results, Count);
@@ -168,6 +168,14 @@ namespace ServiceLayer.Services
 		{
 			var entity = await _hotelRoomRepository.GetById(Id);
 			await _hotelRoomRepository.Delete(entity);
+		}
+
+		public async Task UpdatePrice(int id, float price, float discountPrice)
+		{
+			var entity=await _hotelRoomRepository.GetById(id);
+			entity.Price = price;
+			entity.Discount = discountPrice;
+			await _hotelRoomRepository.Edit(entity);
 		}
 	}
 }

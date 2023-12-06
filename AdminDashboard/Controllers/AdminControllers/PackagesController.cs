@@ -1,4 +1,5 @@
 ﻿using AdminDashboard.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer;
 using ServiceLayer.DTO;
@@ -7,6 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
+    [Authorize(Roles = "Admin")]
     public class PackagesController : BaseController
     {
         private readonly PackageServices _packageServices;

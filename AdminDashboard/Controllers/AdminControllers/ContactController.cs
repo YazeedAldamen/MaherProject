@@ -1,10 +1,12 @@
 ﻿using AdminDashboard.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer;
 using ServiceLayer.Services;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
+    [Authorize(Roles = "Admin")]
     public class ContactController : Controller
     {
         private readonly ContactService _contactServices;
