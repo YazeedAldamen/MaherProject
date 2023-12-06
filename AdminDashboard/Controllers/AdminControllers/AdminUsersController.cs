@@ -1,10 +1,12 @@
 ﻿using AdminDashboard.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer;
 using ServiceLayer.Services;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminUsersController : Controller
     {
         private readonly AdminUsersService _adminUsersService;

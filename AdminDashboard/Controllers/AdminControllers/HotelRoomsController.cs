@@ -143,5 +143,19 @@ namespace AdminDashboard.Controllers.AdminControllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> EditPrice(int id, float Price, float DiscountPrice)
+        {
+            try
+            {
+                await _roomService.UpdatePrice(id, Price, DiscountPrice);
+                ShowSuccessMessage("Price Changed Successfully");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Something went Wrong," + ex.Message);
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

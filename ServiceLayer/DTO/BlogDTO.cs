@@ -13,10 +13,13 @@ namespace ServiceLayer.DTO
         public string? Title { get; set; }
         public string? BlogMainImage { get; set; }
         public string? BlogMainText { get; set; }
-        public IFormFile? Image { get; set; }
-
+        public List<IFormFile>? Image { get; set; }
+        public IFormFile? VideoFile { get; set; }
+        public string Video {  get; set; }  
         public bool IsPublished { get; set; }
         public bool IsDeleted { get; set; }
+        public string? SecondaryDescription { get; set; }
+
 
     }
 }

@@ -5,10 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using ServiceLayer.DTO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ServiceLayer.Services
@@ -77,6 +80,7 @@ namespace ServiceLayer.Services
                 BlogMainImage = entity.BlogMainImage,
                 IsPublished = entity.IsPublished,
                 BlogMainText = entity.BlogMainText,
+                SecondaryDescription = entity.SecondaryDescription,
             };
             return data;
         }
@@ -87,13 +91,37 @@ namespace ServiceLayer.Services
             entity.Title = data.Title;
             entity.BlogMainText = data.BlogMainText;
             entity.IsPublished = data.IsPublished;
+            entity.SecondaryDescription = data.SecondaryDescription;
+            if (data.VideoFile != null)
+            {
+                entity.Video = await ImageService.UploadFile(data.VideoFile);
+                FileManager.DeleteFile(entity.Video);
+            }
+
             if (data.Image != null) 
             {
+                string images = "";
+                int counter = 1;
                 if (!string.IsNullOrEmpty(entity.BlogMainImage))
-                {
-                    FileManager.DeleteFile(entity.BlogMainImage);
+                { 
+                    List<ImageInfo> deserializedCollection = JsonSerializer.Deserialize<List<ImageInfo>>(entity.BlogMainImage);
+                    foreach (var image in deserializedCollection)
+                    {
+                       FileManager.DeleteFile(image.ImagePath);
+                    }
                 }
-                entity.BlogMainImage = await ImageService.UploadFile(data.Image);
+                List<ImageInfo> imagesList = new List<ImageInfo>();
+                foreach (var image in data.Image)
+                {
+                    ImageInfo imageInfo = new ImageInfo();
+
+                    imageInfo.Name = "image" + counter;
+                    imageInfo.ImagePath = await ImageService.UploadFile(image);
+                    imagesList.Add(imageInfo);
+                    counter++;
+                }
+                images = JsonSerializer.Serialize(imagesList);
+                entity.BlogMainImage = images;
             }
             await _blogRepository.Edit(entity);
         }
@@ -105,7 +133,11 @@ namespace ServiceLayer.Services
             {
                 if (!string.IsNullOrEmpty(entity.BlogMainImage))
                 {
-                    FileManager.DeleteFile(entity.BlogMainImage);
+                    List<ImageInfo> deserializedCollection = JsonSerializer.Deserialize<List<ImageInfo>>(entity.BlogMainImage);
+                    foreach (var image in deserializedCollection)
+                    {
+                        FileManager.DeleteFile(image.ImagePath);
+                    }
                 }
                 await _blogRepository.Delete(entity);
             }
@@ -113,15 +145,40 @@ namespace ServiceLayer.Services
 
         public async Task Create(BlogDTO data)
         {
+            string images = "";
+            if (data.Image != null)
+            {
+                int counter = 1;
+              
+                List<ImageInfo> imagesList = new List<ImageInfo>();
+                foreach (var image in data.Image)
+                {
+                    ImageInfo imageInfo = new ImageInfo();
+
+                    imageInfo.Name = "image"+counter;
+                    imageInfo.ImagePath = await ImageService.UploadFile(image);
+                    imagesList.Add(imageInfo);
+                    counter++;
+                }
+                images = JsonSerializer.Serialize(imagesList);
+            }
+
             var entity = new Blog() 
             {
                 IsPublished = data.IsPublished,
                 BlogMainText = data.BlogMainText,
-                Title = data.Title,            
+                Title = data.Title,
+                SecondaryDescription = data.SecondaryDescription,
+                
             };
-            if (data.Image != null)
+
+            if (data.VideoFile != null)
             {
-                entity.BlogMainImage = await ImageService.UploadFile(data.Image);
+                entity.Video = await ImageService.UploadFile(data.VideoFile);
+            }
+            if (!string.IsNullOrEmpty(images))
+            {
+                entity.BlogMainImage = images;
             }
 
             await _blogRepository.Add(entity);

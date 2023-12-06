@@ -14,19 +14,30 @@
 
     <div class="mb-3">
         <label for="formFile" class="form-label">Upload Main Image</label>
-            <input asp-for="Image" class="form-control" id="Image" />
+            <input asp-for="Image" class="form-control" id="Image li" accept="image/*" />
         @{ 
-            if(Model.BlogMainImage != null)
+            if(Model.ImageInfo != null)
             {
-                <img src="../../images/content/@Model.BlogMainImage" class="img-fluid" />
+                foreach (var image in Model.ImageInfo)
+                {
+                        <img src="../../images/content/@image.ImagePath" class="img-fluid LimitImageSize" />
+                    <br />
+                }
             }
          }
+    </div>
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Upload Video </label>
+            <input asp-for="Video" class="form-control" id="Video" accept="video/mp4" />
     </div>
     <div class="col-md-6">
         <label for="BlogMainText" class="form-label">@Html.DisplayNameFor(x=>x.BlogMainText):</label>
         <textarea asp-for="BlogMainText" class="form-control" id="BlogMainText"></textarea>
     </div>
-
+    <div class="col-md-6">
+        <label for="SecondaryDescription" class="form-label">@Html.DisplayNameFor(x => x.SecondaryDescription):</label>
+        <textarea asp-for="SecondaryDescription" class="form-control" id="SecondaryDescription"></textarea>
+    </div>
     <div class="col-12">
         <label for="BlogMainText" class="form-label">@Html.DisplayNameFor(x=>x.IsPublished):</label>
         <div class="col-sm-10">

@@ -35,27 +35,27 @@
                                 @{
                                     if (room.IsWifi)
                                     {
-                                        <span class="badge rounded-pill bg-light text-dark text-wrap">
-                                            <i class='bx bx-wifi'></i>Wifi
-                                        </span>
+                                            <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                                <i class='bx bx-wifi'></i>Wifi
+                                            </span>
                                     }
                                     if (room.IsTV)
                                     {
-                                        <span class="badge rounded-pill bg-light text-dark text-wrap">
-                                            <i class='bx bx-tv'></i>Television
-                                            </span>
+                                            <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                                <i class='bx bx-tv'></i>Television
+                                                </span>
                                         }
                                     if (room.IsAC)
                                     {
-                                        <span class="badge rounded-pill bg-light text-dark text-wrap">
-                                            <i class='bx bx-wind'></i>AC
-                                            </span>
+                                            <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                                <i class='bx bx-wind'></i>AC
+                                                </span>
                                         }
                                     if (room.IsRoomHeater)
                                     {
-                                        <span class="badge rounded-pill bg-light text-dark text-wrap">
-                                            <i class='bx bxs-hot'></i>Room Heater
-                                        </span>
+                                            <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                                <i class='bx bxs-hot'></i>Room Heater
+                                            </span>
                                     }
                                 }
                             </div>
@@ -83,9 +83,13 @@
                                 <a href="@Url.Action("Show","HotelRooms",new{Id=room.Id})" class="btn btn-success">Show</a>
                             }
                         </div>
+                        <button type="button" class="btn btn-primary mt-3 edit-price-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="setModalContent('@room.Id')">Edit Price</button>
+
                     </div>
                     </div>
                 </div>
+
+            
             }
         <nav aria-label="Page navigation">
             <ul class="pagination">
@@ -122,4 +126,82 @@
         </nav>
 
     </div>
+
+    <form>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Price</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="RoomId" />
+                        <div class="col-md-6">
+                            <label for="inputCity" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="inputPrice">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputCity" class="form-label">Discount Price</label>
+                            <input type="number" class="form-control" id="inputDiscountPrice">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    
 </div>
+<script>
+    function submitForm() {
+        js=jQuery.noConflict();
+        debugger;
+        var id = js("#RoomId").val();
+        console.log(id);
+        var price = js("#inputPrice").val();
+        var discountPrice = js("#inputDiscountPrice").val();
+
+        // Perform the AJAX call
+        js.ajax({
+            url: "/HotelRooms/EditPrice", // replace with your actual URL
+            type: "POST",
+            data: {
+                id: id,
+                price: price,
+                discountPrice: discountPrice
+            },
+            success: function (data) {
+                // Handle success (if needed)
+                console.log("Success:", data);
+                location.reload();
+            },
+            error: function (error) {
+                // Handle errors (if needed)
+                console.log("Error:", error);
+            }
+        });
+    }
+</script>
+
+<script>
+    function setModalContent(roomId) {
+        // Set the modal content based on roomId
+        var modal = document.getElementById('exampleModal');
+        var hiddenInput = document.getElementById('RoomId');
+        var inputPrice = document.getElementById('inputPrice');
+        var inputDiscountPrice = document.getElementById('inputDiscountPrice');
+
+        // Replace the following lines with your actual logic to fetch and set the modal content
+        hiddenInput.value = roomId;
+        inputPrice.value = ''; // Set the initial value for price
+        inputDiscountPrice.value = ''; // Set the initial value for discount price
+
+        // Show the modal
+        var myModal = new bootstrap.Modal(modal);
+        myModal.show();
+    }
+</script>

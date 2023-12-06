@@ -1,11 +1,14 @@
 ﻿using AdminDashboard.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer;
 using ServiceLayer.DTO;
 using ServiceLayer.Services;
+using System.Text.Json;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
+    [Authorize(Roles ="Admin")]
     public class BlogsController : BaseController
     {
         private readonly BlogServices _blogServices;
@@ -33,6 +36,7 @@ namespace AdminDashboard.Controllers.AdminControllers
         public async Task<IActionResult> Edit(int Id)
         {
             var data = await _blogServices.GetById(Id);
+           
             BlogModel model = new BlogModel
             {
                 Id = Id,
@@ -40,7 +44,13 @@ namespace AdminDashboard.Controllers.AdminControllers
                 Title = data.Title,
                 IsPublished = data.IsPublished,
                 BlogMainImage = data.BlogMainImage,
+                SecondaryDescription=data.SecondaryDescription
             };
+            if (!string.IsNullOrEmpty(data.BlogMainImage))
+            {
+                List<ImageInfo> deserializedCollection = JsonSerializer.Deserialize<List<ImageInfo>>(data.BlogMainImage);
+                model.ImageInfo = deserializedCollection;
+            }
             return View(model);
         }
 
@@ -60,6 +70,8 @@ namespace AdminDashboard.Controllers.AdminControllers
                 IsPublished = model.IsPublished,
                 BlogMainImage = model.BlogMainImage,
                 Image = model.Image,
+                VideoFile = model.Video,
+                SecondaryDescription = model.SecondaryDescription
             };
             try 
             { 
@@ -110,6 +122,8 @@ namespace AdminDashboard.Controllers.AdminControllers
                     IsPublished = model.IsPublished,
                     BlogMainImage = model.BlogMainImage,
                     Image = model.Image,
+                    VideoFile=model.Video,
+                    SecondaryDescription = model.SecondaryDescription,
                 };
 
                 await _blogServices.Create(data);
