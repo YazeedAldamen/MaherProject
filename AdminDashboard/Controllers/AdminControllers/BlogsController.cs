@@ -8,7 +8,6 @@ using System.Text.Json;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
-    [Authorize(Roles ="Admin")]
     public class BlogsController : BaseController
     {
         private readonly BlogServices _blogServices;
@@ -44,7 +43,10 @@ namespace AdminDashboard.Controllers.AdminControllers
                 Title = data.Title,
                 IsPublished = data.IsPublished,
                 BlogMainImage = data.BlogMainImage,
-                SecondaryDescription=data.SecondaryDescription
+                SecondaryDescription=data.SecondaryDescription,
+                CardImageUrl = data.CardImageUrl,
+                VideoUrl = data.Video,
+                ShortDescription=data.ShortDescription
             };
             if (!string.IsNullOrEmpty(data.BlogMainImage))
             {
@@ -61,6 +63,11 @@ namespace AdminDashboard.Controllers.AdminControllers
             {
                 return View(model);
             }
+            if (model.Image != null && model.Image?.Count != 5)
+            {
+                ShowErrorMessage($"The number of images should be 5 ");
+                return View(model);
+            }
 
             var data = new BlogDTO
             {
@@ -71,7 +78,9 @@ namespace AdminDashboard.Controllers.AdminControllers
                 BlogMainImage = model.BlogMainImage,
                 Image = model.Image,
                 VideoFile = model.Video,
-                SecondaryDescription = model.SecondaryDescription
+                SecondaryDescription = model.SecondaryDescription,
+                CardImage = model.CardImage,
+                ShortDescription = model.ShortDescription
             };
             try 
             { 
@@ -114,6 +123,11 @@ namespace AdminDashboard.Controllers.AdminControllers
                 {
                     return View(model);
                 }
+                if (model.Image.Count != 5)
+                {
+                    ShowErrorMessage($"The number of images should be 5 ");
+                    return View(model);
+                }
 
                 var data = new BlogDTO
                 {
@@ -124,6 +138,8 @@ namespace AdminDashboard.Controllers.AdminControllers
                     Image = model.Image,
                     VideoFile=model.Video,
                     SecondaryDescription = model.SecondaryDescription,
+                    CardImage= model.CardImage,
+                    ShortDescription = model.ShortDescription,
                 };
 
                 await _blogServices.Create(data);

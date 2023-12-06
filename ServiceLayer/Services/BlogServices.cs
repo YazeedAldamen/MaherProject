@@ -81,7 +81,25 @@ namespace ServiceLayer.Services
                 IsPublished = entity.IsPublished,
                 BlogMainText = entity.BlogMainText,
                 SecondaryDescription = entity.SecondaryDescription,
+                Video=entity.Video,
+                CardImageUrl=entity.BlogCardImage,
+                ShortDescription=entity.ShortDescription,
+                LastUpdated=entity.LastUpdated,
             };
+            return data;
+        }
+
+        public async Task<IEnumerable<BlogDTO>> GetPublishedBlogs()
+        {
+            var entities = await _blogRepository.List(x => x.IsPublished == true);
+            var data = entities.Select(x => new BlogDTO()
+            {
+                Id = x.Id,
+                Title = x.Title,
+                CardImageUrl=x.BlogCardImage,
+                ShortDescription=x.ShortDescription,
+                LastUpdated=x.LastUpdated,
+            });
             return data;
         }
 
@@ -92,10 +110,19 @@ namespace ServiceLayer.Services
             entity.BlogMainText = data.BlogMainText;
             entity.IsPublished = data.IsPublished;
             entity.SecondaryDescription = data.SecondaryDescription;
+            entity.ShortDescription = data.ShortDescription;
+            entity.LastUpdated= DateTime.Now;
             if (data.VideoFile != null)
             {
-                entity.Video = await ImageService.UploadFile(data.VideoFile);
                 FileManager.DeleteFile(entity.Video);
+
+                entity.Video = await ImageService.UploadFile(data.VideoFile);
+            }
+            if (data.CardImage != null)
+            {
+                FileManager.DeleteFile(entity.BlogCardImage);
+
+                entity.BlogCardImage = await ImageService.UploadFile(data.CardImage);
             }
 
             if (data.Image != null) 
@@ -169,12 +196,17 @@ namespace ServiceLayer.Services
                 BlogMainText = data.BlogMainText,
                 Title = data.Title,
                 SecondaryDescription = data.SecondaryDescription,
-                
+                ShortDescription = data.ShortDescription,
+                LastUpdated=DateTime.Now,
             };
 
             if (data.VideoFile != null)
             {
                 entity.Video = await ImageService.UploadFile(data.VideoFile);
+            }
+            if (data.CardImage != null)
+            {
+                entity.BlogCardImage = await ImageService.UploadFile(data.CardImage);
             }
             if (!string.IsNullOrEmpty(images))
             {

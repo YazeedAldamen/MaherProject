@@ -1,7 +1,7 @@
 :root{
     /* --orange: #FF5722; */
     --main-color:#222A59;
-    --orange:#CEB290;
+    --gold:#CEB290;
     --light-grey: #f7f7f7;
     --dark: #0e1010;
     --white: #fff; 
@@ -53,11 +53,13 @@ img{
 .btn1{
     text-decoration: none;
     padding: 0.35rem 2.36rem;
+    border: none;
     border-radius: 0.2rem;
     font-weight: 400;
-    background-color: var(--orange);
+    background-color: var(--gold);
     color: #fff;
 } 
+
 
 .btn1:hover{
     background-color: var(--white);
@@ -69,7 +71,7 @@ img{
     text-decoration: none;
     font-weight: 400;
     margin-left: 20px;
-    color: var(--orange);
+    color: var(--gold);
     margin-top: 7px;
 }
 
@@ -84,7 +86,7 @@ img{
 
 /* header */
 header{
-    min-height: 90vh;
+    min-height: 10vh;
     padding-top: 15rem;
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../images/img1.jpeg) center/cover no-repeat;
     color: var(--white);
@@ -102,7 +104,7 @@ header{
 }
 .header-title h3 a:hover {
     text-decoration: none;
-    color: var(--orange);
+    color: var(--gold);
 }
 .header-title p{
     margin: 5rem auto;
@@ -132,7 +134,7 @@ header{
 }
 
 .header-form .btn{
-    background-color: var(--orange);
+    background-color: var(--gold);
     color: var(--light-grey);
 }
 
@@ -207,7 +209,20 @@ header{
     font-size: 1.6rem;
 }
 
-/* Properties */
+/* Hotels */
+
+.card-rating{
+  display: flex;
+}
+.card-rating h5{
+    width: 50px;
+    border-radius: 20px 0 20px 0;
+    padding: 5px;
+    margin-right: 15px;
+    background-color: var(--main-color);
+    color: var(--white);
+}
+
 
 .card-content{
     text-decoration: none;
@@ -262,7 +277,7 @@ header{
     font-weight: 500;
     font-size: 20px;
     margin-top: 2rem;
-}
+} 
 
 /* video */
 .video-wrapper{
@@ -318,7 +333,7 @@ header{
 }
 
 .footer-box a:hover{
-    color:var(--orange);
+    color:var(--gold);
 }
 
 .social a{
@@ -327,7 +342,7 @@ header{
 }
 
 .social a:hover{
-    color:var(--orange)
+    color:var(--gold)
 }
 
 .copyright{
@@ -385,27 +400,44 @@ form .input-data input:focus{
 }
 form .input-data p a{
     text-decoration: none;
-    color: var(--orange);
+    color: var(--gold);
 }
 form .btn-style{
     font-size: 18px;
     color: var(--white);
-    background: var(--orange);
+    background: var(--gold);
     padding:15px 100px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
 }
-form .btn-style:hover{
+/* form .btn-style:hover{
     background:var(--);
-}
+} */
 
 
 
 /* Package Details PAGE */
 
+.package_details .package_body{
+    background-color: var(--main-color);
+    color: var(--white);
+    margin-top: 25px;
+    margin-left: 300px;
+    text-align: center;
+    width: 750px;
+    border-radius: 7px;
+    
+}
+
 .package_details img{
     width: 300px;
+}
+
+.package_details .table a{
+    color: var(--main-color);
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .package_imgs{
@@ -433,6 +465,18 @@ form .btn-style:hover{
     border-radius: 100px;
 }
 
+.Packages a{
+    text-decoration: none;
+    color: var(--gold);
+}
+
+.media-entry .package-body{
+    border: 0.25px solid var(--gold);
+    border-radius: 10px;
+    border-top: none;
+    margin-bottom: 15px;
+}
+
 .media-entry > a {
     display: block;
     background-color: #000;
@@ -442,11 +486,11 @@ form .btn-style:hover{
     overflow: hidden;
     border-radius: 10px; 
 }
-.media-entry h3, .media-entry .h3 {
+.media-entry h3 {
     font-size: 16px;
     font-weight: 700; 
 }
-.media-entry h3 a, .media-entry .h3 a {
+.media-entry h3 a {
       color: #343661; 
       text-decoration: none;
 }
@@ -458,13 +502,27 @@ color: #f17945;
 }
 .media-entry .m-body a{
     text-decoration: none;
-    color: var(--orange);
+    color: var(--gold);
 }
 .media-entry .date {
     font-size: 12px; 
 }
 .media-entry p {
     font-size: 14px; 
+}
+
+.room-type-card img{
+    width: 650px;
+}
+.room-type-card{
+    display: flex;
+    
+}
+.room-type-card .view{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    
 }
   
 /* about */
@@ -485,6 +543,32 @@ color: #f17945;
     margin-bottom: 1rem;
 }
 
+/* About Sri_lanka Blog */
+
+.blog{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.blog video{
+    margin: 100px;
+    width: 800px;
+    border-radius: 50px;
+}
+.blog_details{
+    display: flex;
+    justify-content: space-around;
+}
+.blog_details p{
+    line-height: 2;
+}
+.blog_details img{
+    width: 450px;
+    height: 350px;
+    margin-left: 35px;
+    margin-bottom: 25px;
+}
+
 
 /* CONTACT PAGE  */
 /* contact */
@@ -497,7 +581,7 @@ color: #f17945;
 .contact-form .btn{
     display: block;
     margin: auto;
-    background-color: var(--orange);
+    background-color: var(--gold);
     color: var(--white);
 }
 .contact-icon{

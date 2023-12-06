@@ -1,0 +1,34 @@
+﻿@model AdminDashboard.Models.BlogModel
+@{
+    ViewData["Title"] = "Blog Details";
+}
+
+<div class="container">
+    <div class="blog">
+        <video src="../../images/content/@Model.VideoUrl" autoplay loop></video>
+    </div>
+</div>
+
+<div class="container blog_details">
+    <div>
+        <p>
+           @Model.BlogMainText
+        </p>
+    </div>
+    <div>
+        <img src="../../images/content/@Model.ImageInfo?[0].ImagePath" />
+        <img src="../../images/content/@Model.ImageInfo?[1].ImagePath" />
+    </div>
+</div>
+<div class="container blog_details">
+    <div>
+        <p>
+            @Model.SecondaryDescription
+        </p>
+    </div>
+</div>
+<div class="container blog_details mt-5">
+    <img src="../../images/content/@Model.ImageInfo?[2].ImagePath" />
+    <img src="../../images/content/@Model.ImageInfo?[3].ImagePath" />
+    <img src="../../images/content/@Model.ImageInfo?[4].ImagePath" />
+</div>

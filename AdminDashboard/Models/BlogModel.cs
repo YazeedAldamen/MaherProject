@@ -18,7 +18,14 @@ namespace AdminDashboard.Models
 
         public List<IFormFile>? Image { get; set;}
 
+        public IFormFile? CardImage { get; set; }
+        public string? CardImageUrl { get; set; }
+
+
+
         public IFormFile? Video { get; set; }
+
+        public string? VideoUrl { get; set; }
 
         public List<ImageInfo>? ImageInfo { get; set; }
 
@@ -26,5 +33,9 @@ namespace AdminDashboard.Models
 
         [Display(Name = "Share")]
         public bool IsPublished { get; set; }
+
+        public string? ShortDescription { get; set; }
+
+        public DateTime? LastUpdate { get; set; }
     }
 }
