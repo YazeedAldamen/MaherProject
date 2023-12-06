@@ -1,0 +1,31 @@
+﻿@model IEnumerable<AdminDashboard.Models.BlogModel>
+@{
+    ViewData["Title"] = "About Srilanka";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container mt-5 mb-5">
+        <h3 class="mt-5 mb-5 pt-5">About Sri Lanka</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+        @{
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                            <a href="@Url.Action("Details","AboutSriLanka",new{id=item.Id})">
+                                <img src="../../images/content/@item.CardImageUrl" class="card-img-top" />
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Title</h5>
+                                <p class="card-text">
+                                    @item.ShortDescription
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                            <small class="text-muted">@item.LastUpdate?.ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

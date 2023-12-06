@@ -12,11 +12,14 @@ namespace DataLayer.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string? Title { get; set; }
+        public string? BlogCardImage { get; set; }
         public string? BlogMainImage { get; set; }
         public string? BlogMainText { get; set; }
         public string? SecondaryDescription { get; set; }
         public string? Video { get; set; }
         public bool IsPublished { get; set; }
         public bool IsDeleted { get; set; }
+        public string? ShortDescription { get; set; }
+        public DateTime? LastUpdated {  get; set; }
     }
 }

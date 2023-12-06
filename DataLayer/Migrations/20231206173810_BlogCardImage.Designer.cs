@@ -3,6 +3,7 @@ using System;
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231206173810_BlogCardImage")]
+    partial class BlogCardImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,13 +243,7 @@ namespace DataLayer.Migrations
                     b.Property<int?>("Language")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastUpdated")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("SecondaryDescription")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ShortDescription")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Title")
