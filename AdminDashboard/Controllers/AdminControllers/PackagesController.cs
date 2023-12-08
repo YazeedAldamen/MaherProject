@@ -8,7 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class PackagesController : BaseController
     {
         private readonly PackageServices _packageServices;
@@ -33,46 +33,38 @@ namespace AdminDashboard.Controllers.AdminControllers
 
         public async Task<IActionResult> Edit(int Id)
         {
+            PackageModel model = new PackageModel();
+            try { 
             var data = await _packageServices.GetById(Id);
-            PackageModel model = new PackageModel
+             model = new PackageModel
             {
                 Id = Id,
                 Description = data.Description,
                 PackageMainImage = data.PackageMainImage,
-                PackageImage1 = data.PackageImage1,
-                PackageImage2 = data.PackageImage2,
-                PackageImage3 = data.PackageImage3,
+                ImageInfo = data.ImageInfo,
                 PackageTypeId = data.PackageTypeId,
-
+                RoomClassId = data.RoomClassId,
                 Price = data.Price,
                 Discount = data.Discount,
 
                 IsPublished = data.IsPublished,
-                IsVip = data.IsVip,
-                IsAC = data.IsAC,
-                IsTV = data.IsTV,
-                IsWifi = data.IsWifi,
-                IsRoomHeater = data.IsRoomHeater,
+
                 IsDeleted = data.IsDeleted,
-
-                HotelName = data.HotelName,
-                HotelDescription = data.HotelDescription,
-                HotelMainImage = data.HotelMainImage,
-                HotelImage1 = data.HotelImage1,
-                HotelImage2 = data.HotelImage2,
-                HotelImage3 = data.HotelImage3,
-
-                NumberOfAdults = data.NumberOfAdults,
-                NumberOfChildren = data.NumberOfChildren,
-                NumberOfBeds = data.NumberOfBeds,
-                NumberOfBathrooms = data.NumberOfBathrooms,
-                NumberOfSofas = data.NumberOfSofas,
 
                 NumberOfDays = data.NumberOfDays,
                 NumberOfNights = data.NumberOfNights,
 
-                UserId = data.UserId
+                UserId = data.UserId,
+                AboutPackage = data.AboutPackage,
+                
             };
+            ViewBag.PackageTypes = PackageTypes;
+            ViewBag.RoomClass = RoomClass;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Something went wrong" + ex.Message);
+            }
             return View(model);
 
         }
@@ -90,32 +82,20 @@ namespace AdminDashboard.Controllers.AdminControllers
                 Id = model.Id,
                 Description = model.Description,
                 PackageMainImageFile = model.PackageMainImageFile,
+                
                 Name = model.Name,
-
+                AboutPackage = model.AboutPackage,
                 PackageImages = model.PackageImages,
                 PackageTypeId = model.PackageTypeId,
-
+                RoomClassId = model.RoomClassId,
                 Price = model.Price,
                 Discount = model.Discount,
 
                 IsPublished = model.IsPublished,
-                IsVip = model.IsVip,
-                IsAC = model.IsAC,
-                IsTV = model.IsTV,
-                IsWifi = model.IsWifi,
-                IsRoomHeater = model.IsRoomHeater,
+               
                 IsDeleted = model.IsDeleted,
 
-                HotelName = model.HotelName,
-                HotelDescription = model.HotelDescription,
-                HotelMainImageFile = model.HotelMainImageFile,
-                HotelImages = model.HotelImages,
-
-                NumberOfAdults = model.NumberOfAdults,
-                NumberOfChildren = model.NumberOfChildren,
-                NumberOfBeds = model.NumberOfBeds,
-                NumberOfBathrooms = model.NumberOfBathrooms,
-                NumberOfSofas = model.NumberOfSofas,
+               
 
                 NumberOfDays = model.NumberOfDays,
                 NumberOfNights = model.NumberOfNights,
@@ -150,6 +130,9 @@ namespace AdminDashboard.Controllers.AdminControllers
 
         public async Task<ActionResult> Create()
         {
+            ViewBag.PackageTypes = PackageTypes;
+            ViewBag.RoomClass = RoomClass;
+            ViewBag.Cities = Cities;
             return View();
         }
 
@@ -169,28 +152,15 @@ namespace AdminDashboard.Controllers.AdminControllers
                 PackageMainImageFile = model.PackageMainImageFile,
                 PackageImages = model.PackageImages,
                 PackageTypeId = model.PackageTypeId,
-
+                RoomClassId = model.RoomClassId,
                 Price = model.Price,
                 Discount = model.Discount,
-
+                AboutPackage = model.AboutPackage,
                 IsPublished = model.IsPublished,
-                IsVip = model.IsVip,
-                IsAC = model.IsAC,
-                IsTV = model.IsTV,
-                IsWifi = model.IsWifi,
-                IsRoomHeater = model.IsRoomHeater,
+               
                 IsDeleted = model.IsDeleted,
 
-                HotelName = model.HotelName,
-                HotelDescription = model.HotelDescription,
-                HotelMainImageFile = model.HotelMainImageFile,
-                HotelImages = model.HotelImages,
-
-                NumberOfAdults = model.NumberOfAdults,
-                NumberOfChildren = model.NumberOfChildren,
-                NumberOfBeds = model.NumberOfBeds,
-                NumberOfBathrooms = model.NumberOfBathrooms,
-                NumberOfSofas = model.NumberOfSofas,
+              
 
                 NumberOfDays = model.NumberOfDays,
                 NumberOfNights = model.NumberOfNights,

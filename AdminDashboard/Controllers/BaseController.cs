@@ -66,7 +66,7 @@ namespace AdminDashboard.Controllers
             }
         };
 
-        public List<SelectListItem> selectListItems = new List<SelectListItem>
+        public List<SelectListItem> RoomClass = new List<SelectListItem>
         {
             new SelectListItem
             {
@@ -82,6 +82,124 @@ namespace AdminDashboard.Controllers
             {
                 Value = "2",
                 Text = "Luxury"
+            }
+        };
+
+        public List<SelectListItem> Cities = new List<SelectListItem>
+        {
+            new SelectListItem
+            {
+                Value = "0",
+                Text = "Select City"
+            },
+            new SelectListItem
+            {
+                Value = "1",
+                Text = "Baku"
+            },
+            new SelectListItem
+            {
+                Value = "2",
+                Text = "Ganja"
+            },
+            new SelectListItem
+            {
+                Value = "3",
+                Text = "Shaki"
+            },
+            new SelectListItem
+            {
+                Value = "4",
+                Text = "Lankaran"
+            },
+            new SelectListItem
+            {
+                Value = "5",
+                Text = "Quba"
+            },
+            new SelectListItem
+            {
+                Value = "6",
+                Text = "Qabala"
+            },
+            new SelectListItem
+            {
+                Value = "7",
+                Text = "Sheki"
+            },
+            new SelectListItem
+            {
+                Value = "8",
+                Text = "Guba"
+            },
+            new SelectListItem
+            {
+                Value = "9",
+                Text = "Khachmaz"
+            },
+            new SelectListItem
+            {
+                Value = "10",
+                Text = "Gabala"
+            },
+            new SelectListItem
+            {
+                Value = "11",
+                Text = "Mingachevir"
+            },
+            new SelectListItem
+            {
+                Value = "12",
+                Text = "Sumqayit"
+            },
+            new SelectListItem
+            {
+                Value = "13",
+                Text = "Nakhchivan"
+            },
+            new SelectListItem
+            {
+                Value = "14",
+                Text = "Shamakhi"
+            },
+            new SelectListItem
+            {
+                Value = "15",
+                Text = "Goychay"
+            },
+            new SelectListItem
+            {
+                Value = "16",
+                Text = "Lerik"
+            },
+            new SelectListItem
+            {
+                Value = "17",
+                Text = "Masalli"
+            },
+            new SelectListItem
+            {
+                Value = "18",
+                Text = "Astara"
+            },
+            new SelectListItem
+            {
+                Value = "19",
+                Text = "Ordubad"
+            },
+            new SelectListItem
+            {
+                Value = "20",
+                Text = "Goygol"
+            },
+            new SelectListItem
+            {
+                Value = "21",
+                Text = "Balakan"
+            },
+            new SelectListItem
+            {
+                Value = "22",
             }
         };
     }

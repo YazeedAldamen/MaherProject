@@ -34,143 +34,66 @@
         <div class="mb-3">
             <label for="formFile" class="form-label">Upload Main Image</label>
             <input asp-for="PackageMainImageFile" class="form-control" id="PackageMainImageFile" />
-            @{
+           @*  @{
                 if (Model.PackageMainImage != null)
                 {
                     <img src="../../images/content/@Model.PackageMainImage" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
                 }
-            }
+            } *@
         </div>
         <div class="mb-3">
             <label for="formFileMultiple" class="form-label">Upload Multiple Images</label>
             <input asp-for="PackageImages" class="form-control" id="PackageImages" multiple onchange="limitFileSelection(this, 3)" />
+            @* @{
+                if (Model.ImageInfo.Any())
+                {
+                    
+                }
+            } *@
         </div>
         <div class="mb-12">
             <div class="row">
                 <div class="col mb-3">
-                    @{
+                   @*  @{
                         if (Model.PackageImage1 != null)
                         {
+
                             <img src="../../images/content/@Model.PackageImage1" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
                         }
-                    }
-                </div>
-                <div class="col mb-3">
-                    @{
-                        if (Model.PackageImage2 != null)
-                        {
-                            <img src="../../images/content/@Model.PackageImage2" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
-                        }
-                    }
-                </div>
-                <div class="col mb-3">
-                    @{
-                        if (Model.PackageImage3 != null)
-                        {
-                            <img src="../../images/content/@Model.PackageImage3" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
-                        }
-                    }
+                    } *@
                 </div>
             </div>
         </div>
-        <h2>Hotel Info</h2>
-        <div class="col-md-6">
-            <label for="HotelName" class="form-label">@Html.DisplayNameFor(x=>x.HotelName):</label>
-            <input asp-for="HotelName" class="form-control" name="HotelName" id="HotelName" />
-        </div>
-        <div class="col-md-2">
-            <label for="NumberOfAdults" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfAdults):</label>
-            <input asp-for="NumberOfAdults" class="form-control" name="NumbNumberOfAdultserOfDays" id="NumberOfAdults" type="number" />
-        </div>
-        <div class="col-md-2">
-            <label for="NumberOfChildren" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfChildren):</label>
-            <input asp-for="NumberOfChildren" class="form-control" name="NumberOfChildren" id="NumberOfChildren" type="number" />
-        </div>
-        <div class="col-md-6">
-            <label for="HotelDescription" class="form-label">@Html.DisplayNameFor(x=>x.HotelDescription):</label>
-            <textarea asp-for="HotelDescription" class="form-control" id="HotelDescription"></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="HotelMainImageFile" class="form-label">Upload Main Image</label>
-            <input asp-for="HotelMainImageFile" class="form-control" id="HotelMainImageFile" />
-            @{
-                if (Model.HotelMainImage != null)
+        <div class="col-lg-4 mb-2">
+            <label for="PackageTypeId" class="form-label">Package Type</label>
+            <select id="PackageTypeId" class="form-select">
+                @foreach (var type in ViewBag.PackageTypes)
                 {
-                    <img src="../../images/content/@Model.HotelMainImage" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
+                    if(type.Value == Model.PackageTypeId.ToString())
+                    {
+                        <option value="@type.Value" selected>@type.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@type.Value">@type.Text</option>
+                    }
                 }
-            }
+            </select>
         </div>
-        <div class="mb-3">
-            <label for="formFileMultiple" class="form-label">Upload Multiple Images</label>
-            <input asp-for="HotelImages" class="form-control" id="HotelImages" multiple onchange="limitFileSelection(this, 3)" />
-        </div>
-        <div class="mb-12">
-            <div class="row">
-                <div class="col mb-3">
-                    @{
-                        if (Model.HotelImage1 != null)
-                        {
-                            <img src="../../images/content/@Model.HotelImage1" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
-                        }
+        <div class="col-lg-4 mb-2">
+            <label for="RoomClassId" class="form-label">Hotel Room Class</label>
+            <select id="RoomClassId" class="form-select">
+                @foreach(var roomClass in ViewBag.RoomClass){
+                    if (roomClass.Value == Model.RoomClassId.ToString())
+                    {
+                        <option value="@roomClass.Value" selected>@roomClass.Text</option>
                     }
-                </div>
-                <div class="col mb-3">
-                    @{
-                        if (Model.HotelImage2 != null)
-                        {
-                            <img src="../../images/content/@Model.HotelImage2" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
-                        }
+                    else
+                    {
+                        <option value="@roomClass.Value">@roomClass.Text</option>
                     }
-                </div>
-                <div class="col mb-3">
-                    @{
-                        if (Model.HotelImage3 != null)
-                        {
-                            <img src="../../images/content/@Model.HotelImage3" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
-            <h2 class="mb-4 mt-4">Options 1</h2>
-            <div class="form-check">
-                <input asp-for="IsWifi" class="form-check-input" type="checkbox" name="IsWifi" id="IsWifi" />
-                <label class="form-check-label" for="gridCheck">
-                    <i class='bx bx-wifi'></i> Wifi
-                </label>
-            </div>
-            <div class="form-check">
-                <input asp-for="IsTV" class="form-check-input" type="checkbox" name="IsTV" id="IsTV" />
-                <label class="form-check-label" for="gridCheck">
-                    <i class='bx bx-tv'></i> Television
-                </label>
-            </div>
-            <div class="form-check">
-                <input asp-for="IsAC" class="form-check-input" type="checkbox" name="IsAC" id="IsAC" />
-                <label class="form-check-label" for="gridCheck">
-                    <i class='bx bx-wind'></i>  AC
-                </label>
-            </div>
-            <div class="form-check">
-                <input asp-for="IsRoomHeater" class="form-check-input" type="checkbox" name="IsRoomHeater" id="IsRoomHeater" />
-                <label class="form-check-label" for="gridCheck">
-                    <i class='bx bxs-hot'></i> Room Heater
-                </label>
-            </div>
-        </div>
-        <h2 class="mb-4 mt-4">Options 2</h2>
-        <div class="col-md-2">
-            <label for="inputState" class="form-label"> <i class='bx bx-bed'></i>No. Of Beds</label>
-            <input asp-for="NumberOfBeds" class="form-control" name="NumberOfBeds" id="Price" type="NumberOfBeds" />
-        </div>
-        <div class="col-md-2">
-            <label for="inputState" class="form-label"><i class='bx bx-chair'></i>No. Of Sofa</label>
-            <input asp-for="NumberOfSofas" class="form-control" name="NumberOfSofas" id="Price" type="NumberOfSofas" />
-        </div>
-        <div class="col-md-2 mb-5">
-            <label for="inputState" class="form-label"><i class='bx bx-bath'></i>No. Of Bathroom</label>
-            <input asp-for="NumberOfBathrooms" class="form-control" name="NumberOfBathrooms" id="Price" type="NumberOfBathrooms" />
+                }
+            </select>
         </div>
         <div class="col-12">
             <label for="IsPublished" class="form-label">@Html.DisplayNameFor(x=>x.IsPublished):</label>

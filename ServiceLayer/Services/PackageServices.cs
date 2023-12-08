@@ -16,18 +16,6 @@ namespace ServiceLayer.Services
     {
         private readonly IGenericRepository<Package> _packageRepository;
         private readonly ImageService _imageService;
-        public static List<string> PackageImages = new List<string>()
-            {
-                "PackageImage1",
-                "PackageImage2",
-                "PackageImage3"
-            };
-        public static List<string> HotelImages = new List<string>()
-            {
-                "HotelImage1",
-                "HotelImage2",
-                "HotelImage3"
-            };
         public PackageServices(IUnitOfWorkRepositories unitofworkRepository,ImageService imageService)
 		{
 			_packageRepository = unitofworkRepository.PackageRepository;
@@ -83,13 +71,16 @@ string orderBy, int? page, int? pageSize, bool isDescending)
         public async Task<PackageDTO> GetById(int Id)
         {
             var entity = await _packageRepository.GetById(Id);
-
+            List<ImageInfo> images = new List<ImageInfo>();
+            if (!string.IsNullOrEmpty(entity.PackageImage1))
+            {
+                images =  Newtonsoft.Json.JsonConvert.DeserializeObject<List<ImageInfo>>(entity.PackageImage1);
+            }
             var data = new PackageDTO
             {
                 Description = entity.Description,
                 PackageMainImage = entity.PackageMainImage,
-                PackageImage1 = entity.PackageImage1,
-
+                ImageInfo = images,
                 PackageTypeId = entity.PackageTypeId,
                 Name = entity.Name,
                 Price = entity.Price,
@@ -98,7 +89,9 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 IsDeleted = entity.IsDeleted,
                 NumberOfDays = entity.NumberOfDays,
                 NumberOfNights = entity.NumberOfNights,
-                UserId = entity.UserId
+                UserId = entity.UserId,
+                AboutPackage = entity.AboutPackage,
+
             };
             return data;
         }
@@ -117,15 +110,18 @@ string orderBy, int? page, int? pageSize, bool isDescending)
             entity.IsPublished = data.IsPublished;
 
             entity.IsDeleted = data.IsDeleted;
+            entity.AboutPackage = data.AboutPackage;
 
 
             entity.NumberOfDays = data.NumberOfDays;
             entity.NumberOfNights = data.NumberOfNights;
             entity.UserId = data.UserId;
-            entity = await HandlePackageMultipleImages(entity, data);
-            entity = await HandleHotelMultipleImages(entity, data);
+            //entity = await HandlePackageMultipleImages(entity, data);
+            //entity = await HandleHotelMultipleImages(entity, data);
 
-            entity = await HandleImagesOC(entity, data, true);
+            entity.PackageMainImage = await _imageService.HandleImage(entity.PackageMainImage, data.PackageMainImageFile);
+            entity.PackageImage1 = await _imageService.HandleMultipleImages(data.PackageImages, true,entity.PackageImage1);
+
 
             await _packageRepository.Edit(entity);
         }
@@ -152,96 +148,32 @@ string orderBy, int? page, int? pageSize, bool isDescending)
 
         public async Task Create(PackageDTO data)
         {
-            var entity = new Package()
+            try
             {
-                Description = data.Description,
-                Name = data.Name,
-                Price = data.Price,
-                Discount = data.Discount,
-                IsPublished = data.IsPublished,
-                IsDeleted = data.IsDeleted,
-                NumberOfDays = data.NumberOfDays,
-                NumberOfNights = data.NumberOfNights,
-                UserId = data.UserId
-            };
-            entity = await HandleImagesOC(entity, data,false);
-            entity = await HandlePackageMultipleImages(entity, data);
-            entity = await HandleHotelMultipleImages(entity, data);
-            await _packageRepository.Add(entity);
-        }
-
-        public async Task<Package> HandleImagesOC(Package entity, PackageDTO data,bool IsEdit)
-        {
-            var imageDictionary = new Dictionary<string, IFormFile>
-            {
-                { "PackageMainImage", data.PackageMainImageFile },
-                { "HotelMainImage", data.HotelMainImageFile },
-            };
-
-            foreach (var kvp in imageDictionary)
-            {
-                var propertyName = kvp.Key;
-
-                if (kvp.Value != null)
+                var entity = new Package()
                 {
-                    if (IsEdit)
-                    {
-                        var oldImage = entity.GetType().GetProperty(propertyName)?.GetValue(entity);
-                        FileManager.DeleteFile(oldImage.ToString());
-                    }
-                    var uploadedImageUrl = await ImageService.UploadFile(kvp.Value);
-                    entity.GetType().GetProperty(propertyName)?.SetValue(entity, uploadedImageUrl);
-                }
+                    Description = data.Description,
+                    Name = data.Name,
+                    Price = data.Price,
+                    Discount = data.Discount,
+                    IsPublished = data.IsPublished,
+                    IsDeleted = data.IsDeleted,
+                    NumberOfDays = data.NumberOfDays,
+                    NumberOfNights = data.NumberOfNights,
+                    UserId = data.UserId,
+                    AboutPackage = data.AboutPackage
+                };
+
+                entity.PackageMainImage = await ImageService.UploadFile(data.PackageMainImageFile);
+                entity.PackageImage1 = await _imageService.HandleMultipleImages(data.PackageImages, false);
+
+                await _packageRepository.Add(entity);
             }
-            return entity;
-        }
-        public async Task<Package> HandlePackageMultipleImages(Package entity, PackageDTO data, bool IsEdit=false)
-        {
-            int count = 0;
-            if(data.PackageImages != null) 
-            { 
-                foreach (var kvp in data.PackageImages)
-                {
-                    var files = kvp;
-                    var propertyName = PackageImages[count];
-                    var oldImage = entity.GetType().GetProperty(propertyName)?.GetValue(entity);
-                    if(oldImage != null)
-                    {
-                        FileManager.DeleteFile(oldImage.ToString());
-                    }
-                    if (files != null)
-                    {
-                        var uploadedImageUrl = await ImageService.UploadFile(kvp);
-                        entity.GetType().GetProperty(propertyName)?.SetValue(entity, uploadedImageUrl);
-                    }
-                    count++;
-                }
-            }
-            return entity;
-        }
-        public async Task<Package> HandleHotelMultipleImages(Package entity, PackageDTO data)
-        {
-            int count = 0;
-            if(data.HotelImages != null)
+            catch (Exception ex)
             {
-                foreach (var kvp in data.HotelImages)
-                {
-                    var files = kvp;
-                    var propertyName = HotelImages[count];
-                    var oldImage = entity.GetType().GetProperty(propertyName)?.GetValue(entity);
-                    if(oldImage != null)
-                    {
-                        FileManager.DeleteFile(oldImage.ToString());
-                    }
-                    if (files != null)
-                    {
-                        var uploadedImageUrl = await ImageService.UploadFile(kvp);
-                        entity.GetType().GetProperty(propertyName)?.SetValue(entity, uploadedImageUrl);
-                    }
-                    count++;
-                }
+                throw ex;
             }
-            return entity;
+            
         }
     }
 }

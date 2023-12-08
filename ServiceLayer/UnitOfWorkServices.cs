@@ -31,10 +31,11 @@ namespace ServiceLayer
 		public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, UserManager<AspNetUser> userManager, RoleManager<AspNetRole> roleManager, ImageService imageServices = null)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
-            _imageServices = imageServices;
             _userManager = userManager;
             _roleManager = roleManager;
+            _imageServices = imageServices;
         }
+        public ImageService ImageService => _imageServices ?? new ImageService();
 
         public BlogServices BlogServices =>_blogServices??=new BlogServices(_unitOfWorkRepository);
         public HotelRoomService HotelRoomService=>_hotelRoomService??new HotelRoomService(_unitOfWorkRepository);
@@ -43,6 +44,6 @@ namespace ServiceLayer
         public AdminUsersService AdminUsersService=>_adminUsersService??new AdminUsersService(_unitOfWorkRepository,_userManager,_roleManager);
         public PackageOrderService PackageOrderService=>_packageOrderService??new PackageOrderService(_unitOfWorkRepository);
         public ContactService ContactService=>_contactService??new ContactService(_unitOfWorkRepository);
-        public RoomsOrderService RoomsOrderService=>_roomsOrderService??new RoomsOrderService(_unitOfWorkRepository);
-	}
+        public RoomsOrderService RoomsOrderService => _roomsOrderService ?? new RoomsOrderService(_unitOfWorkRepository);
+    }
 }

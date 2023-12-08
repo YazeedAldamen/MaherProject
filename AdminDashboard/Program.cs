@@ -18,6 +18,7 @@ namespace AdminDashboard
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddMySqlCoreDb(builder.Configuration);
+            builder.Services.AddTransient<ImageService>();
             builder.Services.AddTransient<UnitOfWorkServices>();
             builder.Services.AddDbContext<MainDbContext>(options =>
             {
