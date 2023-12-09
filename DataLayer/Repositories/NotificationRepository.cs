@@ -24,6 +24,44 @@ namespace DataLayer.Repositories
             this.dbSet = context.Set<Notification>();
         }
 
+        public virtual async Task<Notification> GetById(object id)
+        {
+            if (id is null)
+            {
+                return null;
+            }
+            Notification item = await dbSet.FindAsync(id);
+            if (item == null)
+            {
+                return null;
+            }
+
+            context.Entry(item).State = EntityState.Detached;
+            return item;
+        }
+
+        public virtual async Task Edit(Notification entity)
+        {
+            var entry = dbSet.Update(entity);
+            context.Entry(entity).State = EntityState.Modified;
+
+            _ = await context.SaveChangesAsync();
+            context.Entry(entity).State = EntityState.Detached;
+        }
+
+        public virtual async Task Add(Notification entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            var entry = dbSet.Add(entity);
+
+            _ = await context.SaveChangesAsync();
+        }
+
+
         public async Task<(IList<Notification> EntityData, int Count)> ListWithPaging(Expression<Func<Notification, bool>> filter = null, Func<IQueryable<Notification>, IOrderedQueryable<Notification>> orderBy = null, int? page = null, int? pageSize = null, Func<IQueryable<Notification>, IIncludableQueryable<Notification, object>> includeProperties = null, Expression<Func<Notification, Notification>>? select = null)
         {
             IQueryable<Notification> query = dbSet;

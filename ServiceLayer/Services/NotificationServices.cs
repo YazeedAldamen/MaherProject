@@ -13,13 +13,11 @@ namespace ServiceLayer.Services
 {
     public class NotificationServices
     {
-        private readonly IGenericRepository<Notification> _notificationRepository;
-        private readonly NotificationRepository notificationRepositoryScroll;
+        private readonly NotificationRepository _notificationRepository;
 
         public NotificationServices (IUnitOfWorkRepositories unitOfWorkRepositories)
         {
             _notificationRepository = unitOfWorkRepositories.NotificationRepository;
-            notificationRepositoryScroll=unitOfWorkRepositories.NotificationRepositoryScroll;
         }
 
         public async Task CreateNotification(string ControllerName,string Description,Guid? HotelId=null)
@@ -53,7 +51,7 @@ namespace ServiceLayer.Services
             Func<IQueryable<Notification>, IOrderedQueryable<Notification>> orderByExpression;
             orderByExpression = q => q.OrderBy(x => x.Seen).ThenByDescending(x => x.CreateDate);
 
-            var notifications = await notificationRepositoryScroll.ListWithPaging(page: page, pageSize: pageSize, orderBy: orderByExpression);
+            var notifications = await _notificationRepository.ListWithPaging(page: page, pageSize: pageSize, orderBy: orderByExpression);
 
             var notificationDTO = notifications.EntityData.Select(x => new NotificationDTO
             {
