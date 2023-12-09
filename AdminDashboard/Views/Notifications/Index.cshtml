@@ -3,6 +3,7 @@
     ViewData["Title"] = "Notifications";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
 @section DataTable {
     <partial name="_DataTableCSSPartial" />
     <partial name="_DataTableScriptsPartial" />
@@ -11,86 +12,56 @@
 <div class="col-lg-9 col-md-12 px-4 mt-3">
     <div class="body-contant">
         <h1>@ViewData["Title"]</h1>
-        <div class="row row-cols-1 row-cols-md-2 g-4 mt-5">
-        @foreach(var notification in Model.NotificationsDTO){
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@notification.Title</h5>
-                        <p class="card-text">@notification.Description</p>
-                        <a class="card-link check-it" data-notification-id="@notification.Id" data-path="@notification.Path">Check It</a>
-                    </div>
-                </div>
-            </div>
-        }
+        <div id="notification-container" class="row row-cols-1 row-cols-md-2 g-4 mt-5">
+
         </div>
     </div>
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            @if (ViewBag.Page > 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index","Notifications",new {page=1})">First</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index","Notifications",new {page=ViewBag.Page - 1})">Previous</a>
-                </li>
-            }
-
-            @for (int i = ViewBag.Page - 2; i <= ViewBag.Page + 2 && i <= Model.TotalCount / 10 + 1; i++)
-            {
-                if (i >= 1)
-                {
-                    <li class="page-item @(i == ViewBag.Page ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Index","Notifications",new {page=i})">@i</a>
-                    </li>
-                }
-            }
-
-            @if (ViewBag.Page < Model.TotalCount / 10 + 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index","Notifications",new {page=ViewBag.Page + 1})">Next</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index","Notifications",new {page=Model.TotalCount / 10 + 1})">Last</a>
-                </li>
-            }
-        </ul>
-    </nav>
 </div>
 
 <script>
     var js = jQuery.noConflict();
 
     js(document).ready(function () {
-        // Handle click event on "Check It" link
-        js(".check-it").on("click", function (e) {
-            e.preventDefault(); // Prevent the default behavior of the anchor element
+        var page = 1; // Initial page number
+        var loading = false; // Flag to prevent multiple simultaneous requests
+        var allNotificationsLoaded = false; // Flag to track when all notifications have been loaded
 
-            // Get the notification ID from data attribute
-            var notificationId = js(this).data("notification-id");
-            var path = js(this).data("path");
-            // Make AJAX request
-            js.ajax({
-                url: "@Url.Action("ChangeStatus", "Notifications")",
-                type: "POST",
-                data: { notificationId: notificationId },
-                success: function (result) {
-                    // Check the JSON result for success
-                    if (result.success) {
-                        console.log("Status changed successfully");
-                        window.location.href = path;
-                        // You can perform additional actions if needed
-                    } else {
-                        console.error("Error changing status");
+        function loadNotifications() {
+            if (!loading && !allNotificationsLoaded) {
+                loading = true;
+
+                js.ajax({
+                    url: "@Url.Action("GetData", "Notifications")" + "?page=" + page,
+                    type: "GET",
+                    success: function (html) {
+                        if (html.trim() === "") {
+                            // No more notifications, stop loading
+                            allNotificationsLoaded = true;
+                        } else {
+                            // Append the new notifications to the container
+                            js("#notification-container").append(html);
+                            page++; // Increment the page number for the next request
+                        }
+
+                        loading = false;
+                    },
+                    error: function (error) {
+                        console.error("Error loading notifications", error);
+                        loading = false;
                     }
-                },
-                error: function (error) {
-                    // Handle other errors
-                    console.error("Error changing status", error);
-                }
-            });
+                });
+            }
+        }
+
+        // Detect when the user scrolls to the bottom of the page
+        js(window).scroll(function () {
+            if (js(window).scrollTop() + js(window).height() >= js(document).height() - 100) {
+                // Load more notifications when the user is close to the bottom
+                loadNotifications();
+            }
         });
+
+        // Initial load of notifications
+        loadNotifications();
     });
 </script>

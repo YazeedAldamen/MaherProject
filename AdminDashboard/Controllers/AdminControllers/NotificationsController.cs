@@ -17,9 +17,13 @@ namespace AdminDashboard.Controllers.AdminControllers
 
         public async Task<IActionResult> Index(int page = 1)
         {
+            return View();
+        }
+
+        public async Task<IActionResult> GetData(int page = 1)
+        {
             int pageSize = 10;
-            ViewBag.Page = page;
-            var model = await _notificationServices.GetNotificationList(page,pageSize);
+            var model = await _notificationServices.GetNotificationList(page, pageSize);
             var viewModel = new NotificationListModel
             {
                 NotificationsDTO = model.data.Select(x => new NotificationDTO
@@ -32,7 +36,7 @@ namespace AdminDashboard.Controllers.AdminControllers
                 }).ToList(),
                 TotalCount = model.Count
             };
-            return View(viewModel);
+            return PartialView("_NotificationPartial", viewModel);
         }
 
         public async Task<IActionResult> ChangeStatus(int notificationId)

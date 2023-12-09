@@ -1,5 +1,6 @@
 ﻿using DataLayer.Entities;
 using DataLayer.Interfaces;
+using DataLayer.Repositories;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ServiceLayer.DTO;
 using System;
@@ -13,10 +14,12 @@ namespace ServiceLayer.Services
     public class NotificationServices
     {
         private readonly IGenericRepository<Notification> _notificationRepository;
+        private readonly NotificationRepository notificationRepositoryScroll;
 
         public NotificationServices (IUnitOfWorkRepositories unitOfWorkRepositories)
         {
             _notificationRepository = unitOfWorkRepositories.NotificationRepository;
+            notificationRepositoryScroll=unitOfWorkRepositories.NotificationRepositoryScroll;
         }
 
         public async Task CreateNotification(string ControllerName,string Description,Guid? HotelId=null)
@@ -45,21 +48,20 @@ namespace ServiceLayer.Services
 
         }
 
-        public async Task<(List<NotificationDTO> data,int Count)> GetNotificationList(int page=0, int pageSize=10)
+        public async Task<(List<NotificationDTO> data, int Count)> GetNotificationList(int page = 0, int pageSize = 10)
         {
-            page = (page - 1) * pageSize;
-
             Func<IQueryable<Notification>, IOrderedQueryable<Notification>> orderByExpression;
             orderByExpression = q => q.OrderBy(x => x.Seen).ThenByDescending(x => x.CreateDate);
 
-            var notifications = await _notificationRepository.ListWithPaging(page: page, pageSize: pageSize, orderBy:orderByExpression);
+            var notifications = await notificationRepositoryScroll.ListWithPaging(page: page, pageSize: pageSize, orderBy: orderByExpression);
 
-            var notificationDTO = notifications.EntityData.Select(x => new NotificationDTO 
-            {   Id=x.Id,
-                Title=x.Title,
-                Description=x.Description,
-                CreateDate=x.CreateDate,
-                Path=x.Path
+            var notificationDTO = notifications.EntityData.Select(x => new NotificationDTO
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Description = x.Description,
+                CreateDate = x.CreateDate,
+                Path = x.Path
             }).ToList();
             return (notificationDTO, notifications.Count);
         }

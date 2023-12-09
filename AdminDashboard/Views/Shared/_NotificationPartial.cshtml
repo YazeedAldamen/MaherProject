@@ -1,0 +1,48 @@
+﻿@model AdminDashboard.Models.NotificationListModel
+
+@foreach (var notification in Model.NotificationsDTO)
+{
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@notification.Title</h5>
+                <p class="card-text">@notification.Description</p>
+                <a class="card-link check-it" data-notification-id="@notification.Id" data-path="@notification.Path">Check It</a>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    var js = jQuery.noConflict();
+
+    js(document).ready(function () {
+        // Handle click event on "Check It" link
+        js(".check-it").on("click", function (e) {
+            e.preventDefault(); // Prevent the default behavior of the anchor element
+
+            // Get the notification ID from data attribute
+            var notificationId = js(this).data("notification-id");
+            var path = js(this).data("path");
+            // Make AJAX request
+            js.ajax({
+                url: "@Url.Action("ChangeStatus", "Notifications")",
+                type: "POST",
+                data: { notificationId: notificationId },
+                success: function (result) {
+                    // Check the JSON result for success
+                    if (result.success) {
+                        console.log("Status changed successfully");
+                        window.location.href = path;
+                        // You can perform additional actions if needed
+                    } else {
+                        console.error("Error changing status");
+                    }
+                },
+                error: function (error) {
+                    // Handle other errors
+                    console.error("Error changing status", error);
+                }
+            });
+        });
+    });
+</script>
