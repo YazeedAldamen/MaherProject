@@ -19,6 +19,7 @@ namespace DataLayer.Entities
         public int? PackageTypeId { get; set; }
 
         public float? Price { get; set; }
+        public string? AboutPackage { get; set; }
 
         public float? Discount { get; set; }
 
@@ -44,5 +45,6 @@ namespace DataLayer.Entities
         public int? RoomClassId { get; set; }
 
         public virtual RoomClass? RoomClass { get; set; }
+
     }
 }

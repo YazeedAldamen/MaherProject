@@ -32,10 +32,11 @@ namespace ServiceLayer
 		public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, UserManager<AspNetUser> userManager, RoleManager<AspNetRole> roleManager, ImageService imageServices = null)
         {
             _unitOfWorkRepository = unitOfWorkRepository;
-            _imageServices = imageServices;
             _userManager = userManager;
             _roleManager = roleManager;
+            _imageServices = imageServices;
         }
+        public ImageService ImageService => _imageServices ?? new ImageService();
 
         public BlogServices BlogServices =>_blogServices??=new BlogServices(_unitOfWorkRepository);
         public HotelRoomService HotelRoomService=>_hotelRoomService??new HotelRoomService(_unitOfWorkRepository);

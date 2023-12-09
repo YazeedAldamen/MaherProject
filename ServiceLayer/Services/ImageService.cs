@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using ServiceLayer.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ServiceLayer.Services
 {
@@ -37,8 +41,9 @@ namespace ServiceLayer.Services
                     FileManager.DeleteFile(oldImage);
                 }
                 newImageName = await ImageService.UploadFile(newImage);
+                return newImageName;
             }
-            return newImageName;
+            return oldImage;
         }
         public async Task<string> HandleMultipleImages(string oldImage, IFormFile newImage)
         {
@@ -52,6 +57,36 @@ namespace ServiceLayer.Services
                 newImageName = await ImageService.UploadFile(newImage);
             }
             return newImageName;
+        }
+
+        public async Task<string> HandleMultipleImages(List<IFormFile> imageFiles, bool isEdit = false, string oldImages = "")
+        {
+            List<ImageInfo> images = new List<ImageInfo>();
+            int counter = 0;
+            if (!imageFiles.Any())
+            {
+                return oldImages;
+            }
+            foreach (var image in imageFiles)
+            {
+                counter++;
+                var uploadedImageUrl = await ImageService.UploadFile(image);
+                images.Add(new ImageInfo
+                {
+                    Name = "Image" + counter,
+                    ImagePath = uploadedImageUrl
+                });
+            }
+            if (isEdit)
+            {
+                List<ImageInfo> deserializedObject = JsonConvert.DeserializeObject<List<ImageInfo>>(oldImages);
+                foreach (var item in deserializedObject)
+                {
+                    FileManager.DeleteFile(item.ImagePath);
+                }
+
+            }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(images);
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using DataLayer.Entities;
+using ServiceLayer.DTO;
 using System.ComponentModel.DataAnnotations;
 
 namespace AdminDashboard.Models
@@ -25,56 +26,19 @@ namespace AdminDashboard.Models
 
         public string? PackageImage1 { get; set; }
 
-        public string? PackageImage2 { get; set; }
-
-        public string? PackageImage3 { get; set; }
-
-        public string? HotelName { get; set; }
-
-        public int? NumberOfAdults { get; set; }
-
-        public int? NumberOfChildren { get; set; }
-
-        public string? HotelDescription { get; set; }
-
-        public string? HotelMainImage { get; set; }
-
-        public string? HotelImage1 { get; set; }
-
-        public string? HotelImage2 { get; set; }
-
-        public string? HotelImage3 { get; set; }
-
-        public int? NumberOfBeds { get; set; }
-
-        public int? NumberOfSofas { get; set; }
-
-        public int? NumberOfBathrooms { get; set; }
-
         public bool IsPublished { get; set; }
 
         public bool IsDeleted { get; set; }
 
-        public bool IsVip { get; set; }
-
-        public bool IsWifi { get; set; }
-
-        public bool IsTV { get; set; }
-
-        public bool IsAC { get; set; }
-        public bool IsRoomHeater { get; set; }
-
         public Guid? UserId { get; set; }
         public IFormFile? PackageMainImageFile { get; set; }
         public List<IFormFile>? PackageImages { get; set; }
-        //public List<IFormFile>? PackageImage1File { get; set; }
-        //public IFormFile? PackageImage2File { get; set; }
 
-        //public IFormFile? PackageImage3File { get; set; }
-        public IFormFile? HotelMainImageFile { get; set; }
-        public List<IFormFile>? HotelImages { get; set; }
+        public string? AboutPackage { get; set; }
+        public int? RoomClassId { get; set; }
 
+        public List<ImageInfo>? ImageInfo { get; set; }
 
-
+        public List<AboutPackage>? PackageDays { get; set; }
     }
 }
