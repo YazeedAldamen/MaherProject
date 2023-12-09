@@ -1,4 +1,5 @@
-﻿using AdminDashboard.Models;
+﻿using AdminDashboard.Controllers.AdminControllers;
+using AdminDashboard.Models;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer;
 using ServiceLayer.DTO;
@@ -33,7 +34,7 @@ namespace AdminDashboard.Controllers.SiteControllers
                 data.Email = model.Email;
                 data.Message = model.Message;
                 await _contactServices.CreateContact(data);
-                await _notificationServices.CreateNotification(nameof(ContactUsController),data.Message);
+                await _notificationServices.CreateNotification(nameof(ContactController),data.Message);
                 ShowSuccessMessage("Message Sent Successfully");
             }
             catch (Exception ex) 

@@ -25,5 +25,7 @@ namespace DataLayer.Entities
 
         public virtual AspNetUser? User { get; set; }
 
+        public bool Seen { get; set; }
+
     }
 }
