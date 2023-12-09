@@ -1,4 +1,5 @@
 ﻿using DataLayer.Entities;
+using DataLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,6 @@ namespace DataLayer.Interfaces
         IGenericRepository<AspNetUser> UsersRepository { get; }
         IGenericRepository<AspNetUserRole> UserRoleRepository { get; }
         IGenericRepository<AspNetRole> RoleRepository { get; }
+        NotificationRepository NotificationRepository { get; }
     }
 }
