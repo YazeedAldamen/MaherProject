@@ -68,7 +68,6 @@
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
     <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Models\SiteModels\" />
