@@ -3,6 +3,7 @@ using System;
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209124402_AddingNotification")]
+    partial class AddingNotification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,9 +386,6 @@ namespace DataLayer.Migrations
                     b.Property<string>("Path")
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("Seen")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Title")
                         .HasColumnType("longtext");
 
@@ -401,9 +401,6 @@ namespace DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<string>("AboutPackage")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");

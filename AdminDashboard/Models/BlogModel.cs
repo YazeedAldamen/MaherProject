@@ -21,8 +21,6 @@ namespace AdminDashboard.Models
         public IFormFile? CardImage { get; set; }
         public string? CardImageUrl { get; set; }
 
-
-
         public IFormFile? Video { get; set; }
 
         public string? VideoUrl { get; set; }
