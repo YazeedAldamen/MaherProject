@@ -48,6 +48,7 @@ namespace ServiceLayer.DTO
         //public IFormFile? PackageImage3File { get; set; }
         public string? AboutPackage { get; set; }
         public List<ImageInfo>? ImageInfo { get; set; }
+        public List<AboutPackage>? PackageDays { get; set; }
 
     }
 }

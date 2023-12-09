@@ -35,21 +35,24 @@
         </div>
         <div class="col-lg-4 mb-2">
             <label for="PackageTypeId" class="form-label">Package Type</label>
-            <select id="PackageTypeId" class="form-select">
+@*             <select id="PackageTypeId" class="form-select">
                 @foreach (var type in ViewBag.PackageTypes)
                 {
                     <option value="@type.Value">@type.Text</option>
                 }
-            </select>
+            </select> *@
+            @Html.DropDownListFor(c => c.PackageTypeId, (IEnumerable<SelectListItem>)ViewBag.PackageTypes,new{@class="form-control"})
+
         </div>
         <div class="col-lg-4 mb-2">
             <label for="RoomClassId" class="form-label">Hotel Room Class</label>
-            <select id="RoomClassId" class="form-select">
+@*             <select id="RoomClassId" class="form-select">
                 @foreach (var roomClass in ViewBag.RoomClass)
                 {
                     <option value="@roomClass.Value">@roomClass.Text</option>
                 }
-            </select>
+            </select> *@
+            @Html.DropDownListFor(c => c.RoomClassId, (IEnumerable<SelectListItem>)ViewBag.RoomClass,new{@class="form-control"})
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Upload Main Image</label>
@@ -69,25 +72,26 @@
         <div id="dayContainer">
             <h5>Day 1</h5>
             <div class="col-md-4">
-                <label for="inputEmail4" class="form-label">Title</label>
-                <input type="text" class="form-control" id="inputEmail4">
+                <label for="day1title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="day1title">
             </div>
             <div class="col-md-6">
-                <label for="inputCity" class="form-label">Description</label>
-                <textarea type="text" class="form-control" id="inputCity"></textarea>
+                <label for="day1description" class="form-label">Description</label>
+                <textarea type="text" class="form-control" id="day1description"></textarea>
             </div>
             <div class="col-md-2">
                 <label for="cities" class="form-label">City</label>
-                <select id="RoomClassId" class="form-select">
+                <select id="cities1" class="form-select">
                     @{
                     foreach(var city in ViewBag.Cities)
                     {
-                        <option value="@city.Value" id="city1">@city.Text</option>
+                                    <option value="@city.Value" id="city1">@city.Text</option>
                     }
                 }
                 </select>
             </div>
         </div>
+
         <div class="col-12">
             <label for="IsPublished" class="form-label">@Html.DisplayNameFor(x=>x.IsPublished):</label>
             <div class="col-sm-10">
@@ -98,7 +102,7 @@
         </div>
 
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
         </div>
     </form>
 </div>
@@ -113,7 +117,6 @@
 
     var dayCounter = 2; 
     function addDay(event) {
-
         event.preventDefault();
 
         var dayTitle = document.createElement("h5");
@@ -125,13 +128,13 @@
         var titleLabel = document.createElement("label");
         titleLabel.classList.add("form-label");
         titleLabel.textContent = "Title";
-        titleLabel.setAttribute("for", "inputEmail" + dayCounter); 
+        titleLabel.setAttribute("for", "day" + dayCounter + "title"); 
         titleDiv.appendChild(titleLabel);
 
         var titleInput = document.createElement("input");
         titleInput.type = "text";
         titleInput.classList.add("form-control");
-        titleInput.id = "inputEmail" + dayCounter;
+        titleInput.id = "day" + dayCounter+"title";
         titleDiv.appendChild(titleInput);
 
         var descriptionDiv = document.createElement("div");
@@ -140,68 +143,92 @@
         var descriptionLabel = document.createElement("label");
         descriptionLabel.classList.add("form-label");
         descriptionLabel.textContent = "Description";
-        descriptionLabel.setAttribute("for", "inputCity" + dayCounter); 
+        descriptionLabel.setAttribute("for", "day" + dayCounter + "description"); 
         descriptionDiv.appendChild(descriptionLabel);
 
         var descriptionTextarea = document.createElement("textarea");
         descriptionTextarea.type = "text";
         descriptionTextarea.classList.add("form-control");
-        descriptionTextarea.id = "inputCity" + dayCounter;
+        descriptionTextarea.id = "day" + dayCounter + "description";
         descriptionDiv.appendChild(descriptionTextarea);
 
-        // var citiesDiv = document.createElement("div");
-        // citiesDiv.classList.add("col-md-2");
-        // var selectList = document.createElement("select");
-        // selectList.id = "cities" + dayCounter;
-        // selectList.classList.add("form-select");
-        // foreach(var city in @ViewBag.Cities)
-        // {
-        //     var option = document.createElement("option");
-        //     option.value = city.Value;
-        //     option.text = city.Text;
-        //     option.id = "city" + dayCounter;
-        //     selectList.appendChild(option);
-        // }
+    @{
+        var citiesJson = Json.Serialize(ViewBag.Cities);
+    }
+        var cityLable = document.createElement("label");
+        cityLable.classList.add("form-label");
+        cityLable.textContent = "City";
+        cityLable.setAttribute("for", "day" + dayCounter + "description");
+        var citiesDiv = document.createElement("div");
+        citiesDiv.classList.add("col-md-2");
+        var selectList = document.createElement("select");
+        selectList.id = "cities" + dayCounter;
+        selectList.classList.add("form-select");
 
-        // citiesDiv.appendChild(selectList));
+        var cities = @Html.Raw(citiesJson);
+        debugger;
+        for (var i = 0; i < cities.length; i++) {
+            var option = document.createElement("option");
+            option.value = cities[i].value;
+            option.text = cities[i].text;
+            option.id = "city" + dayCounter;
+            selectList.appendChild(option);
+        }
+        citiesDiv.appendChild(cityLable);
+        citiesDiv.appendChild(selectList);
+
+
+
 
 
         var dayContainer = document.getElementById("dayContainer");
         dayContainer.appendChild(dayTitle);
         dayContainer.appendChild(titleDiv);
         dayContainer.appendChild(descriptionDiv);
-        // dayContainer.appendChild(citiesDiv);
+        dayContainer.appendChild(citiesDiv);
 
         dayCounter++;
     }
 
+    function getDaysData() {
+        debugger;
+        event.preventDefault();
+        var days = [];
+        for (var i = 1; i < dayCounter; i++) {
+            var day = {
+                Title: document.getElementById("day" + i+"title").value,
+                Description: document.getElementById("day" + i + "description").value,
+                CityId: document.getElementById("cities"+i).value
+            };
+            days.push(day);
+        }
+        return days;
+    }
+
+
+    document.getElementById("submitButton").addEventListener("click", function () {
+        document.getElementById("AboutPackage").value = JSON.stringify(getDaysData());
+    });
+
     function limitAndHandleFileSelection(input, maxCount) {
-        // Call the original limitFileSelection function to limit the number of selected files
         limitFileSelection(input, maxCount);
 
-        // Get the selected files
         var files = input.files;
 
-        // Initialize an array to store JSON objects
         var imageArray = [];
 
-        // Loop through the selected files
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
 
-            // Create a JSON object for each file
             var imageObject = {
                 fileName: file.name,
                 fileSize: file.size,
                 fileType: file.type
-                // You can add more properties based on your requirements
             };
 
-            // Add the JSON object to the array
             imageArray.push(imageObject);
         }
 
-        // Display the array of JSON objects in the console (you can modify this part based on your needs)
         console.log(imageArray);
     }
 
@@ -211,4 +238,39 @@
             alert("You can only upload a maximum of " + maxCount + " files");
         }
     }
+</script>
+<!-- ... Your existing HTML ... -->
+
+<script>
+    // ... Your existing JavaScript ...
+
+    document.getElementById("submitButton").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        // Assuming you have an endpoint to handle the form data on the server-side
+        var endpoint = "/Packages/Create";
+
+        // Collect form data, including dynamically added days data
+        var formData = new FormData(document.querySelector('form'));
+        formData.append("AboutPackage", JSON.stringify(getDaysData()));
+
+        // Make AJAX request
+        fetch(endpoint, {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
 </script>

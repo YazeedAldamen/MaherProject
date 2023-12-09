@@ -46,7 +46,7 @@ namespace AdminDashboard.Controllers.AdminControllers
                 RoomClassId = data.RoomClassId,
                 Price = data.Price,
                 Discount = data.Discount,
-
+                Name = data.Name,
                 IsPublished = data.IsPublished,
 
                 IsDeleted = data.IsDeleted,
@@ -55,11 +55,13 @@ namespace AdminDashboard.Controllers.AdminControllers
                 NumberOfNights = data.NumberOfNights,
 
                 UserId = data.UserId,
-                AboutPackage = data.AboutPackage,
+                PackageDays = data.PackageDays,
                 
             };
+            
             ViewBag.PackageTypes = PackageTypes;
             ViewBag.RoomClass = RoomClass;
+            ViewBag.Cities = Cities;
             }
             catch (Exception ex)
             {
@@ -69,7 +71,7 @@ namespace AdminDashboard.Controllers.AdminControllers
 
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Edit(PackageModel model)
         {
             if (!ModelState.IsValid)
@@ -90,7 +92,7 @@ namespace AdminDashboard.Controllers.AdminControllers
                 RoomClassId = model.RoomClassId,
                 Price = model.Price,
                 Discount = model.Discount,
-
+                
                 IsPublished = model.IsPublished,
                
                 IsDeleted = model.IsDeleted,

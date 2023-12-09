@@ -7,6 +7,7 @@
 
     <h1>Edit / Delete Package</h1>
     <form asp-action="Edit" asp-controller="Packages" class="row g-3 mt-5" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" name="Id" />
         <div class="col-md-6">
             <label for="Name" class="form-label">@Html.DisplayNameFor(x=>x.Name):</label>
             <input asp-for="Name" class="form-control" name="Name" id="Name" />
@@ -31,84 +32,285 @@
             <label for="NumberOfNights" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfNights):</label>
             <input asp-for="NumberOfNights" class="form-control" name="NumberOfNights" id="Price" type="number" />
         </div>
+        <div class="col-lg-4 mb-2">
+            <label for="PackageTypeId" class="form-label">Package Type</label>
+            @Html.DropDownListFor(c => c.PackageTypeId, (IEnumerable<SelectListItem>)ViewBag.PackageTypes,new{@class="form-control"})
+
+        </div>
+        <div class="col-lg-4 mb-2">
+            <label for="RoomClassId" class="form-label">Hotel Room Class</label>
+            @Html.DropDownListFor(c => c.RoomClassId, (IEnumerable<SelectListItem>)ViewBag.RoomClass,new{@class="form-control"})
+        </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Upload Main Image</label>
             <input asp-for="PackageMainImageFile" class="form-control" id="PackageMainImageFile" />
-           @*  @{
+            @{
                 if (Model.PackageMainImage != null)
                 {
                     <img src="../../images/content/@Model.PackageMainImage" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
                 }
-            } *@
+            }
         </div>
         <div class="mb-3">
             <label for="formFileMultiple" class="form-label">Upload Multiple Images</label>
-            <input asp-for="PackageImages" class="form-control" id="PackageImages" multiple onchange="limitFileSelection(this, 3)" />
-            @* @{
-                if (Model.ImageInfo.Any())
-                {
-                    
-                }
-            } *@
+            <input asp-for="PackageImages" class="form-control" id="PackageImages" multiple onchange="limitAndHandleFileSelection(this, 3)" />
         </div>
         <div class="mb-12">
             <div class="row">
-                <div class="col mb-3">
-                   @*  @{
-                        if (Model.PackageImage1 != null)
-                        {
+                @{
 
-                            <img src="../../images/content/@Model.PackageImage1" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
+                    if (Model.ImageInfo.Any())
+                    {
+
+                        foreach (var image in Model.ImageInfo)
+                        {
+                        <div class="col mb-3">
+                            <img src="../../images/content/@image.ImagePath" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
+                        </div>
                         }
-                    } *@
-                </div>
+                    }
+                }
             </div>
         </div>
-        <div class="col-lg-4 mb-2">
-            <label for="PackageTypeId" class="form-label">Package Type</label>
-            <select id="PackageTypeId" class="form-select">
-                @foreach (var type in ViewBag.PackageTypes)
-                {
-                    if(type.Value == Model.PackageTypeId.ToString())
-                    {
-                        <option value="@type.Value" selected>@type.Text</option>
-                    }
-                    else
-                    {
-                        <option value="@type.Value">@type.Text</option>
-                    }
-                }
-            </select>
+       
+        <h2>About The Package</h2>
+        <div>
+            <button class="btn1" style="border: none;" onclick="addDay(event)"><i class='bx bx-message-square-add'></i> Add Day</button>
+            <h5 class="mt-4">Use a mark (//) to separate lines in the Description.</h5>
         </div>
-        <div class="col-lg-4 mb-2">
-            <label for="RoomClassId" class="form-label">Hotel Room Class</label>
-            <select id="RoomClassId" class="form-select">
-                @foreach(var roomClass in ViewBag.RoomClass){
-                    if (roomClass.Value == Model.RoomClassId.ToString())
-                    {
-                        <option value="@roomClass.Value" selected>@roomClass.Text</option>
-                    }
-                    else
-                    {
-                        <option value="@roomClass.Value">@roomClass.Text</option>
-                    }
+        <div id="dayContainer">
+            @{
+                int dayCount = 1;
+              
+                foreach(var day in Model.PackageDays)
+                {
+                    string titleId = "day" + dayCount + "title";
+                    string descriptionId = "day" + dayCount + "description";
+                    string cityId = "city" + dayCount;
+                    <h5>Day @dayCount</h5>
+                    <div class="col-md-4">
+                        <label for="@titleId" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="@titleId" value="@day.Title">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="@descriptionId" class="form-label">Description</label>
+                        <textarea type="text" class="form-control" id="@descriptionId">@day.Description</textarea>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="@cityId" class="form-label">City</label>
+                        <select id="@cityId" class="form-select">
+                            @foreach (var city in ViewBag.Cities)
+                            {
+                                if (city.Value == day.CityId.ToString())
+                                {
+                                    <option value="@city.Value" id="@cityId" selected>@city.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@city.Value" id="@cityId">@city.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    dayCount++;
+                
                 }
-            </select>
+            }
         </div>
         <div class="col-12">
             <label for="IsPublished" class="form-label">@Html.DisplayNameFor(x=>x.IsPublished):</label>
             <div class="col-sm-10">
                 <div class="form-check">
-                    <input asp-for="IsPublished" class="form-check-input" type="checkbox" name="IsPublished" id="IsPublished" />
+                    <input asp-for="IsPublished" class="form-check-input" type="checkbox" name="IsPublished" id="IsPublished" value="@Model.IsPublished"/>
                 </div>
             </div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
             <a href="@Url.Action("Delete","Packages",new{Id=Model.Id})" class="btn btn-danger ms-3"> Delete</a>
         </div>
     </form>
 </div>
 
 
+<script>
 
+    function limitFileSelection(input, maxCount) {
+        if (input.files.length > maxCount) {
+            input.value = "";
+            alert("You can only upload a maximum of " + maxCount + " files");
+        }
+    }
+
+    var dayCounter = @Model.PackageDays.Count + 1;
+    function addDay(event) {
+        event.preventDefault();
+
+        var dayTitle = document.createElement("h5");
+        dayTitle.textContent = "Day " + dayCounter;
+
+        var titleDiv = document.createElement("div");
+        titleDiv.classList.add("col-md-4");
+
+        var titleLabel = document.createElement("label");
+        titleLabel.classList.add("form-label");
+        titleLabel.textContent = "Title";
+        titleLabel.setAttribute("for", "day" + dayCounter + "title");
+        titleDiv.appendChild(titleLabel);
+
+        var titleInput = document.createElement("input");
+        titleInput.type = "text";
+        titleInput.classList.add("form-control");
+        titleInput.id = "day" + dayCounter + "title";
+        titleDiv.appendChild(titleInput);
+
+        var descriptionDiv = document.createElement("div");
+        descriptionDiv.classList.add("col-md-6");
+
+        var descriptionLabel = document.createElement("label");
+        descriptionLabel.classList.add("form-label");
+        descriptionLabel.textContent = "Description";
+        descriptionLabel.setAttribute("for", "day" + dayCounter + "description");
+        descriptionDiv.appendChild(descriptionLabel);
+
+        var descriptionTextarea = document.createElement("textarea");
+        descriptionTextarea.type = "text";
+        descriptionTextarea.classList.add("form-control");
+        descriptionTextarea.id = "day" + dayCounter + "description";
+        descriptionDiv.appendChild(descriptionTextarea);
+
+    @{
+        var citiesJson = Json.Serialize(ViewBag.Cities);
+    }
+            var cityLable = document.createElement("label");
+        cityLable.classList.add("form-label");
+        cityLable.textContent = "City";
+        cityLable.setAttribute("for", "day" + dayCounter + "description");
+        var citiesDiv = document.createElement("div");
+        citiesDiv.classList.add("col-md-2");
+        var selectList = document.createElement("select");
+        selectList.id = "cities" + dayCounter;
+        selectList.classList.add("form-select");
+
+        var cities = @Html.Raw(citiesJson);
+        debugger;
+        for (var i = 0; i < cities.length; i++) {
+            var option = document.createElement("option");
+            option.value = cities[i].value;
+            option.text = cities[i].text;
+            option.id = "city" + dayCounter;
+            selectList.appendChild(option);
+        }
+        citiesDiv.appendChild(cityLable);
+        citiesDiv.appendChild(selectList);
+
+
+
+
+
+        var dayContainer = document.getElementById("dayContainer");
+        dayContainer.appendChild(dayTitle);
+        dayContainer.appendChild(titleDiv);
+        dayContainer.appendChild(descriptionDiv);
+        dayContainer.appendChild(citiesDiv);
+
+        dayCounter++;
+    }
+
+    
+    function getDaysData() {
+        event.preventDefault();
+        var days = [];
+
+        for (var i = 1; i < dayCounter; i++) {
+            var titleElement = document.getElementById("day" + i + "title");
+            var descriptionElement = document.getElementById("day" + i + "description");
+            var cityElement = document.getElementById("cities" + i);
+
+            // Check if elements exist before accessing their values
+            if (titleElement && descriptionElement && cityElement) {
+                var day = {
+                    Title: titleElement.value,
+                    Description: descriptionElement.value,
+                    CityId: cityElement.value
+                };
+                days.push(day);
+            } else {
+                // Handle the case where one or more elements are not found
+                console.error("One or more elements not found for day " + i);
+            }
+        }
+
+        return days;
+    }
+
+
+
+    document.getElementById("submitButton").addEventListener("click", function () {
+        document.getElementById("AboutPackage").value = JSON.stringify(getDaysData());
+    });
+
+    function limitAndHandleFileSelection(input, maxCount) {
+        limitFileSelection(input, maxCount);
+
+        var files = input.files;
+
+        var imageArray = [];
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+
+            var imageObject = {
+                fileName: file.name,
+                fileSize: file.size,
+                fileType: file.type
+            };
+
+            imageArray.push(imageObject);
+        }
+
+        console.log(imageArray);
+    }
+
+    function limitFileSelection(input, maxCount) {
+        if (input.files.length > maxCount) {
+            input.value = "";
+            alert("You can only upload a maximum of " + maxCount + " files");
+        }
+    }
+</script>
+<!-- ... Your existing HTML ... -->
+
+<script>
+    // ... Your existing JavaScript ...
+
+    document.getElementById("submitButton").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        // Assuming you have an endpoint to handle the form data on the server-side
+        var endpoint = "/Packages/Edit";
+
+        // Collect form data, including dynamically added days data
+        var formData = new FormData(document.querySelector('form'));
+        formData.append("AboutPackage", JSON.stringify(getDaysData()));
+
+        // Make AJAX request
+        fetch(endpoint, {
+            method: 'PUT',
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
+</script>

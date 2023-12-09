@@ -38,5 +38,7 @@ namespace AdminDashboard.Models
         public int? RoomClassId { get; set; }
 
         public List<ImageInfo>? ImageInfo { get; set; }
+
+        public List<AboutPackage>? PackageDays { get; set; }
     }
 }
