@@ -1,6 +1,7 @@
 using DataLayer;
 using DataLayer.DbContext;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer;
@@ -45,7 +46,11 @@ namespace AdminDashboard
             builder.Services.AddTransient<EmailSender>();
             builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+            builder.Services.Configure<IISServerOptions>(options =>
+            {
+                // Set the maximum request size (100 MB in this example)
+                options.MaxRequestBodySize = 104857600;
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

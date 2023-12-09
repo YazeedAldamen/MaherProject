@@ -8,6 +8,7 @@ using System.Text.Json;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
+    [Authorize(Roles = "Admin")]
     public class BlogsController : BaseController
     {
         private readonly BlogServices _blogServices;
@@ -59,31 +60,32 @@ namespace AdminDashboard.Controllers.AdminControllers
         [HttpPost]
         public async Task<IActionResult> Edit(BlogModel model)
         {
-            if (!ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
                 return View(model);
-            }
-            if (model.Image != null && model.Image?.Count != 5)
-            {
-                ShowErrorMessage($"The number of images should be 5 ");
-                return View(model);
-            }
+                }
+                if (model.Image != null && model.Image?.Count != 5)
+                {
+                    ShowErrorMessage($"The number of images should be 5 ");
+                    return View(model);
+                }
 
-            var data = new BlogDTO
-            {
-                Id = model.Id,
-                BlogMainText = model.BlogMainText,
-                Title = model.Title,
-                IsPublished = model.IsPublished,
-                BlogMainImage = model.BlogMainImage,
-                Image = model.Image,
-                VideoFile = model.Video,
-                SecondaryDescription = model.SecondaryDescription,
-                CardImage = model.CardImage,
-                ShortDescription = model.ShortDescription
-            };
-            try 
-            { 
+                var data = new BlogDTO
+                {
+                    Id = model.Id,
+                    BlogMainText = model.BlogMainText,
+                    Title = model.Title,
+                    IsPublished = model.IsPublished,
+                    BlogMainImage = model.BlogMainImage,
+                    Image = model.Image,
+                    VideoFile = model.Video,
+                    SecondaryDescription = model.SecondaryDescription,
+                    CardImage = model.CardImage,
+                    ShortDescription = model.ShortDescription
+                };
+         
                 await _blogServices.Edit(data);
                 ShowSuccessMessage("Blog Edited Successfully");
             }
