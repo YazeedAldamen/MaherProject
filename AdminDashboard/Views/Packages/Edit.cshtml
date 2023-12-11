@@ -7,7 +7,7 @@
 
     <h1>Edit / Delete Package</h1>
     <form asp-action="Edit" asp-controller="Packages" class="row g-3 mt-5" enctype="multipart/form-data">
-            <input type="hidden" asp-for="Id" name="Id" />
+            <input type="hidden" asp-for="Id" name="Id" id="id"/>
         <div class="col-md-6">
             <label for="Name" class="form-label">@Html.DisplayNameFor(x=>x.Name):</label>
             <input asp-for="Name" class="form-control" name="Name" id="Name" />
@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-2">
             <label for="Discount" class="form-label">@Html.DisplayNameFor(x=>x.Discount):</label>
-            <input asp-for="Discount" class="form-control" name="Discount" id="Price" type="number" />
+            <input asp-for="Discount" class="form-control" name="Discount" id="Discount" type="number" />
         </div>
         <div class="col-md-6">
             <label for="Description" class="form-label">@Html.DisplayNameFor(x=>x.Description):</label>
@@ -30,16 +30,16 @@
         </div>
         <div class="col-md-2">
             <label for="NumberOfNights" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfNights):</label>
-            <input asp-for="NumberOfNights" class="form-control" name="NumberOfNights" id="Price" type="number" />
+            <input asp-for="NumberOfNights" class="form-control" name="NumberOfNights" id="NumberOfNights" type="number" />
         </div>
         <div class="col-lg-4 mb-2">
             <label for="PackageTypeId" class="form-label">Package Type</label>
-            @Html.DropDownListFor(c => c.PackageTypeId, (IEnumerable<SelectListItem>)ViewBag.PackageTypes,new{@class="form-control"})
+            @Html.DropDownListFor(c => c.PackageTypeId, (IEnumerable<SelectListItem>)ViewBag.PackageTypes,new{@class="form-control", @id="PackageTypeId"})
 
         </div>
         <div class="col-lg-4 mb-2">
             <label for="RoomClassId" class="form-label">Hotel Room Class</label>
-            @Html.DropDownListFor(c => c.RoomClassId, (IEnumerable<SelectListItem>)ViewBag.RoomClass,new{@class="form-control"})
+            @Html.DropDownListFor(c => c.RoomClassId, (IEnumerable<SelectListItem>)ViewBag.RoomClass,new{@class="form-control", @id="RoomClassId"})
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Upload Main Image</label>
@@ -126,7 +126,7 @@
             </div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+            <button type="submit" class="btn btn-primary" id="submitButton" disabled>Submit</button>
             <a href="@Url.Action("Delete","Packages",new{Id=Model.Id})" class="btn btn-danger ms-3"> Delete</a>
         </div>
     </form>
@@ -303,11 +303,11 @@
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
+                window.location.href = "/Packages/Index";
                 return response.json();
             })
             .then(data => {
                 console.log(data);
-                location.reload();
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);

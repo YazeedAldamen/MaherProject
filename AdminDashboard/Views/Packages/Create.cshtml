@@ -11,27 +11,27 @@
     <form asp-action="Create" asp-controller="Packages" class="row g-3 mt-5" enctype="multipart/form-data">
         <div class="col-md-6">
             <label for="Name" class="form-label">@Html.DisplayNameFor(x=>x.Name):</label>
-            <input asp-for="Name" class="form-control" name="Name" id="Name" />
+            <input asp-for="Name" class="form-control" name="Name" id="Name" oninput="validateForm()"/>
         </div>
         <div class="col-md-2">
             <label for="Price" class="form-label">@Html.DisplayNameFor(x=>x.Price):</label>
-            <input asp-for="Price" class="form-control" name="Price" id="Price" type="number" />
+            <input asp-for="Price" class="form-control" name="Price" id="Price" type="number" oninput="validateForm()" />
         </div>
         <div class="col-md-2">
             <label for="Discount" class="form-label">@Html.DisplayNameFor(x=>x.Discount):</label>
-            <input asp-for="Discount" class="form-control" name="Discount" id="Price" type="number" />
+            <input asp-for="Discount" class="form-control" name="Discount" id="Discount" type="number" oninput="validateForm()" />
         </div>
         <div class="col-md-6">
             <label for="Description" class="form-label">@Html.DisplayNameFor(x=>x.Description):</label>
-            <textarea asp-for="Description" class="form-control" id="Description"></textarea>
+            <textarea asp-for="Description" class="form-control" id="Description" oninput="validateForm()"></textarea>
         </div>
         <div class="col-md-2">
             <label for="NumberOfDays" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfDays):</label>
-            <input asp-for="NumberOfDays" class="form-control" name="NumberOfDays" id="NumberOfDays" type="number" />
+            <input asp-for="NumberOfDays" class="form-control" name="NumberOfDays" id="NumberOfDays" type="number" oninput="validateForm()" />
         </div>
         <div class="col-md-2">
             <label for="NumberOfNights" class="form-label">@Html.DisplayNameFor(x=>x.NumberOfNights):</label>
-            <input asp-for="NumberOfNights" class="form-control" name="NumberOfNights" id="Price" type="number" />
+            <input asp-for="NumberOfNights" class="form-control" name="NumberOfNights" id="NumberOfNights" type="number" oninput="validateForm()" />
         </div>
         <div class="col-lg-4 mb-2">
             <label for="PackageTypeId" class="form-label">Package Type</label>
@@ -41,7 +41,7 @@
                     <option value="@type.Value">@type.Text</option>
                 }
             </select> *@
-            @Html.DropDownListFor(c => c.PackageTypeId, (IEnumerable<SelectListItem>)ViewBag.PackageTypes,new{@class="form-control"})
+            @Html.DropDownListFor(c => c.PackageTypeId, (IEnumerable<SelectListItem>)ViewBag.PackageTypes,new{@class="form-control", @id="PackageTypeId", onchange="validateForm()"})
 
         </div>
         <div class="col-lg-4 mb-2">
@@ -52,11 +52,11 @@
                     <option value="@roomClass.Value">@roomClass.Text</option>
                 }
             </select> *@
-            @Html.DropDownListFor(c => c.RoomClassId, (IEnumerable<SelectListItem>)ViewBag.RoomClass,new{@class="form-control"})
+            @Html.DropDownListFor(c => c.RoomClassId, (IEnumerable<SelectListItem>)ViewBag.RoomClass,new{@class="form-control", @id="RoomClassId", onchange="validateForm()"})
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Upload Main Image</label>
-            <input asp-for="PackageMainImageFile" class="form-control" id="PackageMainImageFile" />
+            <input asp-for="PackageMainImageFile" class="form-control" id="PackageMainImageFile" onchange="validateForm()" />
         </div>
         <div class="mb-3">
             <label for="formFileMultiple" class="form-label">Upload Multiple Images</label>
@@ -73,19 +73,19 @@
             <h5>Day 1</h5>
             <div class="col-md-4">
                 <label for="day1title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="day1title">
+                <input type="text" class="form-control" id="day1title" oninput="validateForm()">
             </div>
             <div class="col-md-6">
                 <label for="day1description" class="form-label">Description</label>
-                <textarea type="text" class="form-control" id="day1description"></textarea>
+                <textarea type="text" class="form-control" id="day1description" oninput="validateForm()"></textarea>
             </div>
             <div class="col-md-2">
                 <label for="cities" class="form-label">City</label>
-                <select id="cities1" class="form-select">
+                <select id="cities1" class="form-select" onchange="validateForm()">
                     @{
                     foreach(var city in ViewBag.Cities)
                     {
-                                    <option value="@city.Value" id="city1">@city.Text</option>
+                                            <option value="@city.Value" id="city1">@city.Text</option>
                     }
                 }
                 </select>
@@ -102,7 +102,7 @@
         </div>
 
         <div class="col-12">
-            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+            <button type="submit" class="btn btn-primary" id="submitButton" disabled>Submit</button>
         </div>
     </form>
 </div>
@@ -135,6 +135,7 @@
         titleInput.type = "text";
         titleInput.classList.add("form-control");
         titleInput.id = "day" + dayCounter+"title";
+        titleInput.addEventListener("input", validateForm);
         titleDiv.appendChild(titleInput);
 
         var descriptionDiv = document.createElement("div");
@@ -150,6 +151,7 @@
         descriptionTextarea.type = "text";
         descriptionTextarea.classList.add("form-control");
         descriptionTextarea.id = "day" + dayCounter + "description";
+        descriptionTextarea.addEventListener("input", validateForm);
         descriptionDiv.appendChild(descriptionTextarea);
 
     @{
@@ -164,9 +166,8 @@
         var selectList = document.createElement("select");
         selectList.id = "cities" + dayCounter;
         selectList.classList.add("form-select");
-
+        selectList.addEventListener("change", validateForm);
         var cities = @Html.Raw(citiesJson);
-        debugger;
         for (var i = 0; i < cities.length; i++) {
             var option = document.createElement("option");
             option.value = cities[i].value;
@@ -188,10 +189,11 @@
         dayContainer.appendChild(citiesDiv);
 
         dayCounter++;
+        var submitBtn = document.getElementById('submitButton');
+        submitBtn.disabled = true;
     }
 
     function getDaysData() {
-        debugger;
         event.preventDefault();
         var days = [];
         for (var i = 1; i < dayCounter; i++) {
@@ -230,6 +232,8 @@
         }
 
         console.log(imageArray);
+
+        validateForm();
     }
 
     function limitFileSelection(input, maxCount) {
@@ -238,11 +242,31 @@
             alert("You can only upload a maximum of " + maxCount + " files");
         }
     }
+
+    function dynamicDaysValidation() {
+        debugger;
+        try {
+            for (var i = 1; i < dayCounter; i++) {
+                var daytitle = document.getElementById('day' + i.toString() + 'title').value;
+                var daydescription = document.getElementById('day' + i.toString() + 'description').value;
+                var daycity = document.getElementById('cities' + i.toString()).value;
+
+                if (daytitle.trim() === '' || daydescription.trim() === '' || daycity === '0') {
+
+                    return true;
+                }
+            }
+        }
+        catch (e) {
+            console.log(e);
+            return false;
+        }
+        return false;
+    }
+
 </script>
-<!-- ... Your existing HTML ... -->
 
 <script>
-    // ... Your existing JavaScript ...
 
     document.getElementById("submitButton").addEventListener("click", function (event) {
         event.preventDefault();
@@ -263,14 +287,57 @@
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
+                window.location.href = "/Packages/Index";
                 return response.json();
             })
             .then(data => {
                 console.log(data);
-                location.reload();
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
     });
+
+    function validateForm() {
+        var name = document.getElementById('Name').value;
+        var price = document.getElementById('Price').value;
+        var discount = document.getElementById('Discount').value;
+        var description = document.getElementById('Description').value;
+        var numberOfDays = document.getElementById('NumberOfDays').value;
+        var numberOfNights = document.getElementById('NumberOfNights').value;
+        var packageTypeId = document.getElementById('PackageTypeId').value;
+        var roomClassId = document.getElementById('RoomClassId').value;
+        var packageMainImageFile = document.getElementById('PackageMainImageFile').value;
+        var packageImages = document.getElementById('PackageImages').value;
+
+
+
+
+        var submitBtn = document.getElementById('submitButton');
+
+        if (name.trim() !== '' 
+        && price !== 0 
+        && discount !== 0 
+        && description !== '' 
+        && numberOfDays !== 0 
+        && numberOfNights !== 0 
+        && packageTypeId !== '0' 
+        && roomClassId !== '0' 
+        && packageMainImageFile !== '' 
+        && packageImages !== '' 
+        ) {
+            var isDisabled = dynamicDaysValidation();
+            console.log("disabled " + isDisabled);
+            if (isDisabled) {
+                submitBtn.disabled = isDisabled;
+            }
+            else {
+                submitBtn.disabled = isDisabled;
+            }
+        } else {
+            submitBtn.disabled = true; 
+        }
+
+               
+    }
 </script>
