@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DataLayer.Entities;
+using ServiceLayer.Services;
+using ServiceLayer;
 
 namespace AdminDashboard.Areas.Identity.Pages.Account.Manage
 {
@@ -17,13 +19,16 @@ namespace AdminDashboard.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<AspNetUser> _userManager;
         private readonly SignInManager<AspNetUser> _signInManager;
+        private readonly ImageService _imageService;
 
         public IndexModel(
             UserManager<AspNetUser> userManager,
-            SignInManager<AspNetUser> signInManager)
+            SignInManager<AspNetUser> signInManager,
+            UnitOfWorkServices unitOfWorkServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _imageService = unitOfWorkServices.ImageService;
         }
 
         /// <summary>
@@ -59,18 +64,36 @@ namespace AdminDashboard.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            public string Image { get; set; }
+
+            public string Email { get; set; }
+
+            public string Address { get; set; }
+
+            public IFormFile? ImageFile { get; set; }
         }
 
         private async Task LoadAsync(AspNetUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                LastName= user.LastName,
+                FirstName= user.FirstName,
+                Email= user.Email,
+                Address = user.Address,
+                Image= user.ProfileImage
             };
         }
 
@@ -99,17 +122,27 @@ namespace AdminDashboard.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
-
+            user.Address = Input.Address;
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+            if (Input.ImageFile != null)
+            {
+                Input.Image=await ImageService.UploadFile(Input.ImageFile);
+                user.ProfileImage = Input.Image;
+            }
+            await _userManager.UpdateAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
             }
+            
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
