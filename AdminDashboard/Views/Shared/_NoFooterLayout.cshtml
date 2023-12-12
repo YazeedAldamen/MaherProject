@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Project Name</title>
+    <title>@ViewData["Title"]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="~/datatable/js/jquery-3.6.0.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -40,13 +41,13 @@
                         <a class="nav-link" href="./packages.html">Packages</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./about_sri_lanka.html">About Sri Lanka</a>
+                        <a class="nav-link" href="@Url.Action("Index","AboutSriLanka")">About Sri Lanka</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./about.html">About Us</a>
+                        <a class="nav-link" href="@Url.Action("Index","AboutUs")">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
+                        <a class="nav-link" href="@Url.Action("Index","ContactUs")">Contact</a>
                     </li>
 
 
@@ -58,46 +59,13 @@
         </div>
     </nav>
 
-    <div class="content-wrapper">
-        @RenderBody()
-    </div>
-
-    <section class="footer">
-        <h2 class="footer-head"><a href="./index.html"><img src="~/images/logo/logo.png"></a></h2>
-        <div class="footer-container container">
-
-            <div class="footer-box">
-                <h3>Quick Links</h3>
-                <a href="#">Join Us</a>
-                <a href="#">terms and conditions</a>
-                <a href="#">AboutUs</a>
-            </div>
-            <div class="footer-box">
-                <h3>Locations</h3>
-                <a href="#">Irbid</a>
-                <a href="#">Amman</a>
-                <a href="#">Mafraq</a>
-            </div>
-            <div class="footer-box">
-                <h3>Contact</h3>
-                <a href="#">+962 789456123</a>
-                <a href="#">email.Contact@gmail.com</a>
-                <div class="social">
-                    <a href="#"><i class='bx bxl-facebook-circle'></i></a>
-                    <a href="#"><i class='bx bxl-twitter'></i></a>
-                    <a href="#"><i class='bx bxl-instagram'></i></a>
-
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--copyright-->
-    <div class="copyright">
-        <p>&#169; Project-Name All Right Reserved.</p>
-    </div>
-
+    <!--  NavBar End  -->
+    @RenderBody()
+    <!--Footer-->
     <!-- end of footer -->
     <!-- js -->
+    <partial name="_SweetAlert" />
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
 </body>

@@ -17,13 +17,13 @@ namespace ServiceLayer.Services
                 var smtpClient = new SmtpClient("smtp.office365.com")
                 {
                     Port = 587,
-                    Credentials = new NetworkCredential("/Email", "/Password"),
+                    Credentials = new NetworkCredential("/Email", "/PASSWORD"),
                     EnableSsl = true,
                 };
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("/Email"),
+                    From = new MailAddress("/EMAIL"),
                     Subject = subject,
                     Body = htmlMessage,
                     IsBodyHtml = true,
@@ -31,7 +31,7 @@ namespace ServiceLayer.Services
                 mailMessage.To.Add(email);
 
            
-                    await smtpClient.SendMailAsync(mailMessage);
+                await smtpClient.SendMailAsync(mailMessage);
             }
             catch (Exception ex)
             {
