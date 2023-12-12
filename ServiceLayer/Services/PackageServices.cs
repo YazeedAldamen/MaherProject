@@ -182,9 +182,14 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                     PackageTypeId = data.PackageTypeId,
 
                 };
-
-                entity.PackageMainImage = await ImageService.UploadFile(data.PackageMainImageFile);
-                entity.PackageImage1 = await _imageService.HandleMultipleImages(data.PackageImages, false);
+                if (data.PackageMainImageFile != null)
+                {
+                    entity.PackageMainImage = await ImageService.UploadFile(data.PackageMainImageFile);
+                }
+                if(data.PackageImages.Any())
+                {
+                    entity.PackageImage1 = await _imageService.HandleMultipleImages(data.PackageImages, false);
+                }
 
                 await _packageRepository.Add(entity);
             }
