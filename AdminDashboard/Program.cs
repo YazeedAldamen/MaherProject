@@ -37,9 +37,9 @@ namespace AdminDashboard
                 options.Password.RequireNonAlphanumeric = false;
 
             }).AddEntityFrameworkStores<MainDbContext>()
-            .AddDefaultTokenProviders()
-            .AddSignInManager()
-            .AddRoles<AspNetRole>();
+              .AddDefaultTokenProviders()
+              .AddSignInManager<SignInManager<AspNetUser>>()
+              .AddRoles<AspNetRole>();
 
             builder.Services.AddAuthentication();
             builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Auth/Login");
