@@ -99,8 +99,20 @@ namespace ServiceLayer.Services
             catch (Exception e)
             {
             }
-            
+        }
 
+        public async Task<bool> CheckUserRoleByEmail(string Email)
+        {
+            var user=await _usersRepository.GetBy(x=>x.Email==Email);
+            var userRoles=await _userManager.GetRolesAsync(user);
+            foreach (var role in userRoles) 
+            {
+                if (role == "Admin" || role == "Service Provider")
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

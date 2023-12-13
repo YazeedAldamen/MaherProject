@@ -13,7 +13,7 @@
     </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Upload Card Image</label>
-            <input asp-for="CardImage" class="form-control" id="Image" accept="image/*" />
+            <input asp-for="CardImage" class="form-control" id="Image" accept="image/*" required />
         </div>
         @{
             if (Model.CardImageUrl != null)
@@ -24,7 +24,7 @@
     <div class="mb-3">
             <div class="mb-3">
                 <label for="formFile" class="form-label">Upload Images</label>
-                <input asp-for="Image" class="form-control" id="Image" multiple accept="image/*" />
+                <input asp-for="Image" class="form-control" id="Image" multiple accept="image/*" required />
             </div>
         @{ 
             if(Model.ImageInfo != null)
@@ -39,7 +39,7 @@
     </div>
     <div class="mb-3">
             <label for="formFile" class="form-label">Upload Video </label>
-            <input asp-for="Video" class="form-control" id="Video" accept="video/mp4" />
+            <input asp-for="Video" class="form-control" id="Video" accept="video/mp4" required />
     </div>
         <video width="640" height="360" controls>
             <source src="../../images/content/@Model.VideoUrl" type="video/mp4">
@@ -47,16 +47,16 @@
         </video>
     <div class="col-md-6">
             <label for="ShortDescription" class="form-label">@Html.DisplayNameFor(x => x.ShortDescription):</label>
-            <textarea asp-for="ShortDescription" class="form-control" id="ShortDescription"></textarea>
+            <textarea asp-for="ShortDescription" class="form-control" id="ShortDescription" required></textarea>
     </div>
     <div class="col-md-6">
         <label for="BlogMainText" class="form-label">@Html.DisplayNameFor(x=>x.BlogMainText):</label>
-        <textarea asp-for="BlogMainText" class="form-control" id="BlogMainText"></textarea>
+            <textarea asp-for="BlogMainText" class="form-control" id="BlogMainText" required></textarea>
     </div>
         
     <div class="col-md-6">
         <label for="SecondaryDescription" class="form-label">@Html.DisplayNameFor(x => x.SecondaryDescription):</label>
-        <textarea asp-for="SecondaryDescription" class="form-control" id="SecondaryDescription"></textarea>
+            <textarea asp-for="SecondaryDescription" class="form-control" id="SecondaryDescription" required></textarea>
     </div>
     <div class="col-12">
         <label for="BlogMainText" class="form-label">@Html.DisplayNameFor(x=>x.IsPublished):</label>
