@@ -6,6 +6,7 @@ using ServiceLayer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,6 +53,27 @@ namespace ServiceLayer.Services
             orderByExpression = q => q.OrderBy(x => x.Seen).ThenByDescending(x => x.CreateDate);
 
             var notifications = await _notificationRepository.ListWithPaging(page: page, pageSize: pageSize, orderBy: orderByExpression);
+
+            var notificationDTO = notifications.EntityData.Select(x => new NotificationDTO
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Description = x.Description,
+                CreateDate = x.CreateDate,
+                Path = x.Path
+            }).ToList();
+            return (notificationDTO, notifications.Count);
+        }
+
+        public async Task<(List<NotificationDTO> data, int Count)> GetNotificationList(Guid userId,int page = 0, int pageSize = 10)
+        {
+            Func<IQueryable<Notification>, IOrderedQueryable<Notification>> orderByExpression;
+            orderByExpression = q => q.OrderBy(x => x.Seen).ThenByDescending(x => x.CreateDate);
+
+            Expression<Func<Notification, bool>> filterExpression = x =>
+            (userId == Guid.Empty || x.HotelId.Equals(userId));
+
+            var notifications = await _notificationRepository.ListWithPaging(page: page, pageSize: pageSize, orderBy: orderByExpression,filter: filterExpression);
 
             var notificationDTO = notifications.EntityData.Select(x => new NotificationDTO
             {

@@ -1,11 +1,15 @@
 ﻿using AdminDashboard.Models;
+using DataLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer;
 using ServiceLayer.DTO;
 using ServiceLayer.Services;
+using System.Security.Claims;
 
 namespace AdminDashboard.Controllers.AdminControllers
 {
+    [Authorize(Roles = "Admin,Service Provider")]
     public class NotificationsController : Controller
     {
         private readonly NotificationServices _notificationServices;
@@ -22,9 +26,20 @@ namespace AdminDashboard.Controllers.AdminControllers
 
         public async Task<IActionResult> GetData(int page = 1)
         {
+            var viewModel = new NotificationListModel();
             int pageSize = 10;
-            var model = await _notificationServices.GetNotificationList(page, pageSize);
-            var viewModel = new NotificationListModel
+            Guid userId = Guid.Empty;
+            bool isServiceProvider = User.IsInRole("Service Provider");
+            if (isServiceProvider) 
+            {
+                var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+
+                var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+                userId = Guid.Parse(claim.Value);
+            }
+            var model = await _notificationServices.GetNotificationList(userId,page, pageSize);
+            viewModel = new NotificationListModel
             {
                 NotificationsDTO = model.data.Select(x => new NotificationDTO
                 {
@@ -36,6 +51,7 @@ namespace AdminDashboard.Controllers.AdminControllers
                 }).ToList(),
                 TotalCount = model.Count
             };
+   
             return PartialView("_NotificationPartial", viewModel);
         }
 
