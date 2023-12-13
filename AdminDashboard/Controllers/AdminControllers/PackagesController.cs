@@ -16,6 +16,7 @@ namespace AdminDashboard.Controllers.AdminControllers
         {
             _packageServices = unitOfWorkServices.PackageServices;
         }
+        [Route("/Admin/Packages")]
         public IActionResult Index()
         {
             return View();

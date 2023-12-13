@@ -70,7 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
-    <Folder Include="Models\SiteModels\" />
     <Folder Include="Views\HotelRequest\" />
   </ItemGroup>
 

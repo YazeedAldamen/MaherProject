@@ -1,0 +1,164 @@
+﻿@model AdminDashboard.Models.PackageModel
+@{
+    ViewData["Title"] = "Package Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 mb-5 package_details">
+    <div class="row">
+        <div class="col-lg-3 col-md-12 mb-lg-0 mb-4 px-0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white rounded shadow">
+                <div class="container-fluid flex-lg-column align-items-stretch">
+                    <h3 class="mt-2">COLOMBO-SIGIRIYA-KANDY-BENTOTA 8 DAYS 7 KNIGHS</h3>
+                    <button class="navbar-toggler shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#filterDropdown" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse flex-column align-items-stretch mt-2" id="filterDropdown">
+
+
+                        <div class="border bg-light p-3 rounded mb-3">
+                            <div class="guests">
+                                <h6 class="mb-1">Included Cities</h6>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-location-plus'></i>Colombo
+                                </span>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-location-plus'></i>Kandy
+                                </span>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-location-plus'></i>Sigiriya
+                                </span>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-location-plus'></i>Bentota
+                                </span>
+
+                            </div>
+
+                        </div>
+                        <div class="border bg-light p-3 rounded mb-3">
+                            <div class="col-lg-10 mb-2">
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-location-plus'></i>Colombo
+                                </span>
+                                <label for="inputState" class="form-label">Hotel Room Class</label>
+                                <select id="inputState" class="form-select">
+                                    <option selected>Economic</option>
+                                    <option>Luxury</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-10 mb-2">
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-location-plus'></i>Kandy
+                                </span>
+                                <label for="inputState" class="form-label">Hotel Room Class</label>
+                                <select id="inputState" class="form-select">
+                                    <option selected>Economic</option>
+                                    <option>Luxury</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-10 mb-2">
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-location-plus'></i>Sigiriya
+                                </span>
+                                <label for="inputState" class="form-label">Hotel Room Class</label>
+                                <select id="inputState" class="form-select">
+                                    <option selected>Economic</option>
+                                    <option>Luxury</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-10 mb-2">
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    <i class='bx bx-location-plus'></i>Bentota
+                                </span>
+                                <label for="inputState" class="form-label">Hotel Room Class</label>
+                                <select id="inputState" class="form-select">
+                                    <option selected>Economic</option>
+                                    <option>Luxury</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="border bg-light p-3 rounded mb-3">
+                            <h5 class="mt-2">Package Booking</h5>
+                            <div class="Facilities mb-3">
+                                <h6 class="mb-4">8 Days 7 Nights</h6>
+                                <h6 class="mb-4">Price : Start From $200</h6>
+                                <a href="booking.html" class="btn1">Book Now</a>
+                            </div>
+                            <div class="Facilities mb-3">
+                                <a href="#" class="btn1">Download as pdf</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="col-lg-9 col-md-12 px-4 package_imgs">
+            <div class="row">
+                <div>
+                    <div class="package_imgs_g1">
+                        <div class="me-1">
+                            <img class="p-1" src="~/images/content/@Model.ImageInfo?[0].ImagePath" alt="">
+                            <img class="p-1" src="~/images/content/@Model.ImageInfo?[1].ImagePath" alt="">
+                        </div>
+                        <img class="p-1 img1" src="~/images/content/@Model.PackageMainImage" alt="">
+                    </div>
+                </div>
+                <div class="package_imgs_g1 ms-5">
+                    <img class="p-1" src="~/images/content/@Model.ImageInfo?[2].ImagePath" alt="">
+                    <img class="p-1" src="~/images/content/@Model.ImageInfo?[3].ImagePath" alt="">
+                    <img class="p-1" src="~/images/content/@Model.ImageInfo?[4].ImagePath" alt="">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container mt-5 mb-5 package_details">
+
+    <h3 class="mb-4">About the Package</h3>
+
+    <p>@Model.Name @Model.NumberOfDays Days @Model.NumberOfNights Nights</p>
+
+    <div class="row row-cols-1 row-cols-md-1 g-4">
+        @{
+            int count = 1;
+            if (Model.PackageDays.Any())
+            {     
+                foreach(var day in Model.PackageDays)
+                {
+                    int cityId = day.CityId; 
+                    <div class="col">
+                        <div class="card package_body">
+                            <div class="card-header">Day @count: @ViewBag.Cities[cityId].Text</div>
+                            <ul class="list-group list-group-flush">
+                                @if (!string.IsNullOrEmpty(day.Description))
+                                {
+                                    string[] dayDetails = day.Description.Split('/');
+                                    foreach(var detail in dayDetails)
+                                    {
+                                        <li class="list-group-item">@detail</li>
+
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    count++;
+                }
+            }
+        }
+        <div class="col">
+            <div class="card package_body">
+                <div class="card-header">Additional Information</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Of course, you can modify this path to suit your interests</li>
+                    <li class="list-group-item">An accompanying representative speaks Arabic and English</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
