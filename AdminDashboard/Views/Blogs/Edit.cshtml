@@ -15,28 +15,42 @@
             <label for="formFile" class="form-label">Upload Card Image</label>
             <input asp-for="CardImage" class="form-control" id="Image" accept="image/*" required />
         </div>
-        @{
-            if (Model.CardImageUrl != null)
-            {
-                <img src="../../images/content/@Model.CardImageUrl" class="LimitImageSize" />
-            }
-        }
+        <div class="mb-12">
+            <div class="row">
+                @{
+
+                    if (!string.IsNullOrEmpty(Model.CardImageUrl))
+                    {
+                            <div class="col mb-3">
+                                <img src="../../images/content/@Model.CardImageUrl" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
+                            </div>
+                    }
+                }
+            </div>
+        </div>
     <div class="mb-3">
             <div class="mb-3">
                 <label for="formFile" class="form-label">Upload Images</label>
                 <input asp-for="Image" class="form-control" id="Image" multiple accept="image/*" required />
             </div>
-        @{ 
-            if(Model.ImageInfo != null)
-            {
-                foreach (var image in Model.ImageInfo)
-                {
-                        <img src="../../images/content/@image.ImagePath" class="img-fluid LimitImageSize" />
-                    <br />
-                }
-            }
-         }
     </div>
+        <div class="mb-12">
+            <div class="row">
+                @{
+
+                    if (Model.ImageInfo.Any())
+                    {
+
+                        foreach (var image in Model.ImageInfo)
+                        {
+                            <div class="col mb-3">
+                                <img src="../../images/content/@image.ImagePath" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
     <div class="mb-3">
             <label for="formFile" class="form-label">Upload Video </label>
             <input asp-for="Video" class="form-control" id="Video" accept="video/mp4" required />

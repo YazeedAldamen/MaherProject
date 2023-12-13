@@ -143,8 +143,8 @@ namespace AdminDashboard.Controllers.AdminControllers
                     CardImage= model.CardImage,
                     ShortDescription = model.ShortDescription,
                 };
-
                 await _blogServices.Create(data);
+                ShowSuccessMessage("Blog Created Successfully");
             }
             catch (Exception ex)
             {
