@@ -15,17 +15,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using DataLayer.Entities;
+using ServiceLayer;
+using ServiceLayer.Services;
 namespace AdminDashboard.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly SignInManager<AspNetUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<AspNetUser> signInManager, ILogger<LoginModel> logger)
+        AdminUsersService _adminUsersService;
+        public LoginModel(SignInManager<AspNetUser> signInManager, ILogger<LoginModel> logger,UnitOfWorkServices unitOfWorkServices)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _adminUsersService = unitOfWorkServices.AdminUsersService;
         }
 
         /// <summary>
@@ -115,6 +118,11 @@ namespace AdminDashboard.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    
+                    if (await _adminUsersService.CheckUserRoleByEmail(Input.Email))
+                    {
+                        return RedirectToAction("Index", "Notifications");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
