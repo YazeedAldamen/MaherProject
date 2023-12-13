@@ -1,6 +1,8 @@
 ﻿using DataLayer.Entities;
 using DataLayer.Interfaces;
+using DataLayer.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using ServiceLayer.DTO;
 using System;
@@ -16,10 +18,12 @@ namespace ServiceLayer.Services
     {
         private readonly IGenericRepository<Package> _packageRepository;
         private readonly ImageService _imageService;
+        private readonly SitePackagesRepository _sitePackagesRepository;
         public PackageServices(IUnitOfWorkRepositories unitofworkRepository, ImageService imageService)
         {
             _packageRepository = unitofworkRepository.PackageRepository;
             _imageService = imageService;
+            _sitePackagesRepository = unitofworkRepository.SitePackagesRepository;
         }
 
         public async Task<(IEnumerable<PackageDTO> EntityData, int Count)> ListWithPaging(
@@ -77,7 +81,7 @@ string orderBy, int? page, int? pageSize, bool isDescending)
             {
                 images = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ImageInfo>>(entity.PackageImage1);
             }
-            if(!string.IsNullOrEmpty(entity.AboutPackage))
+            if (!string.IsNullOrEmpty(entity.AboutPackage))
             {
                 aboutPackages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<AboutPackage>>(entity.AboutPackage);
             }
@@ -117,7 +121,7 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 entity.IsPublished = data.IsPublished;
 
                 entity.IsDeleted = data.IsDeleted;
-                if(data.AboutPackage != "[]")
+                if (data.AboutPackage != "[]")
                 {
                     entity.AboutPackage = data.AboutPackage;
                 }
@@ -186,7 +190,7 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 {
                     entity.PackageMainImage = await ImageService.UploadFile(data.PackageMainImageFile);
                 }
-                if(data.PackageImages.Any())
+                if (data.PackageImages.Any())
                 {
                     entity.PackageImage1 = await _imageService.HandleMultipleImages(data.PackageImages, false);
                 }
@@ -200,6 +204,45 @@ string orderBy, int? page, int? pageSize, bool isDescending)
 
         }
 
+        public async Task<(List<PackageDTO> data, int totalRecords)> GetPackageAsync(int skip, int take)
+        {
+            (IList<Package> EntityData, int Count) packages = await _sitePackagesRepository.ListWithPaging(
+                orderBy: null,
+                page: skip,
+                pageSize: take,
+                filter: null
+            );
+            var packagesDtoList = packages.EntityData.Select(x => new PackageDTO
+            {
+                Id = x.Id,
+                Name = x.Name,
+                PackageMainImage = x.PackageMainImage,
+                NumberOfDays = x.NumberOfDays,
+                NumberOfNights = x.NumberOfNights,
+                Price = x.Price,
 
+            }).ToList();
+            return (packagesDtoList, packages.Count);
+        }
+
+
+        public async Task<(List<PackageDTO> data, int Count)> GetPackagesList(int page = 0, int pageSize = 10)
+        {
+            //Func<IQueryable<Package>, IOrderedQueryable<Package>> orderByExpression;
+            //orderByExpression = q => q.OrderBy(x => x.Seen).ThenByDescending(x => x.CreateDate);
+
+            var packages = await _sitePackagesRepository.ListWithPaging(page: page, pageSize: pageSize);
+
+            var notificationDTO = packages.EntityData.Select(x => new PackageDTO
+            {
+                Id = x.Id,
+                Name = x.Name,
+                PackageMainImage = x.PackageMainImage,
+                NumberOfDays = x.NumberOfDays,
+                NumberOfNights = x.NumberOfNights,
+                Price = x.Price,
+            }).ToList();
+            return (notificationDTO, packages.Count);
+        }
     }
 }
