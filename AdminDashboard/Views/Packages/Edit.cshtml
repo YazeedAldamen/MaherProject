@@ -6,7 +6,7 @@
 <div class="col-lg-9 col-md-12 px-4 mt-3">
 
     <h1>Edit / Delete Package</h1>
-    <form asp-action="Edit" asp-controller="Packages" class="row g-3 mt-5" enctype="multipart/form-data">
+    <form asp-action="Edit" asp-controller="Packages" id="packageForm" class="row g-3 mt-5" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" name="Id" id="id"/>
         <div class="col-md-6">
             <label for="Name" class="form-label">@Html.DisplayNameFor(x=>x.Name):</label>
@@ -312,7 +312,7 @@
 
         var endpoint = "/Packages/Edit";
 
-        var formData = new FormData(document.querySelector('form'));
+        var formData = new FormData(document.getElementById('packageForm'));
         formData.append("AboutPackage", JSON.stringify(getDaysData()));
 
         fetch(endpoint, {
@@ -323,7 +323,7 @@
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                window.location.href = "/Packages/Index";
+                window.location.href = "@Url.Action("Index","Packages")";
                 return response.json();
             })
             .then(data => {
