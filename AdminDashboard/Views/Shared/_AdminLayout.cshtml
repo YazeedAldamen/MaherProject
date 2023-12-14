@@ -53,7 +53,7 @@
                                 {
                                     <li class="nav-link"><a href="create_service.html"><i class='bx bx-add-to-queue'></i> Create Service</a></li>
                                     <li class="nav-link"><a href="edit_service.html"><i class='bx bx-edit-alt'></i> Edit / Delete Service</a></li>
-                                    <li class="nav-link"><a href="hotel_orders.html"><i class='bx bx-notepad'></i> Hotel Rooms Orders</a></li>
+                                    <li class="nav-link"><a href="@Url.Action("Index","RoomOrders")"><i class='bx bx-notepad'></i> Hotel Rooms Orders</a></li>
                                 }
                             }
                             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

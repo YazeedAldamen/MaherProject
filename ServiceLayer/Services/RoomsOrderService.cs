@@ -5,6 +5,7 @@ using ServiceLayer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,8 +20,11 @@ namespace ServiceLayer.Services
             _roomsOrderRepository = unitofworkRepository.RoomOrderRepository;
         }
 
-        public async Task<(IEnumerable<RoomsOrderDTO> EntityData, int Count)> ListWithPaging(string orderBy, int? page, int? pageSize, bool isDescending)
+        public async Task<(IEnumerable<RoomsOrderDTO> EntityData, int Count)> ListWithPaging(string orderBy, int? page, int? pageSize, bool isDescending,Guid UserId)
         {
+            Expression<Func<RoomsOrder, bool>> filterExpression = x =>
+            (UserId == Guid.Empty || x.Room.UserId.Equals(UserId));
+
             (IList<RoomsOrder> EntityData, int Count) = await _roomsOrderRepository.ListWithPaging(
                 page: page,
                 pageSize: pageSize,
