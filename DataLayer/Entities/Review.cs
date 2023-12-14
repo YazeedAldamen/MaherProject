@@ -18,5 +18,6 @@ namespace DataLayer.Entities
         public int? PackageId { get; set; }
         public virtual Package? Package { get; set; }
         public string? ReviewText { get; set; }
+        public DateTime? CreateDate { get; set; } = DateTime.Now;
     }
 }

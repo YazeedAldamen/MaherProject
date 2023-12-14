@@ -27,6 +27,7 @@ namespace ServiceLayer
         private ContactService _contactService;
         private RoomsOrderService _roomsOrderService;
         private NotificationServices _notificationServices;
+        private ReviewService _reviewService;
 
 
 		public UnitOfWorkServices(IUnitOfWorkRepositories unitOfWorkRepository, UserManager<AspNetUser> userManager, RoleManager<AspNetRole> roleManager, ImageService imageServices = null)
@@ -47,5 +48,6 @@ namespace ServiceLayer
         public ContactService ContactService=>_contactService??new ContactService(_unitOfWorkRepository);
         public RoomsOrderService RoomsOrderService=>_roomsOrderService??new RoomsOrderService(_unitOfWorkRepository);
         public NotificationServices NotificationServices => _notificationServices ?? new NotificationServices(_unitOfWorkRepository);
+        public ReviewService ReviewService=>_reviewService??new ReviewService(_unitOfWorkRepository);
 	}
 }

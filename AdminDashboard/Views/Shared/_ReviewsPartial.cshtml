@@ -1,0 +1,19 @@
+﻿@model AdminDashboard.Models.SiteModels.ReviewsListModel
+
+@foreach (var item in Model.Reviews)
+{
+<div class="col">
+    <div class="card h-100">
+        <div class="card-body">
+            <div class="card_user">
+                <img src="~/images/content/@item.UserImage" class="card-img-top">
+                <h4 class="card-title">@item.Name</h4>
+            </div>
+            <p class="card-text">@item.ReviewText</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">@item.CreatedDate</small>
+        </div>
+    </div>
+</div>
+}

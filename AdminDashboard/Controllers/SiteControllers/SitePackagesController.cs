@@ -65,6 +65,7 @@ namespace AdminDashboard.Controllers.SiteControllers
             var data = await _packageServices.GetById(Id);
             var model = new PackageModel
             {
+                Id= Id,
                 Description = data.Description,
                 PackageMainImage = data.PackageMainImage,
                 ImageInfo = data.ImageInfo,

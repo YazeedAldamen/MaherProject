@@ -27,6 +27,8 @@ namespace DataLayer.Repositories
         public SitePackagesRepository SitePackagesRepository { get; set; }
         public SiteBlogsRepository SiteBlogsRepository { get; set; }
 
+        public ReviewsRepository ReviewsRepository { get; set; }
+
         public UnitOfWorkRepositories(IEfContextFactory efContextFactory)
         {
             _efContextFactory = efContextFactory;
@@ -44,6 +46,7 @@ namespace DataLayer.Repositories
             NotificationRepository = new NotificationRepository(efContextFactory);
             SitePackagesRepository = new SitePackagesRepository(efContextFactory);
             SiteBlogsRepository = new SiteBlogsRepository(efContextFactory);
+            ReviewsRepository = new ReviewsRepository(efContextFactory);
         }
 
 
