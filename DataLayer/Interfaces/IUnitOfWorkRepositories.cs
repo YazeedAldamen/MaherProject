@@ -16,7 +16,6 @@ namespace DataLayer.Interfaces
         IGenericRepository<PackageOrder> PackageOrderRepository { get; }
         IGenericRepository<HotelRoom> HotelRoomRepository { get; }
         IGenericRepository<ProviderService> ProviderServiceRepository { get; }
-        IGenericRepository<Review> ReviewRepository { get; }
         IGenericRepository<RoomsOrder> RoomOrderRepository { get; }
         IGenericRepository<AspNetUser> UsersRepository { get; }
         IGenericRepository<AspNetUserRole> UserRoleRepository { get; }
@@ -24,5 +23,6 @@ namespace DataLayer.Interfaces
         NotificationRepository NotificationRepository { get; }
         SitePackagesRepository SitePackagesRepository { get; }
         SiteBlogsRepository SiteBlogsRepository { get; }
+        ReviewsRepository ReviewsRepository { get; }
     }
 }

@@ -10,9 +10,9 @@ namespace ServiceLayer.DTO
     public class ReviewDTO
     {
         public int Id { get; set; }
-        public Guid? UserId { get; set; }
-        public int? HotelId { get; set; }
-        public int? PackageId { get; set; }
+        public string Name { get; set; }
         public string? ReviewText { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string UserImage { get; set; }
     }
 }
