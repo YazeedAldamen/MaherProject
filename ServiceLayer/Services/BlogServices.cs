@@ -1,5 +1,6 @@
 ﻿using DataLayer.Entities;
 using DataLayer.Interfaces;
+using DataLayer.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using ServiceLayer.DTO;
@@ -19,10 +20,12 @@ namespace ServiceLayer.Services
     public class BlogServices
     {
         private readonly IGenericRepository<Blog> _blogRepository;
+        private readonly SiteBlogsRepository _siteBlogRepository;
 
         public BlogServices(IUnitOfWorkRepositories unitofworkRepository)
         {
             _blogRepository=unitofworkRepository.BlogRepository;
+            _siteBlogRepository = unitofworkRepository.SiteBlogsRepository;
         }
 
         #region ListWithPaging
@@ -89,10 +92,10 @@ namespace ServiceLayer.Services
             return data;
         }
 
-        public async Task<IEnumerable<BlogDTO>> GetPublishedBlogs()
+        public async Task<(IEnumerable<BlogDTO>data,int Count)> GetPublishedBlogs(int skip, int take)
         {
-            var entities = await _blogRepository.List(x => x.IsPublished == true);
-            var data = entities.Select(x => new BlogDTO()
+            var entities = await _siteBlogRepository.ListWithPaging(page: skip,pageSize: take, filter:x => x.IsPublished == true);
+            var data = entities.EntityData.Select(x => new BlogDTO()
             {
                 Id = x.Id,
                 Title = x.Title,
@@ -100,7 +103,7 @@ namespace ServiceLayer.Services
                 ShortDescription=x.ShortDescription,
                 LastUpdated=x.LastUpdated,
             });
-            return data;
+            return (data,entities.Count);
         }
 
         public async Task Edit(BlogDTO data)

@@ -23,5 +23,6 @@ namespace DataLayer.Interfaces
         IGenericRepository<AspNetRole> RoleRepository { get; }
         NotificationRepository NotificationRepository { get; }
         SitePackagesRepository SitePackagesRepository { get; }
+        SiteBlogsRepository SiteBlogsRepository { get; }
     }
 }

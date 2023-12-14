@@ -25,6 +25,7 @@ namespace DataLayer.Repositories
         public IGenericRepository<AspNetRole> RoleRepository { get; set; }
         public NotificationRepository NotificationRepository { get; set; }
         public SitePackagesRepository SitePackagesRepository { get; set; }
+        public SiteBlogsRepository SiteBlogsRepository { get; set; }
 
         public UnitOfWorkRepositories(IEfContextFactory efContextFactory)
         {
@@ -42,6 +43,7 @@ namespace DataLayer.Repositories
             RoleRepository = new GenericRepository<AspNetRole>(efContextFactory);
             NotificationRepository = new NotificationRepository(efContextFactory);
             SitePackagesRepository = new SitePackagesRepository(efContextFactory);
+            SiteBlogsRepository = new SiteBlogsRepository(efContextFactory);
         }
 
 
