@@ -90,6 +90,10 @@
                 }
                 </select>
             </div>
+            <div class="col-md-4">
+                <label for="day1image" class="form-label">Day Image</label>
+                <input type="file" class="form-control" id="day1image" onchange="validateForm()">
+             </div>
         </div>
 
         <div class="col-12">
@@ -160,7 +164,7 @@
         var cityLable = document.createElement("label");
         cityLable.classList.add("form-label");
         cityLable.textContent = "City";
-        cityLable.setAttribute("for", "day" + dayCounter + "description");
+        cityLable.setAttribute("for", "cities" + dayCounter);
         var citiesDiv = document.createElement("div");
         citiesDiv.classList.add("col-md-2");
         var selectList = document.createElement("select");
@@ -178,6 +182,20 @@
         citiesDiv.appendChild(cityLable);
         citiesDiv.appendChild(selectList);
 
+        var imageLable = document.createElement("label");
+        imageLable.classList.add("form-label");
+        imageLable.textContent = "Day Image";
+        imageLable.setAttribute("for", "day" + dayCounter + "image");
+        var imageDiv = document.createElement("div");
+        imageDiv.classList.add("col-md-4");
+        var imageInput = document.createElement("input");
+        imageInput.type = "file";
+        imageInput.classList.add("form-control");
+        imageInput.id = "day" + dayCounter + "image";
+        imageInput.addEventListener("change", validateForm);
+        imageDiv.appendChild(imageLable);
+        imageDiv.appendChild(imageInput);
+
 
 
 
@@ -187,6 +205,7 @@
         dayContainer.appendChild(titleDiv);
         dayContainer.appendChild(descriptionDiv);
         dayContainer.appendChild(citiesDiv);
+        dayContainer.appendChild(imageDiv);
 
         dayCounter++;
         var submitBtn = document.getElementById('submitButton');
@@ -196,17 +215,28 @@
     function getDaysData() {
         event.preventDefault();
         var days = [];
+        var daysImages = [];
         for (var i = 1; i < dayCounter; i++) {
+            var imageInput = document.getElementById("day" + i + "image");
+            var imageName = getImageName(imageInput);
             var day = {
                 Title: document.getElementById("day" + i+"title").value,
                 Description: document.getElementById("day" + i + "description").value,
-                CityId: document.getElementById("cities"+i).value
+                CityId: document.getElementById("cities"+i).value,
+                ImageName: imageName
             };
             days.push(day);
-        }
-        return days;
-    }
+            // append an empty file if no file is selected
+            daysImages.push(imageInput.files.length > 0 ? imageInput.files[0] : new File([], "noFile"));
 
+        }
+        return { days, daysImages };
+    }
+    function getImageName(input) {
+        var file = input.files[0];
+        var imageName = file ? file.name : "";
+        return imageName;
+    }
 
     document.getElementById("submitButton").addEventListener("click", function () {
         document.getElementById("AboutPackage").value = JSON.stringify(getDaysData());
@@ -247,8 +277,9 @@
                 var daytitle = document.getElementById('day' + i.toString() + 'title').value;
                 var daydescription = document.getElementById('day' + i.toString() + 'description').value;
                 var daycity = document.getElementById('cities' + i.toString()).value;
+                var dayimage = document.getElementById('day' + i.toString() + 'image').value;
 
-                if (daytitle.trim() === '' || daydescription.trim() === '' || daycity === '0') {
+                if (daytitle.trim() === '' || daydescription.trim() === '' || daycity === '0' || dayimage === '' ) {
 
                     return true;
                 }
@@ -273,7 +304,11 @@
 
         // Collect form data, including dynamically added days data
         var formData = new FormData(document.getElementById('packageForm'));
-        formData.append("AboutPackage", JSON.stringify(getDaysData()));
+        var daysData = getDaysData();
+        formData.append("AboutPackage", JSON.stringify(daysData.days));
+        for (var i = 0; i < daysData.daysImages.length; i++) {
+            formData.append("AboutPackageImages", daysData.daysImages[i]);
+        }
 
         // Make AJAX request
         fetch(endpoint, {

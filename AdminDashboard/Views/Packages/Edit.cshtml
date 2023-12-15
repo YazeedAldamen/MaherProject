@@ -87,6 +87,7 @@
                     string titleId = "day" + dayCount + "title";
                     string descriptionId = "day" + dayCount + "description";
                     string cityId = "cities" + dayCount;
+                    string imageId = "day" + dayCount + "image";
                     <h5>Day @dayCount</h5>
                     <div class="col-md-4">
                         <label for="@titleId" class="form-label">Title</label>
@@ -111,6 +112,13 @@
                                 }
                             }
                         </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="day1image" class="form-label">Day Image</label>
+                        <input type="file" class="form-control" id="@imageId" onchange="validateForm()">
+                        <div class="col mb-3">
+                            <img src="../../images/content/@day?.ImageName" class="form_img" style="max-width:150px; max-height:150px;min-height:150px;max-height:150px" />
+                        </div>
                     </div>
                     dayCount++;
                 
@@ -145,7 +153,6 @@
     var dayCounter = @Model.PackageDays.Count + 1;
     function addDay(event) {
         event.preventDefault();
-        debugger;
         var dayTitle = document.createElement("h5");
         dayTitle.textContent = "Day " + dayCounter;
 
@@ -187,7 +194,7 @@
             var cityLable = document.createElement("label");
         cityLable.classList.add("form-label");
         cityLable.textContent = "City";
-        cityLable.setAttribute("for", "day" + dayCounter + "description");
+        cityLable.setAttribute("for", "cities" + dayCounter);
         var citiesDiv = document.createElement("div");
         citiesDiv.classList.add("col-md-2");
         var selectList = document.createElement("select");
@@ -197,7 +204,6 @@
 
 
         var cities = @Html.Raw(citiesJson);
-        debugger;
         for (var i = 0; i < cities.length; i++) {
             var option = document.createElement("option");
             option.value = cities[i].value;
@@ -209,7 +215,19 @@
         citiesDiv.appendChild(selectList);
 
 
-
+        var imageLable = document.createElement("label");
+        imageLable.classList.add("form-label");
+        imageLable.textContent = "Day Image";
+        imageLable.setAttribute("for", "day" + dayCounter + "image");
+        var imageDiv = document.createElement("div");
+        imageDiv.classList.add("col-md-4");
+        var imageInput = document.createElement("input");
+        imageInput.type = "file";
+        imageInput.classList.add("form-control");
+        imageInput.id = "day" + dayCounter + "image";
+        imageInput.addEventListener("change", validateForm);
+        imageDiv.appendChild(imageLable);
+        imageDiv.appendChild(imageInput);
 
 
         var dayContainer = document.getElementById("dayContainer");
@@ -217,6 +235,7 @@
         dayContainer.appendChild(titleDiv);
         dayContainer.appendChild(descriptionDiv);
         dayContainer.appendChild(citiesDiv);
+        dayContainer.appendChild(imageDiv);
 
         dayCounter++;
 
@@ -228,6 +247,7 @@
     function getDaysData() {
         event.preventDefault();
         var days = [];
+        var daysImages = [];
 
         for (var i = 1; i < dayCounter; i++) {
             var titleElement = document.getElementById("day" + i + "title");
@@ -235,20 +255,29 @@
             var cityElement = document.getElementById("cities" + i);
 
             if (titleElement && descriptionElement && cityElement) {
+                var imageInput = document.getElementById("day" + i + "image");
+                var imageName = getImageName(imageInput);
                 var day = {
                     Title: titleElement.value,
                     Description: descriptionElement.value,
-                    CityId: cityElement.value
+                    CityId: cityElement.value,
+                    ImageName: imageName
                 };
                 days.push(day);
+                daysImages.push(imageInput.files.length > 0 ? imageInput.files[0] : new File([], "noFile"));
+
             } else {
                 console.error("One or more elements not found for day " + i);
             }
         }
 
-        return days;
+        return { days, daysImages };
     }
-
+    function getImageName(input) {
+        var file = input.files[0];
+        var imageName = file ? file.name : "";
+        return imageName;
+    }
 
 
     document.getElementById("submitButton").addEventListener("click", function () {
@@ -283,7 +312,7 @@
     }
 
     function dynamicDaysValidation() {
-        debugger;
+       
         try {
             for (var i = 1; i < dayCounter; i++) {
                 var daytitle = document.getElementById('day' + i.toString() + 'title').value;
@@ -313,8 +342,11 @@
         var endpoint = "/Packages/Edit";
 
         var formData = new FormData(document.getElementById('packageForm'));
-        formData.append("AboutPackage", JSON.stringify(getDaysData()));
-
+        var daysData = getDaysData();
+        formData.append("AboutPackage", JSON.stringify(daysData.days));
+        for (var i = 0; i < daysData.daysImages.length; i++) {
+            formData.append("AboutPackageImages", daysData.daysImages[i]);
+        }
         fetch(endpoint, {
             method: 'PUT',
             body: formData,
@@ -362,7 +394,6 @@
         ) {
             var isDisabled = dynamicDaysValidation();
             console.log("disabled " + isDisabled);
-            debugger;
             if (isDisabled) {
                 // give the submit button the disabled attribute
                 submitBtn.disabled = true;
