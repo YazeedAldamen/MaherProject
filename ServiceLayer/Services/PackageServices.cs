@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ServiceLayer.Services
@@ -117,24 +118,39 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 entity.RoomClassId = data.RoomClassId;
                 entity.Price = data.Price;
                 entity.Discount = data.Discount;
-
                 entity.IsPublished = data.IsPublished;
-
                 entity.IsDeleted = data.IsDeleted;
-                if (data.AboutPackage != "[]")
-                {
-                    entity.AboutPackage = data.AboutPackage;
-                }
-
-
                 entity.NumberOfDays = data.NumberOfDays;
                 entity.NumberOfNights = data.NumberOfNights;
                 entity.UserId = data.UserId;
-                //entity = await HandlePackageMultipleImages(entity, data);
-                //entity = await HandleHotelMultipleImages(entity, data);
-
                 entity.PackageMainImage = await _imageService.HandleImage(entity.PackageMainImage, data.PackageMainImageFile);
                 entity.PackageImage1 = data.PackageImages != null ? await _imageService.HandleMultipleImages(data.PackageImages, true, entity.PackageImage1) : entity.PackageImage1;
+
+                if (data.AboutPackage != "[]")
+                {
+                    List<AboutPackage> aboutPackages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<AboutPackage>>(entity.AboutPackage);
+                    List<ImageInfo> oldImagesList = new List<ImageInfo>();
+                    aboutPackages.ForEach(x =>
+                    {
+                        oldImagesList.Add(new ImageInfo
+                        {
+                            Name = x.ImageName,
+                            ImagePath = x.ImageName
+                        });
+                    });
+                    if (data.AboutPackageImages != null && data.AboutPackageImages.Any(x=>x.Length > 0))
+                    {
+                        string newImages = await _imageService.HandleMultipleImages(data.AboutPackageImages, true, "", oldImagesList);
+                        data.AboutPackage = ReplaceImageNameWithImagePath(data.AboutPackage, newImages,oldImagesList);
+                    }
+                    else
+                    {
+                        string oldImages = Newtonsoft.Json.JsonConvert.SerializeObject(oldImagesList);
+                        data.AboutPackage = ReplaceImageNameWithImagePath(data.AboutPackage, oldImages);
+                    }
+                }
+
+                entity.AboutPackage = data.AboutPackage;
 
 
                 await _packageRepository.Edit(entity);
@@ -154,7 +170,23 @@ string orderBy, int? page, int? pageSize, bool isDescending)
             {
                 List<string> images = new List<string>();
                 images.Add(entity.PackageMainImage);
-                images.Add(entity.PackageImage1);
+                if (!string.IsNullOrEmpty(entity.PackageImage1))
+                {
+                    List<ImageInfo> imageInfos = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ImageInfo>>(entity.PackageImage1);
+                    imageInfos.ForEach(x =>
+                    {
+                        images.Add(x.ImagePath);
+                    });
+                }
+                // deserialize the about package and get the images
+                if (!string.IsNullOrEmpty(entity.AboutPackage))
+                {
+                    List<AboutPackage> aboutPackages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<AboutPackage>>(entity.AboutPackage);
+                    aboutPackages.ForEach(x =>
+                    {
+                        images.Add(x.ImageName);
+                    });
+                }
                 images.ForEach(async image =>
                 {
                     if (!string.IsNullOrEmpty(image))
@@ -194,6 +226,11 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 {
                     entity.PackageImage1 = await _imageService.HandleMultipleImages(data.PackageImages, false);
                 }
+                if (data.AboutPackageImages.Any())
+                {
+                    string newImages = await _imageService.HandleMultipleImages(data.AboutPackageImages, false);
+                    entity.AboutPackage = ReplaceImageNameWithImagePath(entity.AboutPackage, newImages);
+                }
 
                 await _packageRepository.Add(entity);
             }
@@ -202,6 +239,24 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 throw ex;
             }
 
+        }
+        public string ReplaceImageNameWithImagePath(string aboutPackage, string jsonImages, List<ImageInfo> oldImagesList = null)
+        {
+            List<AboutPackage> aboutPackages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<AboutPackage>>(aboutPackage);
+            List<ImageInfo> newImagesList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ImageInfo>>(jsonImages);
+            // loop through aboutPackages and replace image name with image path respectively on index
+            aboutPackages.ForEach(x =>
+            {
+                if (!string.IsNullOrEmpty(newImagesList[aboutPackages.IndexOf(x)].ImagePath))
+                {
+                    x.ImageName = newImagesList[aboutPackages.IndexOf(x)].ImagePath;
+                }
+                else if (oldImagesList != null)
+                {
+                    x.ImageName = oldImagesList[aboutPackages.IndexOf(x)].ImagePath;
+                }
+            });
+            return Newtonsoft.Json.JsonConvert.SerializeObject(aboutPackages);
         }
 
         public async Task<(List<PackageDTO> data, int totalRecords)> GetPackageAsync(int skip, int take)

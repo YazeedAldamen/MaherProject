@@ -40,5 +40,7 @@ namespace AdminDashboard.Models
         public List<ImageInfo>? ImageInfo { get; set; }
 
         public List<AboutPackage>? PackageDays { get; set; }
+
+        public List<IFormFile>? AboutPackageImages { get; set; }
     }
 }

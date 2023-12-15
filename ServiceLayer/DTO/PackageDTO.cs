@@ -42,10 +42,7 @@ namespace ServiceLayer.DTO
         public Guid? UserId { get; set; }
         public IFormFile? PackageMainImageFile { get; set; }
         public List<IFormFile>? PackageImages { get; set; }
-        //public IFormFile? PackageImage1File { get; set; }
-        //public IFormFile? PackageImage2File { get; set; }
-
-        //public IFormFile? PackageImage3File { get; set; }
+        public List<IFormFile>? AboutPackageImages { get; set; }
         public string? AboutPackage { get; set; }
         public List<ImageInfo>? ImageInfo { get; set; }
         public List<AboutPackage>? PackageDays { get; set; }

@@ -97,7 +97,7 @@ namespace AdminDashboard.Controllers.AdminControllers
                 IsPublished = model.IsPublished,
                
                 IsDeleted = model.IsDeleted,
-
+                AboutPackageImages = model.AboutPackageImages,
                
 
                 NumberOfDays = model.NumberOfDays,
@@ -160,11 +160,8 @@ namespace AdminDashboard.Controllers.AdminControllers
                 Discount = model.Discount,
                 AboutPackage = model.AboutPackage,
                 IsPublished = model.IsPublished,
-               
+                AboutPackageImages = model.AboutPackageImages,
                 IsDeleted = model.IsDeleted,
-
-              
-
                 NumberOfDays = model.NumberOfDays,
                 NumberOfNights = model.NumberOfNights,
 

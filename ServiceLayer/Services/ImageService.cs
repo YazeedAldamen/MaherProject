@@ -59,16 +59,27 @@ namespace ServiceLayer.Services
             return newImageName;
         }
 
-        public async Task<string> HandleMultipleImages(List<IFormFile> imageFiles, bool isEdit = false, string oldImages = "")
+        public async Task<string> HandleMultipleImages(List<IFormFile> imageFiles, bool isEdit = false, string oldImages = "", List<ImageInfo> oldImagesList = null)
         {
             List<ImageInfo> images = new List<ImageInfo>();
             int counter = 0;
+            List<int> notToDelete = new List<int>();
             if (!imageFiles.Any())
             {
                 return oldImages;
             }
             foreach (var image in imageFiles)
             {
+                if (image.Length == 0)
+                {
+                    notToDelete.Add(counter);
+                    images.Add(new ImageInfo
+                    {
+                        Name = "Image" + counter,
+                        ImagePath = ""
+                    });
+                    continue;
+                }
                 counter++;
                 var uploadedImageUrl = await ImageService.UploadFile(image);
                 images.Add(new ImageInfo
@@ -79,9 +90,21 @@ namespace ServiceLayer.Services
             }
             if (isEdit)
             {
-                List<ImageInfo> deserializedObject = JsonConvert.DeserializeObject<List<ImageInfo>>(oldImages);
+                List<ImageInfo> deserializedObject = new List<ImageInfo>();
+                if (oldImagesList != null)
+                {
+                    deserializedObject = oldImagesList;
+                }
+                else
+                {
+                    deserializedObject = JsonConvert.DeserializeObject<List<ImageInfo>>(oldImages);
+                }
                 foreach (var item in deserializedObject)
                 {
+                    if (notToDelete.Contains(deserializedObject.IndexOf(item)))
+                    {
+                        continue;
+                    }
                     FileManager.DeleteFile(item.ImagePath);
                 }
 
