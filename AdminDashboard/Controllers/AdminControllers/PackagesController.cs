@@ -202,17 +202,16 @@ namespace AdminDashboard.Controllers.AdminControllers
                  Packages = packages,
                  oldTopTen = data.Select(x=>x.Id).ToList(),
                  newTopTen= new List<int>()
-
             };
             return View(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditTopTen(List<int> yais)
+        public async Task<IActionResult> EditTopTen(List<int> newTopTen, List<int> oldTopTen)
         {
             try
             {
-                //await _packageServices.EditTopTen(newTopTen, oldTopTen);
+                await _packageServices.EditTopTen(newTopTen, oldTopTen);
                 ShowSuccessMessage("Package Updated Successfully");
             }
             catch (Exception ex)

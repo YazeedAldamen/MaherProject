@@ -302,7 +302,9 @@ string orderBy, int? page, int? pageSize, bool isDescending)
 
         public async Task<IList<PackageDTO>> GetTopTen()
         {
-            var packages = await _packageRepository.List(x => x.TopTen != null);
+            Func<IQueryable<Package>, IOrderedQueryable<Package>> orderByExpression;
+            orderByExpression = q => q.OrderBy(x => x.TopTen);
+            var packages = await _packageRepository.List(x => x.TopTen != null, orderBy : orderByExpression);
             var topTenPackages = packages.Select(x => new PackageDTO
             {
                 Id = x.Id,
@@ -325,20 +327,21 @@ string orderBy, int? page, int? pageSize, bool isDescending)
             return result;
         }
 
-        public async Task EditTopTen(string newTopTen, string oldTopTen)
+        public async Task EditTopTen(List<int> newTopTen, List<int> oldTopTen)
         {
             List<Package> oldPackages = new List<Package>();
             List<Package> newPackages = new List<Package>();
-            foreach (var old in oldTopTen.Split(','))
+
+            foreach (var old in oldTopTen)
             {
-                var package = await _packageRepository.GetById(Convert.ToInt32(old));
+                var package = await _packageRepository.GetById(old);
                 package.TopTen = null;
                 oldPackages.Add(package);
             }
             await _packageRepository.UpdateRange(oldPackages);
-            foreach(var newPackage in newTopTen.Split(','))
+            foreach(var newPackage in newTopTen)
             {
-                var package = await _packageRepository.GetById(Convert.ToInt32(newPackage));
+                var package = await _packageRepository.GetById(newPackage);
                 package.TopTen = newTopTen.IndexOf(newPackage) + 1;
                 newPackages.Add(package);
             }

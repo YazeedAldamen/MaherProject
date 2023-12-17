@@ -1,67 +1,100 @@
 ﻿@model AdminDashboard.Models.TopTenModel
 @{
     ViewData["Title"] = "Edit Top 10 Packages";
-    Layout = null;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<script src="~/datatable/js/jquery-3.6.0.min.js"></script>
 
 <h2>Select up to 10 items:</h2>
 
 <form id="checkboxForm">
-    @foreach (var item in Model.Packages)
-    {
-        <label>
-            <input type="checkbox" name="selectedItems" value="@item.Id" @(item.TopTen != null ? "checked" : "")>
-            <span>@item.Name</span>
-        </label>
-        <br>
-    }
-    <input type="hidden" name="oldTopTen" id="oldTopTen" />
-    <input asp-for="oldTopTen" class="form-control" name="oldTopTen" id="oldTopTen" type="text" />
-    <input asp-for="newTopTen" class="form-control" name="newTopTen" id="newTopTen"   />
+    @{
+        List<PackageModel> order = new List<PackageModel>();
 
-    <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+        foreach (var item in Model.Packages)
+        {
+            if(item.TopTen != null)
+            {
+                order.Add(item);
+            }
+                <label>
+                    <input type="checkbox" name="selectedItems" value="@item.Id" @(item.TopTen != null ? "checked" : "")>
+                    <span>@item.Name</span>
+                </label>
+                <br>
+        }
+        order = order.OrderBy(x=>x.TopTen).ToList();
+    }
+    <button type="submit" class="btn btn-primary" id="submitButton" onclick="submitForm()">Submit</button>
 
 </form>
 
-<script>
-
-    document.getElementById("submitButton").addEventListener("click", function (event) {
-        event.preventDefault();
-
-        var newTopTen = [];
-        debugger;
+ <script>
+     var oldTopTen = [];
+     var newTopTen = [];
+    var maxSelectionLimit = 10;
+    var lastCheckedCheckbox = null;
+     window.onload = function () {
         var checkedCheckboxes = document.querySelectorAll('input[name="selectedItems"]:checked');
-
         for (var i = 0; i < checkedCheckboxes.length; i++) {
             if (checkedCheckboxes[i].checked) {
+                oldTopTen.push(Number(checkedCheckboxes[i].value));
                 newTopTen.push(Number(checkedCheckboxes[i].value));
             }
         }
-        var endpoint = "/Packages/EditTopTen";
+     }
 
-        var formData = new FormData(document.getElementById('checkboxForm'));
-        var oldTopTen = document.getElementById('oldTopTen');
-        console.log(oldTopTen.value);
-        var x = newTopTen;
-        formData.append("oldTopTen", oldTopTen.value);
-        formData.append("newTopTen", x.values);
-        
-        fetch(endpoint, {
-            method: 'PUT',
-            body: formData,
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+    document.querySelectorAll('input[name="selectedItems"]').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+                if (newTopTen.length < maxSelectionLimit) {
+                    newTopTen.push(Number(checkbox.value));
+                    lastCheckedCheckbox = checkbox;
+                } else {
+                    lastCheckedCheckbox.checked = false;
+                    alert("Max Number Can't Exceed 10")
                 }
-                window.location.href = "@Url.Action("Index","Packages")";
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
+            } else {
+                var index = newTopTen.indexOf(Number(checkbox.value));
+                if (index !== -1) {
+                    newTopTen.splice(index, 1);
+                }
+            }
+
+            // You can log or do other operations based on the updated newTopTen array here
+            console.log("Updated newTopTen:", newTopTen);
+        });
     });
+
+    function submitForm() {
+        js = jQuery.noConflict();
+        // var newTopTen = [];
+        // var checkedCheckboxes = document.querySelectorAll('input[name="selectedItems"]:checked');
+
+        // for (var i = 0; i < checkedCheckboxes.length; i++) {
+        //     if (checkedCheckboxes[i].checked) {
+        //         newTopTen.push(Number(checkedCheckboxes[i].value));
+        //     }
+        // }
+
+        // Perform the AJAX call
+        debugger;
+        js.ajax({
+            url: "@Url.Action("EditTopTen","Packages")", // replace with your actual URL
+            type: "PUT",
+            data: {
+               newTopTen : newTopTen,
+               oldTopTen: oldTopTen
+            },
+            success: function (data) {
+                // Handle success (if needed)
+                console.log("Success:", data);
+                location.reload();
+            },
+            error: function (error) {
+                // Handle errors (if needed)
+                console.log("Error:", error);
+            }
+        });
+    }
 </script>
