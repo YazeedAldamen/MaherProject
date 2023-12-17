@@ -1,0 +1,67 @@
+﻿@model AdminDashboard.Models.TopTenModel
+@{
+    ViewData["Title"] = "Edit Top 10 Packages";
+    Layout = null;
+}
+
+<h2>Select up to 10 items:</h2>
+
+<form id="checkboxForm">
+    @foreach (var item in Model.Packages)
+    {
+        <label>
+            <input type="checkbox" name="selectedItems" value="@item.Id" @(item.TopTen != null ? "checked" : "")>
+            <span>@item.Name</span>
+        </label>
+        <br>
+    }
+    <input type="hidden" name="oldTopTen" id="oldTopTen" />
+    <input asp-for="oldTopTen" class="form-control" name="oldTopTen" id="oldTopTen" type="text" />
+    <input asp-for="newTopTen" class="form-control" name="newTopTen" id="newTopTen"   />
+
+    <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+
+</form>
+
+<script>
+
+    document.getElementById("submitButton").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var newTopTen = [];
+        debugger;
+        var checkedCheckboxes = document.querySelectorAll('input[name="selectedItems"]:checked');
+
+        for (var i = 0; i < checkedCheckboxes.length; i++) {
+            if (checkedCheckboxes[i].checked) {
+                newTopTen.push(Number(checkedCheckboxes[i].value));
+            }
+        }
+        var endpoint = "/Packages/EditTopTen";
+
+        var formData = new FormData(document.getElementById('checkboxForm'));
+        var oldTopTen = document.getElementById('oldTopTen');
+        console.log(oldTopTen.value);
+        var x = newTopTen;
+        formData.append("oldTopTen", oldTopTen.value);
+        formData.append("newTopTen", x.values);
+        
+        fetch(endpoint, {
+            method: 'PUT',
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                window.location.href = "@Url.Action("Index","Packages")";
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
+</script>

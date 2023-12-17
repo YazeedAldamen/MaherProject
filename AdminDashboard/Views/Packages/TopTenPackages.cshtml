@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ServiceLayer.DTO.PackageDTO>
+@{
+    ViewData["Title"] = "Top 10";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div>
+    <a href="@Url.Action("EditTopTenPackages","Packages")">Edit Top 10</a>
+</div>
+<div class="col-lg-9 col-md-12 px-4 mt-3">
+    <div class="body-contant">
+        <h1 class="mb-5">Packages</h1>
+        <table class="table" id="table-object">
+            <thead>
+                <tr>
+                    <th data-value="Id" scope="col">#</th>
+                    <th data-value="Name" scope="col">@Html.DisplayNameFor(m=>m.Name)</th>
+                    <th data-value="IsPublished" scope="col">@Html.DisplayNameFor(m=>m.IsPublished)</th>
+                </tr>
+                @{
+                    int counter =1;
+                    foreach (var package in Model)
+                    {
+                        string published = package.IsPublished == true ? "Published" : "Not Published";
+                        <tr>
+                            <th data-value="Id" scope="col">@counter</th>
+                            <th data-value="Name" scope="col">@package.Name</th>
+                            <th data-value="IsPublished" scope="col">@published</th>
+                        </tr>
+                        counter++;
+                    }
+                }
+            </thead>
+        </table>
+    </div>
+</div>
