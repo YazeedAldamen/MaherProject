@@ -1,6 +1,8 @@
 ﻿using AdminDashboard.Models;
+using DataLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ServiceLayer;
 using ServiceLayer.DTO;
 using ServiceLayer.Services;
@@ -35,34 +37,35 @@ namespace AdminDashboard.Controllers.AdminControllers
         public async Task<IActionResult> Edit(int Id)
         {
             PackageModel model = new PackageModel();
-            try { 
-            var data = await _packageServices.GetById(Id);
-             model = new PackageModel
+            try
             {
-                Id = Id,
-                Description = data.Description,
-                PackageMainImage = data.PackageMainImage,
-                ImageInfo = data.ImageInfo,
-                PackageTypeId = data.PackageTypeId,
-                RoomClassId = data.RoomClassId,
-                Price = data.Price,
-                Discount = data.Discount,
-                Name = data.Name,
-                IsPublished = data.IsPublished,
+                var data = await _packageServices.GetById(Id);
+                model = new PackageModel
+                {
+                    Id = Id,
+                    Description = data.Description,
+                    PackageMainImage = data.PackageMainImage,
+                    ImageInfo = data.ImageInfo,
+                    PackageTypeId = data.PackageTypeId,
+                    RoomClassId = data.RoomClassId,
+                    Price = data.Price,
+                    Discount = data.Discount,
+                    Name = data.Name,
+                    IsPublished = data.IsPublished,
 
-                IsDeleted = data.IsDeleted,
+                    IsDeleted = data.IsDeleted,
 
-                NumberOfDays = data.NumberOfDays,
-                NumberOfNights = data.NumberOfNights,
+                    NumberOfDays = data.NumberOfDays,
+                    NumberOfNights = data.NumberOfNights,
 
-                UserId = data.UserId,
-                PackageDays = data.PackageDays,
-                
-            };
-            
-            ViewBag.PackageTypes = PackageTypes;
-            ViewBag.RoomClass = RoomClass;
-            ViewBag.Cities = Cities;
+                    UserId = data.UserId,
+                    PackageDays = data.PackageDays,
+
+                };
+
+                ViewBag.PackageTypes = PackageTypes;
+                ViewBag.RoomClass = RoomClass;
+                ViewBag.Cities = Cities;
             }
             catch (Exception ex)
             {
@@ -85,7 +88,7 @@ namespace AdminDashboard.Controllers.AdminControllers
                 Id = model.Id,
                 Description = model.Description,
                 PackageMainImageFile = model.PackageMainImageFile,
-                
+
                 Name = model.Name,
                 AboutPackage = model.AboutPackage,
                 PackageImages = model.PackageImages,
@@ -93,12 +96,12 @@ namespace AdminDashboard.Controllers.AdminControllers
                 RoomClassId = model.RoomClassId,
                 Price = model.Price,
                 Discount = model.Discount,
-                
+
                 IsPublished = model.IsPublished,
-               
+
                 IsDeleted = model.IsDeleted,
                 AboutPackageImages = model.AboutPackageImages,
-               
+
 
                 NumberOfDays = model.NumberOfDays,
                 NumberOfNights = model.NumberOfNights,
@@ -178,6 +181,45 @@ namespace AdminDashboard.Controllers.AdminControllers
                 ShowErrorMessage("Something went wrong" + ex.Message);
             }
             return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> TopTenPackages()
+        {
+            var data = await _packageServices.GetTopTen();
+            return View(data);
+        }
+
+        public async Task<IActionResult> EditTopTenPackages()
+        {
+            var data = await _packageServices.GetAllPackagesAsync();
+            var packages = data.Select(x => new PackageModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                TopTen = x.TopTen
+            }).ToList();
+            var result =  new TopTenModel
+            {
+                 Packages = packages,
+                 oldTopTen = data.Select(x=>x.Id).ToList(),
+                 newTopTen= new List<int>()
+
+            };
+            return View(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> EditTopTen(List<int> yais)
+        {
+            try
+            {
+                //await _packageServices.EditTopTen(newTopTen, oldTopTen);
+                ShowSuccessMessage("Package Updated Successfully");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Something went wrong" + ex.Message);
+            }
+            return RedirectToAction(nameof(TopTenPackages));
         }
     }
 }

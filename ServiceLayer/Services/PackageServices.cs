@@ -138,10 +138,10 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                             ImagePath = x.ImageName
                         });
                     });
-                    if (data.AboutPackageImages != null && data.AboutPackageImages.Any(x=>x.Length > 0))
+                    if (data.AboutPackageImages != null && data.AboutPackageImages.Any(x => x.Length > 0))
                     {
                         string newImages = await _imageService.HandleMultipleImages(data.AboutPackageImages, true, "", oldImagesList);
-                        data.AboutPackage = ReplaceImageNameWithImagePath(data.AboutPackage, newImages,oldImagesList);
+                        data.AboutPackage = ReplaceImageNameWithImagePath(data.AboutPackage, newImages, oldImagesList);
                     }
                     else
                     {
@@ -298,6 +298,51 @@ string orderBy, int? page, int? pageSize, bool isDescending)
                 Price = x.Price,
             }).ToList();
             return (notificationDTO, packages.Count);
+        }
+
+        public async Task<IList<PackageDTO>> GetTopTen()
+        {
+            var packages = await _packageRepository.List(x => x.TopTen != null);
+            var topTenPackages = packages.Select(x => new PackageDTO
+            {
+                Id = x.Id,
+                Name = x.Name,
+                IsPublished = x.IsPublished,
+            }).ToList();
+            return topTenPackages;
+        }
+
+        public async Task<List<PackageDTO>> GetAllPackagesAsync()
+        {
+            var data = await _packageRepository.GetAllAsync(x=>x.IsPublished == true);
+            var result =new List<PackageDTO>();
+            result = data.Select(x => new PackageDTO
+            {
+                Id=x.Id,
+                Name = x.Name,
+                TopTen = x.TopTen,
+            }).ToList();
+            return result;
+        }
+
+        public async Task EditTopTen(string newTopTen, string oldTopTen)
+        {
+            List<Package> oldPackages = new List<Package>();
+            List<Package> newPackages = new List<Package>();
+            foreach (var old in oldTopTen.Split(','))
+            {
+                var package = await _packageRepository.GetById(Convert.ToInt32(old));
+                package.TopTen = null;
+                oldPackages.Add(package);
+            }
+            await _packageRepository.UpdateRange(oldPackages);
+            foreach(var newPackage in newTopTen.Split(','))
+            {
+                var package = await _packageRepository.GetById(Convert.ToInt32(newPackage));
+                package.TopTen = newTopTen.IndexOf(newPackage) + 1;
+                newPackages.Add(package);
+            }
+            await _packageRepository.UpdateRange(newPackages);
         }
     }
 }

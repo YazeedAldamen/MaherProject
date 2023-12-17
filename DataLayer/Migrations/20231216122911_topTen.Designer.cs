@@ -3,6 +3,7 @@ using System;
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231216122911_topTen")]
+    partial class topTen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,9 +364,6 @@ namespace DataLayer.Migrations
                     b.Property<float?>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int?>("TopTen")
-                        .HasColumnType("int");
-
                     b.Property<Guid?>("UserId")
                         .HasColumnType("char(36)");
 
@@ -454,9 +454,6 @@ namespace DataLayer.Migrations
                         .HasColumnType("float");
 
                     b.Property<int?>("RoomClassId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TopTen")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("UserId")
@@ -709,6 +706,32 @@ namespace DataLayer.Migrations
                     b.ToTable("RoomsOrders");
                 });
 
+            modelBuilder.Entity("DataLayer.Entities.TopTen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("HotelRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PackageId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelRoomId");
+
+                    b.HasIndex("PackageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TopTens");
+                });
+
             modelBuilder.Entity("DataLayer.Entities.AspNetRoleClaim", b =>
                 {
                     b.HasOne("DataLayer.Entities.AspNetRole", null)
@@ -863,6 +886,33 @@ namespace DataLayer.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("Room");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataLayer.Entities.TopTen", b =>
+                {
+                    b.HasOne("DataLayer.Entities.HotelRoom", "Hotel")
+                        .WithMany()
+                        .HasForeignKey("HotelRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Entities.Package", "Package")
+                        .WithMany()
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Entities.AspNetUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("Package");
 
                     b.Navigation("User");
                 });

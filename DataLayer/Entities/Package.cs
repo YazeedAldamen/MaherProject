@@ -46,5 +46,7 @@ namespace DataLayer.Entities
 
         public virtual RoomClass? RoomClass { get; set; }
 
+        public int? TopTen { get; set; }
+
     }
 }
