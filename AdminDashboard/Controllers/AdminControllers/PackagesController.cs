@@ -197,11 +197,12 @@ namespace AdminDashboard.Controllers.AdminControllers
                 Name = x.Name,
                 TopTen = x.TopTen
             }).ToList();
+            var newTopTen = data.OrderBy(x=>x.TopTen).Select(x => x.Id).ToList();
             var result =  new TopTenModel
             {
                  Packages = packages,
                  oldTopTen = data.Select(x=>x.Id).ToList(),
-                 newTopTen= new List<int>()
+                 newTopTen= newTopTen
             };
             return View(result);
         }
