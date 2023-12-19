@@ -1,12 +1,16 @@
 using DataLayer;
 using DataLayer.DbContext;
 using DataLayer.Entities;
+using ServiceLayer.Services;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using ServiceLayer;
-using ServiceLayer.Services;
 using System.ComponentModel;
+using System.Globalization;
+using System.Reflection;
 
 namespace AdminDashboard
 {
@@ -15,6 +19,27 @@ namespace AdminDashboard
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            #region Localization
+            builder.Services.AddSingleton<LanguageService>();
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+            builder.Services.AddMvc().AddViewLocalization().AddDataAnnotationsLocalization(options => {
+                options.DataAnnotationLocalizerProvider = (type, factory) => {
+                    var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName);
+                    return factory.Create("SharedResource", assemblyName.Name);
+                };
+            });
+            builder.Services.Configure<RequestLocalizationOptions>(options => {
+                var supportedCultures = new List<CultureInfo> {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("ar")
+                };
+                options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+                options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
+            });
+            #endregion
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -68,6 +93,8 @@ namespace AdminDashboard
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseRouting();
 
