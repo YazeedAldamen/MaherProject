@@ -17,7 +17,7 @@ namespace DataLayer.Repositories
 
         protected readonly MainDbContext context;
         private readonly DbSet<Package> dbSet;
-
+        static int topSkip = 0;
         public SitePackagesRepository(IEfContextFactory efContextFactory)
         {
             this.context = efContextFactory.Create();
@@ -98,10 +98,29 @@ namespace DataLayer.Repositories
                     // Return null to indicate no more data
                     return (null, count);
                 }
-
-                query = query
-                    .Skip((page.Value - 1) * pageSize.Value)
+                if ((page.Value - 1) == 0)
+                {
+                    var topTen = query.Where(x => x.IsPublished == true && x.TopTen != 0)
+                        .Skip((page.Value - 1) * pageSize.Value)
+                        .Take(pageSize.Value).OrderBy(x=>x.TopTen);
+                    if (!topTen.Any())
+                    {
+                        query = query.Where(x=> x.IsPublished == true)
+                                    .Skip((page.Value - 1) * pageSize.Value)
+                                    .Take(pageSize.Value);
+                    }
+                    else
+                    {
+                        query = topTen;
+                        topSkip = 1;
+                    }
+                }
+                else
+                {
+                    query = query.Where(x=> x.IsPublished == true && x.TopTen == 0)
+                    .Skip((page.Value - 1 - topSkip) * pageSize.Value)
                     .Take(pageSize.Value);
+                }
             }
 
             List<Package> data = await query.ToListAsync();

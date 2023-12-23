@@ -29,15 +29,15 @@ namespace ServiceLayer.DTO
 
         public string? PackageImage1 { get; set; }
 
-       
 
-       
+
+
 
         public bool IsPublished { get; set; }
 
         public bool IsDeleted { get; set; }
 
-       public int? RoomClassId { get; set; }
+        public int? RoomClassId { get; set; }
 
         public Guid? UserId { get; set; }
         public IFormFile? PackageMainImageFile { get; set; }
@@ -47,5 +47,6 @@ namespace ServiceLayer.DTO
         public List<ImageInfo>? ImageInfo { get; set; }
         public List<AboutPackage>? PackageDays { get; set; }
 
+        public int? TopTen { get; set; }
     }
 }

@@ -55,6 +55,7 @@ namespace DataLayer.Entities
         public ICollection<RoomsOrder> RoomOrders { get; set; } = new List<RoomsOrder>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
+        public int? TopTen { get; set; }
 
     }
 }

@@ -42,5 +42,7 @@ namespace AdminDashboard.Models
         public List<AboutPackage>? PackageDays { get; set; }
 
         public List<IFormFile>? AboutPackageImages { get; set; }
+
+        public int? TopTen { get; set; }
     }
 }
